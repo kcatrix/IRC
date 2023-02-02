@@ -1,4 +1,4 @@
-#include"head/irc.hpp"
+#include"../includes/irc.hpp"
 
 irc::irc( void ){ return; }
 

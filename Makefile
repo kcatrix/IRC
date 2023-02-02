@@ -7,9 +7,9 @@ CFLAGS = -Wall -Wextra -Werror -std=c++98
 
 NAME = irc
 
-SRCDIR = ./srcs
+SRCDIR = srcs/
 
-SRC = $(wildcard *.cpp)
+SRC =  $(wildcard $(SRCDIR)*.cpp)
 
 OBJ = $(SRC:.cpp=.o)
 
