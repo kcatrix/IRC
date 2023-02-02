@@ -21,28 +21,30 @@ void irc::init(int argc, char **argv)
 	{
 		for (int i = 1; i < argc; i++)
 			line.push_back(argv[i]);
-		line.erase(line.begin() + 1);
-		for (long unsigned int i = 0; i < line.size(); i++)
-			std::cout << "Taille du vecteur : " << line.size() << "   val :" <<  line[i] << std::endl;
+		
+		// removeString(line, "dudu");
+		printVector(line);
+		
 	}
 }
 
-/* 
-
-exemple manipulation vector
-
-int main() {
-  std::vector<std::string> myVector = {"Hello", "World", "Goodbye"};
-  std::string target = "World";
-  
-  for (int i = 0; i < myVector.size(); ++i) {
-    if (myVector[i] == target) {
-      myVector.erase(myVector.begin() + i);
-      break;
-    }
-  }
-  
-  return 0;
+void irc::removeString(std::vector<std::string>& myVector, const char* target)
+{
+	int lenght = myVector.size();
+	for (int i = 0; i < lenght; ++i) 
+	{
+    	if (myVector[i] == target) 
+		{
+      	myVector.erase(myVector.begin() + i);
+      	break;
+		}
+	}
 }
 
-*/
+
+void irc::printVector(std::vector<std::string>& myVector)
+{
+	std::cout << "Taille du vecteur : " << myVector.size() << "\n";
+	for (long unsigned int i = 0; i < myVector.size(); i++)
+			std::cout << "   value :"  << i <<  myVector[i] << std::endl;
+}
