@@ -27,8 +27,6 @@ void irc::init(int argc, char **argv)
 	}
 }
 
-#include <vector>
-#include <string>
 /* 
 
 exemple manipulation vector
