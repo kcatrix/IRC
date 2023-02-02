@@ -21,29 +21,39 @@ void irc::init(int argc, char **argv)
 	{
 		for (int i = 1; i < argc; i++)
 			line.push_back(argv[i]);
-		
-		// removeString(line, "dudu");
+		removeStringVector(line, "dudu");
 		printVector(line);
 		
 	}
 }
 
-void irc::removeString(std::vector<std::string>& myVector, const char* target)
+int irc::removeStringVector(std::vector<std::string>& myVector, const char* target)
 {
 	int lenght = myVector.size();
 	for (int i = 0; i < lenght; ++i) 
 	{
     	if (myVector[i] == target) 
 		{
-      	myVector.erase(myVector.begin() + i);
-      	break;
+      		myVector.erase(myVector.begin() + i);
+			return (0);
+      		break;
 		}
 	}
+	std::cout << "not find \n"; 
+	return(1);
+}
+
+void irc::copyVector(const std::vector<std::string> &src, std::vector<std::string> &dst)
+{
+    for (long unsigned int i = 0; i < src.size(); i++)
+    {
+        dst.push_back(src[i]);
+    }
 }
 
 void irc::printVector(std::vector<std::string>& myVector)
 {
 	std::cout << "Taille du vecteur : " << myVector.size() << "\n";
 	for (long unsigned int i = 0; i < myVector.size(); i++)
-			std::cout << "   value :"  << i <<  myVector[i] << std::endl;
+			std::cout << "   value "  << i << " == " <<  myVector[i] << std::endl;
 }

@@ -13,11 +13,12 @@ class irc
 	~irc( void );
 
 	void init(int argc, char** argv);
-	void removeString(std::vector<std::string>& myVector, const char* target);
+	int removeStringVector(std::vector<std::string>& myVector, const char* target);
 	void printVector(std::vector<std::string>& myVector);
-
+	void copyVector(const std::vector<std::string> &src, std::vector<std::string> &dst);
 	std::vector<std::string> line;
 	std::vector<std::string> all_commands;
 };
 
 #endif
+
