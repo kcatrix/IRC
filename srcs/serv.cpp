@@ -2,6 +2,7 @@
 
 void run(irc *irc)
 {
-	irc->printVector(irc->line);
+	(void) irc;
+	// irc->printVector(irc->line);
 	std::cout << "ici le serv \n";
 }
