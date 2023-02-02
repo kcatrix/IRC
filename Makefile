@@ -5,7 +5,7 @@ RM = rm -f
 
 CFLAGS = -Wall -Wextra -Werror -std=c++98 
 
-NAME = irc
+NAME = ircserv
 
 SRCDIR = srcs/
 
