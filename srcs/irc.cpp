@@ -41,8 +41,6 @@ void irc::removeString(std::vector<std::string>& myVector, const char* target)
 	}
 }
 
-//je suis un commentaire
-
 void irc::printVector(std::vector<std::string>& myVector)
 {
 	std::cout << "Taille du vecteur : " << myVector.size() << "\n";
