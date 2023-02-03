@@ -15,16 +15,18 @@ irc & irc::operator=( irc const & cp )
 }
 
 
-void irc::init(int argc, char **argv)
+int irc::init(int argc, char **argv)
 {
-	if (argc > 1)
+	if (argc == 3)
 	{
 		for (int i = 1; i < argc; i++)
 			line.push_back(argv[i]);
-		removeStringVector(line, "dudu");
+		port = atoi(line[0].c_str());
+		mdp = line[1];
 		printVector(line);
-		
+		return (0);
 	}
+	return (1);
 }
 
 int irc::removeStringVector(std::vector<std::string>& myVector, const char* target)

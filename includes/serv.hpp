@@ -2,6 +2,6 @@
 # define serv_HPP
 #include "irc.hpp"
 
-void run(irc *irc);
+int run(irc *irc);
 
 #endif

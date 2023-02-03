@@ -5,7 +5,9 @@ int	main(int argc,char **argv)
 {
 	irc irc;
 	
-	irc.init(argc,argv);
+	
+	if (irc.init(argc,argv) == 1)
+		return (1);
 	// parse(&irc)
 	run(&irc);
 }
