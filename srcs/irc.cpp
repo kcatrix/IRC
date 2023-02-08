@@ -26,6 +26,8 @@ int irc::init(int argc, char **argv)
 		printVector(line);
 		return (0);
 	}
+	else if (argc == 1)
+		return (2);
 	return (1);
 }
 

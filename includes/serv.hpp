@@ -2,6 +2,7 @@
 # define serv_HPP
 #include "irc.hpp"
 
-int run(irc *irc);
+int client(irc *irc);
+int server(irc *irc);
 
 #endif
