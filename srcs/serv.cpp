@@ -55,23 +55,24 @@ int server(irc *irc)
         unsigned int crecsize = sizeof csin;
         int socketClient = accept(socketServer, (SOCKADDR *) &csin, &crecsize);
         std::cout << "Un client s'est connecte\n";
-
-        // Send a message to the client
-        std::string message = "Hello client!";
-        send(socketClient, message.c_str(), message.length(), 0);
-    
-        // Wait for a response from the client
         char buffer[1024] = {0};
-        recv(socketClient, buffer, 1024, 0);
-        std::cout << "Received response from client: " << buffer << "\n";
+        while (strcmp(buffer, "exit") != 0)
+        {
+          memset(buffer, 0, sizeof(buffer));
+          // Send a message to the client
+          std::string message = "Hello client!";
+          send(socketClient, message.c_str(), message.length(), 0);
 
-
-        close(socketClient);
-        close(socketServer);
-        std::cout << "adieu\n";
+          // Wait for a response from the client
+          recv(socketClient, buffer, 1024, 0);
+          std::cout << "Received response from client: " << buffer << "\n";
+        }
+          close(socketClient);
+          close(socketServer);
+          std::cout << "adieu\n";
+        }
       }
     }
-  }
  /* struct sockaddr_in addrClient;
   socklen_t csize = sizeof(addrClient);
   int socketClient = accept(socketServer, (struct sockaddr *)&addrClient , &csize);  
@@ -100,20 +101,23 @@ int client(irc *irc)
   addrClient.sin_port = htons(3000);
   connect(socketClient, (const struct sockaddr *)&addrClient, sizeof(addrClient));
   std::cout << "connecté\n";
-
-    // Receive a message from the server
-  char buffer[1024] = {0};
-  recv(socketClient, buffer, 1024, 0);
-  std::cout << "Received message from server: " << buffer << "\n";
-
-  // Prompt the user for a response
   std::string response;
-  std::cout << "Enter your response: ";
-  std::getline(std::cin, response);
 
-  // Send the response back to the server
-  send(socketClient, response.c_str(), response.length(), 0);
+  while (response != "exit")
+  {
+    // Receive a message from the server
+    char buffer[1024] = {0};
+    memset(buffer, 0, sizeof(buffer));
+    recv(socketClient, buffer, 1024, 0);
+    std::cout << "Received message from server: " << buffer << "\n";
 
+    // Prompt the user for a response
+    std::string response;
+    std::cout << "Enter your response: ";
+    std::getline(std::cin, response);
+    // Send the response back to the server
+    send(socketClient, response.c_str(), response.length(), 0);
+  }
   close(socketClient);
   return(0);
 }
