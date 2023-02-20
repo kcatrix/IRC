@@ -61,3 +61,11 @@ void irc::printVector(std::vector<std::string>& myVector)
 	for (long unsigned int i = 0; i < myVector.size(); i++)
 			std::cout << "   value "  << i << " == " <<  myVector[i] << std::endl;
 }
+
+void irc::printVector(std::vector<int>& myVector)
+{
+	std::cout << "Taille du vecteur : " << myVector.size() << "\n";
+	for (long unsigned int i = 0; i < myVector.size(); i++)
+			std::cout << "   value "  << i << " == " <<  myVector[i] << std::endl;
+}
+

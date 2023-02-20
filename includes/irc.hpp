@@ -19,6 +19,7 @@ class irc
 	int init(int argc, char** argv);
 	int removeStringVector(std::vector<std::string>& myVector, const char* target);
 	void printVector(std::vector<std::string>& myVector);
+	void printVector(std::vector<int>& myVector);
 	void copyVector(const std::vector<std::string> &src, std::vector<std::string> &dst);
 
 //------------------------VARIABLE---------------------------------------------------------------------------------------
