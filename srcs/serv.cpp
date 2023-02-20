@@ -33,7 +33,7 @@ int server(irc *irc)
   }
   address.sin_family = AF_INET;
   address.sin_addr.s_addr = INADDR_ANY;
-  address.sin_port = htons(8082);
+  address.sin_port = htons(8083);
    
   if (bind(server_fd, (struct sockaddr *)&address, sizeof(address))<0) {
       perror("bind failed");
@@ -109,90 +109,3 @@ int server(irc *irc)
     return 0;
 
 }
-
-
-int client(irc *irc)
-{
-  (void) irc;
-  std::string env;
-  int socketClient;
-  socketClient = socket(AF_INET, SOCK_STREAM, 0); //AF_inet (ipv4) Sock_stream (socket tcp)
-  struct sockaddr_in addrClient;
-  addrClient.sin_addr.s_addr = inet_addr("127.0.0.1");
-  addrClient.sin_family = AF_INET;
-  addrClient.sin_port = htons(3000);
-  connect(socketClient, (const struct sockaddr *)&addrClient, sizeof(addrClient));
-  std::cout << "connecté\n";
-  std::string response;
-
-  while (response != "exit")
-  {
-    // Receive a message from the server
-    char buffer[1024] = {0};
-    memset(buffer, 0, sizeof(buffer));
-    recv(socketClient, buffer, 1024, 0);
-    std::cout << "Received message from server: " << buffer << "\n";
-
-    // Prompt the user for a response
-    std::string response;
-    std::cout << "Enter your response: ";
-    std::getline(std::cin, response);
-    // Send the response back to the server
-    send(socketClient, response.c_str(), response.length(), 0);
-  }
-  close(socketClient);
-  return(0);
-}
-
- /*/ // Créez un tableau de sockets à surveiller.
-  fd_set read_fds;
-  int max_fd;
-
-  // Boucle infinie
-  while (true) {
-    FD_ZERO(&read_fds);
-    FD_SET(server_socket, &read_fds);
-    max_fd = server_socket;
-
-    // Ajoutez ici les sockets clients connectés existants pour être surveillés également.
-    for (unsigned int i = 0; i < client_sockets.size(); i++) {
-      FD_SET(client_sockets[i], &read_fds);
-      max_fd = std::max(max_fd, client_sockets[i]);
-    }
-
-    // Utilisez la fonction `select` pour surveiller les sockets.
-    int activity = select(max_fd + 1, &read_fds, NULL, NULL, NULL);
-    if (activity < 0) {
-      // Gestion des erreurs
-    } else if (FD_ISSET(server_socket, &read_fds)) {
-      int client_socket = accept(server_socket, NULL, NULL);
-      // Ajoutez le nouveau socket client à la liste des sockets clients connectés.
-      client_sockets.push_back(client_socket);
-    } else {
-      // Gérez les activités sur les sockets clients existants.
-      for (unsigned int i = 0; i < client_sockets.size(); i++) {
-        if (FD_ISSET(client_sockets[i], &read_fds)) {
-        }
-      }
-    }
-	int port = 8080;
-	const char *address = "127.0.0.1";
-
-	//Connection au serveur
-	int sock = socket(AF_INET, SOCK_STREAM, 0);
-	struct sockaddr_in server;
-	server.sin_family = AF_INET;
-	server.sin_port = htons(port);
-	server.sin_addr.s_addr = inet_addr(address);
-	int connection_status = connect(sock, (struct sockaddr *) &server, sizeof(server));
-
-	if(connection_status == -1) {
-	    std::cout << "Error connecting to server" << std::endl;
-	} else {
-	    std::cout << "Connected to server" << std::endl;
-	}
-  }
-
-  return 0;
-}
-*/

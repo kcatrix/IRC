@@ -8,7 +8,5 @@ int	main(int argc,char **argv)
 	
 	if (irc.init(argc,argv) == 2)
 		server(&irc);
-	else if (irc.init(argc,argv) == 0)
-		client(&irc);
 	// parse(&irc)
 }
