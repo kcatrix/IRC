@@ -4,90 +4,110 @@
 #include <unistd.h>
 #include <netdb.h>
 #include <unistd.h>
+#include <fcntl.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <sys/select.h>
 #include <arpa/inet.h>
 typedef struct sockaddr_in SOCKADDR_IN;
 typedef struct sockaddr SOCKADDR;
+const int MAX_CLIENTS = 10;
+const int BUFFER_SIZE = 1024;
 
 //conseil jé utiliser select
 
 int server(irc *irc)
 {
-	(void) irc;
-  int nb_max_client = 3;
-  //init var serveur socket
-  int socketServer;
-  socketServer = socket(AF_INET, SOCK_STREAM, 0); //AF_inet (ipv4) Sock_stream (socket tcp)
-  struct sockaddr_in addrServer;
-  addrServer.sin_addr.s_addr = inet_addr("127.0.0.1");
-  addrServer.sin_family = AF_INET;
-  addrServer.sin_port = htons(3000);
-
-  //connecter le serveur 
-  bind(socketServer, (const struct sockaddr *)&addrServer, sizeof(addrServer));
-  std::cout << "bind : " << socketServer << "\n";
-
-  listen(socketServer, nb_max_client);
-  std::cout << "listen\n";
-
-  //utiliser select pour gérer plusieur client simultanément 
-
-  fd_set readfs;
-  while(1)
-  {
-    int max_fd = socketServer;
-    //On vide l'ensemble de lecture et on lui ajoute 
-    //la socket serveur
-    FD_ZERO(&readfs);
-    FD_SET(socketServer, &readfs);
-    int activity = select(max_fd + 1, &readfs, NULL, NULL, NULL);
-    if (activity == -1)
-        exit(0);
-    if (activity == 0)
-      std::cout << "Aucune activité dans les 10 secondes\n";
-    else
-    {
-      if (FD_ISSET(socketServer, &readfs))
-      {
-        SOCKADDR_IN csin;
-        unsigned int crecsize = sizeof csin;
-        int socketClient = accept(socketServer, (SOCKADDR *) &csin, &crecsize);
-        std::cout << "Un client s'est connecte\n";
-        char buffer[1024] = {0};
-        while (strcmp(buffer, "exit") != 0)
-        {
-          memset(buffer, 0, sizeof(buffer));
-          // Send a message to the client
-          std::string message = "Hello client!";
-          send(socketClient, message.c_str(), message.length(), 0);
-
-          // Wait for a response from the client
-          recv(socketClient, buffer, 1024, 0);
-          std::cout << "Received response from client: " << buffer << "\n";
-        }
-          close(socketClient);
-          close(socketServer);
-          std::cout << "adieu\n";
-        }
-      }
+    (void) irc;
+    int server_fd, new_socket, activity, valread, sd;
+    int max_sd, addrlen;
+    struct sockaddr_in address;
+    fd_set read_fds;
+    char buffer[BUFFER_SIZE] = {0};
+    std::vector<int> clients;
+     
+    if ((server_fd = socket(AF_INET, SOCK_STREAM, 0)) == 0) {
+        perror("socket failed");
+        exit(EXIT_FAILURE);
     }
- /* struct sockaddr_in addrClient;
-  socklen_t csize = sizeof(addrClient);
-  int socketClient = accept(socketServer, (struct sockaddr *)&addrClient , &csize);  
-  std::cout << "accept\n";
 
-  std::cout << "client : " << socketClient << "/n";
+    address.sin_family = AF_INET;
+    address.sin_addr.s_addr = INADDR_ANY;
+    address.sin_port = htons(8080);
+     
+    if (bind(server_fd, (struct sockaddr *)&address, sizeof(address))<0) {
+        perror("bind failed");
+        exit(EXIT_FAILURE);
+    }
+     
+    if (listen(server_fd, MAX_CLIENTS) < 0) {
+        perror("listen");
+        exit(EXIT_FAILURE);
+    }
 
+    addrlen = sizeof(address);
 
-  close(socketClient);
-  close(socketServer);
+    // Set the server socket to non-blocking mode
+    fcntl(server_fd, F_SETFL, O_NONBLOCK);
 
-  std::cout << "close\n";
-*/
-  return(0);
+    while (true) {
+        FD_ZERO(&read_fds);
+        FD_SET(server_fd, &read_fds);
+        max_sd = server_fd;
+         
+        for (std::vector<int>::iterator it = clients.begin(); it != clients.end(); ++it) {
+            sd = *it;
+            FD_SET(sd, &read_fds);
+            if (sd > max_sd) max_sd = sd;
+        }
+
+        activity = select(max_sd + 1, &read_fds, NULL, NULL, NULL);
+      
+        if ((activity < 0) && (errno!=EINTR)) {
+            printf("select error");
+        }
+        
+        if (FD_ISSET(server_fd, &read_fds)) {
+            if ((new_socket = accept(server_fd, (struct sockaddr *)&address, (socklen_t*)&addrlen))<0) {
+                perror("accept");
+                exit(EXIT_FAILURE);
+            }
+             
+            // Set the new client socket to non-blocking mode
+            fcntl(new_socket, F_SETFL, O_NONBLOCK);
+
+            clients.push_back(new_socket);
+            printf("New client %d connected\n", new_socket);
+        }
+         
+        for (std::vector<int>::iterator it = clients.begin(); it != clients.end(); ++it) {
+            sd = *it;
+            if (FD_ISSET(sd, &read_fds)) {
+                // Receive data from the client
+                valread = read(sd, buffer, BUFFER_SIZE);
+
+                if (valread == 0) {
+                    // Client disconnected
+                    getpeername(sd, (struct sockaddr*)&address, (socklen_t*)&addrlen);
+                    printf("Client disconnected: %s:%d\n", inet_ntoa(address.sin_addr), ntohs(address.sin_port));
+                    close(sd);
+                    clients.erase(it);
+                }
+                else if (valread == -1 && errno == EAGAIN) {
+                    // No data available yet
+                    continue;
+                }
+                else {
+                    buffer[valread] = '\0';
+                    getpeername(sd, (struct sockaddr*)&address, (socklen_t*)&addrlen);
+                    std::cout << buffer << std::endl;
+                }
+            }
+        }
+    }
+
 }
+
 
 int client(irc *irc)
 {
