@@ -19,8 +19,9 @@ const int BUFFER_SIZE = 1024;
 int server(irc *irc)
 {
   (void) irc;
-  int server_fd, new_socket, activity, valread, sd;
+  int server_fd, new_socket, activity, valread, sd, sup = -1;
   int max_sd, addrlen;
+  std::vector<int>::iterator supp;
   struct sockaddr_in address;
   fd_set read_fds;
   char buffer[BUFFER_SIZE] = {0};
@@ -32,7 +33,7 @@ int server(irc *irc)
   }
   address.sin_family = AF_INET;
   address.sin_addr.s_addr = INADDR_ANY;
-  address.sin_port = htons(8080);
+  address.sin_port = htons(8082);
    
   if (bind(server_fd, (struct sockaddr *)&address, sizeof(address))<0) {
       perror("bind failed");
@@ -73,18 +74,19 @@ int server(irc *irc)
           clients.push_back(new_socket);
           printf("New client connected\n");
       }
-       
-      for (std::vector<int>::iterator it = clients.begin(); it != clients.end(); ++it) {
+      
+      for (std::vector<int>::iterator it = clients.begin(); it != clients.end(); it++) {
           sd = *it;
-          if (FD_ISSET(sd, &read_fds)) {
+          if (FD_ISSET(*it, &read_fds)) {
               // Receive data from the client
-              valread = read(sd, buffer, BUFFER_SIZE);
+              valread = read(*it, buffer, BUFFER_SIZE);
               if (valread == 0) {
+                  std::cout << "passe\n";
                   // Client disconnected
                   getpeername(sd, (struct sockaddr*)&address, (socklen_t*)&addrlen);
                   printf("Client disconnected: %s:%d\n", inet_ntoa(address.sin_addr), ntohs(address.sin_port));
-                  close(sd);
-                  clients.erase(it);
+                  sup = *it;
+                  supp = it;
               }
               else if (valread == -1 && errno == EAGAIN) {
                   // No data available yet
@@ -96,6 +98,11 @@ int server(irc *irc)
                   std::cout << buffer << std::endl;
               }
           }
+      }
+      if (sup > 0){
+        close(sup);
+        clients.erase(supp);
+        sup = -1;
       }
   }
 
