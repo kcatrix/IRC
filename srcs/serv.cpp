@@ -1,10 +1,13 @@
 #include "../includes/serv.hpp"
+#include "../includes/clien.hpp"
 #include <sys/time.h>
 #include <sys/types.h>
 #include <unistd.h>
 #include <netdb.h>
 #include <unistd.h>
 #include <fcntl.h>
+#include <cerrno>
+#include <cstdio>
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <sys/select.h>
@@ -25,7 +28,9 @@ int server(irc *irc)
   struct sockaddr_in address;
   fd_set read_fds;
   char buffer[BUFFER_SIZE] = {0};
+  std::string message = "Quelle est votre username\n";
   std::vector<int> clients;
+   
    
   if ((server_fd = socket(AF_INET, SOCK_STREAM, 0)) == 0) {
       perror("socket failed");
@@ -39,6 +44,8 @@ int server(irc *irc)
       perror("bind failed");
       exit(EXIT_FAILURE);
   }
+
+  std::cout << "Listening on port 8083" << std::endl;
    
   if (listen(server_fd, MAX_CLIENTS) < 0) {
       perror("listen");
@@ -73,15 +80,18 @@ int server(irc *irc)
           fcntl(new_socket, F_SETFL, O_NONBLOCK);
           clients.push_back(new_socket);
           printf("New client connected\n");
+          clien *client_tab = new clien("john", "doe"); 
+         
+          
       }
       
       for (std::vector<int>::iterator it = clients.begin(); it != clients.end(); it++) {
           sd = *it;
+
           if (FD_ISSET(*it, &read_fds)) {
               // Receive data from the client
               valread = read(*it, buffer, BUFFER_SIZE);
               if (valread == 0) {
-                  std::cout << "passe\n";
                   // Client disconnected
                   getpeername(sd, (struct sockaddr*)&address, (socklen_t*)&addrlen);
                   printf("Client disconnected: %s:%d\n", inet_ntoa(address.sin_addr), ntohs(address.sin_port));
@@ -89,10 +99,13 @@ int server(irc *irc)
                   supp = it;
               }
               else if (valread == -1 && errno == EAGAIN) {
+                std::cout << "passe\n";
                   // No data available yet
                   continue;
               }
               else {
+                
+                // send(it, "", strlen(buffer), 0);
                   buffer[valread] = '\0';
                   getpeername(sd, (struct sockaddr*)&address, (socklen_t*)&addrlen);
                   std::cout << buffer << std::endl;
