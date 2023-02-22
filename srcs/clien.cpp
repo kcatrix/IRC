@@ -2,7 +2,7 @@
 
 clien::clien( void )
 { 
-	std::cout << "Clien created void" << std::endl;
+	std::cout << "Clien created (void)" << std::endl;
 	return; 
 }
 
