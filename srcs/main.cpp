@@ -1,12 +1,13 @@
 #include"../includes/irc.hpp"
 #include"../includes/serv.hpp"
+#include"../includes/utils.hpp"
 
 int	main(int argc,char **argv)
 {
-	irc irc;
+
+    (void)argc;
+    (void)argv;
+    Server  new_server (8080);
 	
-	
-	if (irc.init(argc,argv) == 2)
-		server(&irc);
 	// parse(&irc)
 }
