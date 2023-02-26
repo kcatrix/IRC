@@ -16,10 +16,9 @@
 const int MAX_CLIENTS = 10;
 const int BUFFER_SIZE = 1024;
 
-//conseil jé utiliser select
-
-Server::Server (int port) {
+Server::Server (int port, std::string password) {
     _port = port;
+    _password = password;
     init_address ();
     create_socket ();
     loop ();
@@ -40,9 +39,9 @@ void    Server::create_socket (void) {
     fcntl(_server_fd, F_SETFL, O_NONBLOCK);
     if (bind (_server_fd, (SOCKADDR*) &_address, sizeof(_address)) < 0)
         print_error ("Server socket binding error\n");
-    std::cout << "Listening on port " << _port << std::endl;
     if (listen (_server_fd, MAX_CLIENTS) < 0)
         print_error ("Server socket listening error\n");
+    std::cout << "Listening on port " << _port << std::endl;
 }
 
 void    Server::loop (void) {
@@ -84,7 +83,6 @@ void    Server::loop (void) {
 
 
         }
-
         for (std::vector<int>::iterator it = clients.begin(); it != clients.end(); it++) {
             sd = *it;
 

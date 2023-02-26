@@ -9,19 +9,12 @@
 typedef struct sockaddr_in SOCKADDR_IN;
 typedef struct sockaddr SOCKADDR;
 
-int client(irc *irc);
-//int server(irc *irc);
-
 class Server {
 
     public:
 
-        Server (int port);
+        Server (int port, std::string password);
         virtual ~Server (void);
-
-        void    init_address (void);
-        void    create_socket (void);
-        void    loop (void);
 
     private:
 
@@ -36,6 +29,11 @@ class Server {
         int         _server_fd;
         int         _addrlen;
         SOCKADDR_IN _address;
+        std::string _password;
+
+        void    init_address (void);
+        void    create_socket (void);
+        void    loop (void);
 };
 
 #endif
