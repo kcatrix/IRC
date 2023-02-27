@@ -31,7 +31,6 @@ int server(irc *irc)
   struct sockaddr_in address;
   fd_set read_fds;
   char buffer[BUFFER_SIZE];
-  bzero(buffer, BUFFER_SIZE);
   std::vector<int> clients;
    address.sin_family = AF_INET;
   address.sin_addr.s_addr = INADDR_ANY;
@@ -98,7 +97,7 @@ int server(irc *irc)
       
       for (std::vector<int>::iterator it = clients.begin(); it != clients.end(); it++) {
           sd = *it;
-
+          memset(buffer, 0, BUFFER_SIZE);
           if (FD_ISSET(*it, &read_fds)) {
               // Receive data from the client
               valread = read(*it, buffer, BUFFER_SIZE);
@@ -143,13 +142,9 @@ void removeInvisibleChars(char* str)
 
 int checkInfoClient(int new_socket, char *buffer, clien *client_tab, irc *irc)
 {
-    // removeInvisibleChars(buffer);
+    removeInvisibleChars(buffer);
     std::string message;
-
-    // std::cout << "buffer = " << buffer << std::endl;
-    std::cout << "password = " << irc->mdp << std::endl;
-    std::cout << "buffer size " << strlen(buffer) << std::endl;
-    std::cout << "password size " << irc->mdp.size() << std::endl;
+    std::string commande;
 
     for (int i = 0; i < MAX_CLIENTS; i++)
     {
@@ -166,7 +161,6 @@ int checkInfoClient(int new_socket, char *buffer, clien *client_tab, irc *irc)
                 else
                 {
                     write(new_socket, "Wrong password, try again: ", 27);
-                    bzero(buffer, BUFFER_SIZE);
                     return (1);
                 }
             }
@@ -187,6 +181,9 @@ int checkInfoClient(int new_socket, char *buffer, clien *client_tab, irc *irc)
                 client_tab[i].nickname = buffer;
                 message = "Welcome " + client_tab[i].username + " " + client_tab[i].nickname + " !\n";
                 write(new_socket, message.c_str(), message.length());
+                commande = "Enter a command: \n" ;
+                write(new_socket, commande.c_str(), commande.length());
+
                 return(1);
             }
         }
@@ -201,8 +198,24 @@ int CheckClientExiste(clien *client_tab, int new_socket)
     {
         if (client_tab[i].sd == new_socket)
         {
-            message = "Welcome " + client_tab[i].username + " " + client_tab[i].nickname + " !\n";
-            write(new_socket, message.c_str(), message.length());
+            write(new_socket, "Welcome back\n", 13);
+            if (client_tab[i].password == "")
+            {
+                write(new_socket, "Enter the password\n", 19);
+                return 1;
+            }
+            else if (client_tab[i].username == "")
+            {
+                write(new_socket, "Enter your username: ", 21);
+                return 1;
+            }
+            else if (client_tab[i].nickname == "")
+            {
+                write(new_socket, "Enter your nickname: ", 21);
+                return 1;
+            }
+            else
+                write(new_socket, "Enter a command: \n", 18);
             return 1;
         }
     }
@@ -211,7 +224,7 @@ int CheckClientExiste(clien *client_tab, int new_socket)
 
 void redirectFonction(int newsocket, char *buffer, clien *client_tab, irc *irc)
 {
-    send(newsocket, "test1", 4, 0);
+    send(newsocket, "test1", 5, 0);
 } 
 
 
