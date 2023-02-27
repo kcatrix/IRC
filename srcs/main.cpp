@@ -6,7 +6,7 @@ int	main(int argc,char **argv)
 	irc irc;
 	
 	
-	if (irc.init(argc,argv) == 2)
+	if (irc.init(argc,argv) == 0)
 		server(&irc);
 	// parse(&irc)
 }

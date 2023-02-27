@@ -28,6 +28,8 @@ class irc
 	std::vector<std::string> all_commands;
 	int port;
 	std::string mdp;
+	int client_tab_iterator;
+
 };
 
 #endif
