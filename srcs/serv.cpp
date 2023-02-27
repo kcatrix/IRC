@@ -30,24 +30,26 @@ int server(irc *irc)
   std::vector<int>::iterator supp;
   struct sockaddr_in address;
   fd_set read_fds;
-  char buffer[BUFFER_SIZE] = {0};
+  char buffer[BUFFER_SIZE];
+  bzero(buffer, BUFFER_SIZE);
   std::vector<int> clients;
+   address.sin_family = AF_INET;
+  address.sin_addr.s_addr = INADDR_ANY;
+  address.sin_port = htons(irc->port);
    
+    //--------------------VARIABLE-----------------------------------------------
    
   if ((server_fd = socket(AF_INET, SOCK_STREAM, 0)) == 0) {
       perror("socket failed");
       exit(EXIT_FAILURE);
   }
-  address.sin_family = AF_INET;
-  address.sin_addr.s_addr = INADDR_ANY;
-  address.sin_port = htons(irc->port);
    
   if (bind(server_fd, (struct sockaddr *)&address, sizeof(address))<0) {
       perror("bind failed");
       exit(EXIT_FAILURE);
   }
 
-  std::cout << "Listening on port 8083" << std::endl;
+  std::cout << "Listening on port " << irc->port << std::endl;
    
   if (listen(server_fd, MAX_CLIENTS) < 0) {
       perror("listen");
@@ -82,11 +84,15 @@ int server(irc *irc)
           fcntl(new_socket, F_SETFL, O_NONBLOCK);
           clients.push_back(new_socket);
           printf("New client connected\n");
-          write(new_socket, "Welcome to the server\n", 22);
-          write(new_socket, "Enter the password\n", 19);
-          client_tab[irc->client_tab_iterator].sd = new_socket;
-          std::cout << "client_tab_iterator = " << client_tab[irc->client_tab_iterator].sd << std::endl; 
-          irc->client_tab_iterator++;
+          if (CheckClientExiste(client_tab, new_socket) == 0)
+          {
+             if (irc->client_tab_iterator >= MAX_CLIENTS)
+                exit(0); // a changer en fonction qui close toute les socket
+             write(new_socket, "Welcome to the server\n", 22);
+             write(new_socket, "Enter the password\n", 19);
+             client_tab[irc->client_tab_iterator].sd = new_socket;
+             irc->client_tab_iterator++;
+          }
           
       }
       
@@ -100,20 +106,16 @@ int server(irc *irc)
                   // Client disconnected
                   getpeername(sd, (struct sockaddr*)&address, (socklen_t*)&addrlen);
                   printf("Client disconnected: %s:%d\n", inet_ntoa(address.sin_addr), ntohs(address.sin_port));
-                  for (int i = 0; i < MAX_CLIENTS; i++) //améliorer pour prendre en compte les client qui se déco
-                  {
-                    if (client_tab[i].sd == *it)
-                      client_tab[i].clear_clien();
-                  }
                   sup = *it;
                   supp = it;
               }
               else if (valread == -1 && errno == EAGAIN) {
-                  // No data available yet
-                  continue;
+                  perror("fatal error on client socket");
+                  exit(EXIT_FAILURE);
               }
               else {
-                  checkInfoClient(*it, buffer, client_tab, irc);     
+                if (checkInfoClient(*it, buffer, client_tab, irc ) == 0 )
+                    redirectFonction(*it, buffer, client_tab, irc);    
                   buffer[valread] = '\0';
                   getpeername(sd, (struct sockaddr*)&address, (socklen_t*)&addrlen);
                   std::cout << buffer << std::endl;
@@ -139,10 +141,15 @@ void removeInvisibleChars(char* str)
     str[i] = '\0';
 }
 
-void checkInfoClient(int new_socket, char *buffer, clien *client_tab, irc *irc)
+int checkInfoClient(int new_socket, char *buffer, clien *client_tab, irc *irc)
 {
-    removeInvisibleChars(buffer);
+    // removeInvisibleChars(buffer);
     std::string message;
+
+    // std::cout << "buffer = " << buffer << std::endl;
+    std::cout << "password = " << irc->mdp << std::endl;
+    std::cout << "buffer size " << strlen(buffer) << std::endl;
+    std::cout << "password size " << irc->mdp.size() << std::endl;
 
     for (int i = 0; i < MAX_CLIENTS; i++)
     {
@@ -154,16 +161,20 @@ void checkInfoClient(int new_socket, char *buffer, clien *client_tab, irc *irc)
                 {
                     client_tab[i].password = buffer;
                     write(new_socket, "Enter your username: ", 21);
+                    return (1);
                 }
                 else
                 {
                     write(new_socket, "Wrong password, try again: ", 27);
+                    bzero(buffer, BUFFER_SIZE);
+                    return (1);
                 }
             }
             else if (client_tab[i].username == "")
             {
                 client_tab[i].username = buffer;
                 write(new_socket, "Enter your nickname: ", 21);
+                return(1);
             }
             else if (client_tab[i].nickname == "")
             {
@@ -176,7 +187,31 @@ void checkInfoClient(int new_socket, char *buffer, clien *client_tab, irc *irc)
                 client_tab[i].nickname = buffer;
                 message = "Welcome " + client_tab[i].username + " " + client_tab[i].nickname + " !\n";
                 write(new_socket, message.c_str(), message.length());
+                return(1);
             }
         }
     }
+    return (0);
 }
+
+int CheckClientExiste(clien *client_tab, int new_socket)
+{
+    std::string message;
+    for (int i = 0; i < MAX_CLIENTS; i++)
+    {
+        if (client_tab[i].sd == new_socket)
+        {
+            message = "Welcome " + client_tab[i].username + " " + client_tab[i].nickname + " !\n";
+            write(new_socket, message.c_str(), message.length());
+            return 1;
+        }
+    }
+    return 0;
+} 
+
+void redirectFonction(int newsocket, char *buffer, clien *client_tab, irc *irc)
+{
+    send(newsocket, "test1", 4, 0);
+} 
+
+

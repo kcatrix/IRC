@@ -23,7 +23,7 @@ int irc::init(int argc, char **argv)
 			line.push_back(argv[i]);
 		port = atoi(line[0].c_str());
 		mdp = line[1];
-		printVector(line);
+		// printVector(line);
 		return (0);
 	}
 	else if (argc == 1)
