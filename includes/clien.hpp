@@ -18,7 +18,11 @@ class clien
 		std::string username;
 		std::string nickname;
 		std::string password;
+		std::string hostname;
+		std::string hostmask;
 		int sd;
 };
+
+
 
 #endif

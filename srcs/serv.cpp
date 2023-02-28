@@ -1,5 +1,7 @@
 #include "../includes/serv.hpp"
 #include "../includes/clien.hpp"
+#include "msg.cpp"
+#include "../includes/utils.hpp"
 #include <sys/time.h>
 #include <sys/types.h>
 #include <iostream>
@@ -8,6 +10,7 @@
 #include <netdb.h>
 #include <unistd.h>
 #include <fcntl.h>
+#include <stdio.h>
 #include <cerrno>
 #include <cstdio>
 #include <sys/socket.h>
@@ -113,11 +116,10 @@ int server(irc *irc)
                   exit(EXIT_FAILURE);
               }
               else {
-                if (checkInfoClient(*it, buffer, client_tab, irc ) == 0 )
+                if (checkInfoClient(*it, buffer, client_tab, irc ) == 0)
                     redirectFonction(*it, buffer, client_tab, irc);    
-                  buffer[valread] = '\0';
                   getpeername(sd, (struct sockaddr*)&address, (socklen_t*)&addrlen);
-                  std::cout << buffer << std::endl;
+                  std::cout << "buffer = " << buffer << std::endl;
               }
           }
       }
@@ -138,6 +140,11 @@ void removeInvisibleChars(char* str)
         i++;
     i--;
     str[i] = '\0';
+}
+
+std::string generateHostMask(std::string nickname, std::string username, std::string hostname)
+{
+    return nickname + "!~" + username + "@" + hostname;
 }
 
 int checkInfoClient(int new_socket, char *buffer, clien *client_tab, irc *irc)
@@ -163,31 +170,36 @@ int checkInfoClient(int new_socket, char *buffer, clien *client_tab, irc *irc)
                     write(new_socket, "Wrong password, try again: ", 27);
                     return (1);
                 }
+                std::cout << "Pwdpass" << std::endl;
             }
             else if (client_tab[i].username == "")
             {
+                std::cout << "Usernamepass" << std::endl;
                 client_tab[i].username = buffer;
                 write(new_socket, "Enter your nickname: ", 21);
                 return(1);
             }
             else if (client_tab[i].nickname == "")
             {
+                std::cout << "Nicknamepass" << std::endl;
                 // Remove any newline or carriage return characters from the end of the buffer
                 int len = strlen(buffer);
                 while (len > 0 && (buffer[len-1] == '\n' || buffer[len-1] == '\r')) {
                     buffer[--len] = '\0';
                 }
-                
                 client_tab[i].nickname = buffer;
                 message = "Welcome " + client_tab[i].username + " " + client_tab[i].nickname + " !\n";
                 write(new_socket, message.c_str(), message.length());
+				client_tab[i].hostname = "irc.domain"; // potentiellement a modifier (initialisation de domaine pour tous les clients)
+				client_tab[i].hostmask = generateHostMask(client_tab[i].nickname, client_tab[i].username, client_tab[i].hostname); // generation hostmask sans ident 
+				//client_tab[i].hostmask = generateHostMask(client_tab[i].nickname, client_tab[i].username, client_tab[i].hostname); // generation hostmask avec ident
                 commande = "Enter a command: \n" ;
                 write(new_socket, commande.c_str(), commande.length());
-
                 return(1);
             }
         }
     }
+    std::cout << "COUCOU " << std::endl;
     return (0);
 }
 
@@ -222,9 +234,61 @@ int CheckClientExiste(clien *client_tab, int new_socket)
     return 0;
 } 
 
+
+void msg(int newsocket, char *buffer, clien *client_tab, irc *irc)
+{
+    // // char *check;
+    // // char *check2 = strdup(buffer);
+	// // check = strtok(check2, " ");
+    // // check = strtok(check2, " ");
+    // std::cout << check << std::endl;
+	(void) irc;
+	int ID;
+	// for(int i = 0; i < MAX_CLIENTS; i++)
+	// {
+	// 	getline(buffer, stock[i], " "))	
+	// }
+    char **buffspli = ft_split(buffer, ' ');
+	for (int i = 0; i < MAX_CLIENTS; i++)
+    {
+        if (client_tab[i].sd == newsocket)
+			ID = i;
+	}
+	for (int i = 0; i < MAX_CLIENTS; i++)
+	{
+        if (buffspli[1] == client_tab[i].hostname || buffspli[1] == client_tab[i].username)
+        {
+            // check = strtok(buffer, " ");
+            // while(check != NULL)
+            //     check = strtok(buffer, " ");
+            write(client_tab[i].sd, buffspli[2], strlen(buffspli[2]));
+        }
+    }
+}
+
 void redirectFonction(int newsocket, char *buffer, clien *client_tab, irc *irc)
 {
-    send(newsocket, "test1", 5, 0);
-} 
-
-
+	// char *check;
+    // check = strtok(buffer, " ");
+    char **bufferspli = ft_split(buffer, ' ');
+	if (strcmp(bufferspli[0], "pvtmsg") == 0)
+        msg(newsocket, buffer, client_tab, irc);
+    // if (strcmp(buffer, "/nick") == 0)
+    //     nick(newsocket, buffer, client_tab, irc);
+    // else if (strcmp(buffer, "/list") == 0)
+    //     list(newsocket, buffer, client_tab, irc);
+    // else if (strcmp(buffer, "/join") == 0)
+    //     join(newsocket, buffer, client_tab, irc);
+    // else if (strcmp(buffer, "/part") == 0)
+    //     part(newsocket, buffer, client_tab, irc);
+    // else if (strcmp(buffer, "/users") == 0)
+    //     users(newsocket, buffer, client_tab, irc);
+    // else if (strcmp(buffer, "/quit") == 0)
+    //     quit(newsocket, buffer, client_tab, irc);
+    // else if (strcmp(buffer, "/help") == 0)
+    //     help(newsocket, buffer, client_tab, irc);
+    // else
+    //     write(newsocket, "Command not found\n", 18);
+    //send(newsocket, "test1", 5, 0);
+	//delete stock[];
+}
