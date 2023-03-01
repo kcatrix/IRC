@@ -18,12 +18,9 @@ void    setUsername (clien* new_client, char* buffer) {
 }
 
 void    setNickname (clien* new_client, char* buffer) {
-        new_client->nickname = buffer;
-}
-
-void    writeWelcomeMessage (clien* new_client) {
     std::string message;
 
+    new_client->nickname = buffer;
     message = "Welcome " + new_client->username + " " + new_client->nickname + " !\n";
     write(new_client->sd, message.c_str(), message.length());
     write(new_client->sd, "Enter a command: \n", 19);
@@ -42,7 +39,6 @@ void    getInfoClient (clien* new_client, char* buffer, std::string password) {
     }
     else if (new_client->nickname == "") {
         setNickname (new_client, buffer);
-        writeWelcomeMessage (new_client);
         return;
     }
 }
@@ -101,7 +97,8 @@ void start_irc(int port, std::string password)
                 valread = read((*it).sd, buffer, BUFFER_SIZE);
                 if (valread == 0) {
                     getpeername((*it).sd, (SOCKADDR*)&server_address, (socklen_t*)&address_length);
-                    printf("Client disconnected: %s:%d\n", inet_ntoa(server_address.sin_addr), ntohs(server_address.sin_port));
+                    std::cout << "Client disconnected: " << inet_ntoa(server_address.sin_addr) << ":" \
+                        << ntohs(server_address.sin_port) << std::endl;
                     number_of_clients--;
                     sup = (*it).sd;
                     supp = it;
