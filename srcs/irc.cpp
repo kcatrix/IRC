@@ -64,10 +64,8 @@ void start_irc(int port, std::string password)
         FD_ZERO(&read_fds);
         FD_SET(server_fd, &read_fds);
 
-        if (clients.empty () == 0) {
-            for (std::vector<clien>::iterator it = clients.begin(); it != clients.end(); ++it)
-                FD_SET((*it).sd, &read_fds);
-        }
+        for (std::vector<clien>::iterator it = clients.begin(); it != clients.end(); ++it)
+            FD_SET((*it).sd, &read_fds);
         activity = select(max_sd + 1, &read_fds, NULL, NULL, NULL);
         if ((activity < 0) && (errno!=EINTR))
             print_error ("Select error");
