@@ -3,47 +3,68 @@
 #define VECTOR std::vector<clien>
 #define ITERATOR std::vector<clien>::iterator
 
-void    getInfoClient (clien* new_client, char* buffer, std::string password) {
-    removeInvisibleChars(buffer);
-    std::string message;
-    std::string commande;
-
-    if (new_client->password == "")
-    {
-        if (password.compare(buffer) == 0)
-        {
+void    checkPassword (clien* new_client, char* buffer, std::string password) {
+        if (password.compare(buffer) == 0) {
             new_client->password = buffer;
             write(new_client->sd, "Enter your username: ", 21);
-            return ;
         }
         else
-        {
             write(new_client->sd, "Wrong password, try again: ", 27);
-            return ;
-        }
-    }
-    else if (new_client->username == "")
-    {
+}
+
+void    setUsername (clien* new_client, char* buffer) {
         new_client->username = buffer;
         write(new_client->sd, "Enter your nickname: ", 21);
-        return;
-    }
-    else if (new_client->nickname == "")
-    {
-        // Remove any newline or carriage return characters from the end of the buffer
-        int len = strlen(buffer);
-        while (len > 0 && (buffer[len-1] == '\n' || buffer[len-1] == '\r')) {
-            buffer[--len] = '\0';
-        }
+}
 
+void    setNickname (clien* new_client, char* buffer) {
         new_client->nickname = buffer;
-        message = "Welcome " + new_client->username + " " + new_client->nickname + " !\n";
-        write(new_client->sd, message.c_str(), message.length());
-        commande = "Enter a command: \n" ;
-        write(new_client->sd, commande.c_str(), commande.length());
+}
 
+void    writeWelcomeMessage (clien* new_client) {
+    std::string message;
+
+    message = "Welcome " + new_client->username + " " + new_client->nickname + " !\n";
+    write(new_client->sd, message.c_str(), message.length());
+    write(new_client->sd, "Enter a command: \n", 19);
+}
+
+void    getInfoClient (clien* new_client, char* buffer, std::string password) {
+    removeInvisibleChars(buffer);
+
+    if (new_client->password == "") {
+        checkPassword (new_client, buffer, password);
         return;
     }
+    else if (new_client->username == "") {
+        setUsername (new_client, buffer);
+        return;
+    }
+    else if (new_client->nickname == "") {
+        setNickname (new_client, buffer);
+        writeWelcomeMessage (new_client);
+        return;
+    }
+}
+
+void    createClient (int new_socket, VECTOR* clients, int* max_sd, int* number_of_clients) {
+    clien new_client (new_socket);
+
+    if (CheckClientExists(*clients, new_socket) == 0)
+    {
+        if (*number_of_clients >= MAX_CLIENTS)
+            exit(0); // a changer en fonction qui close toute les socket
+        std::cout << "New client connected" << std::endl;
+        fcntl(new_socket, F_SETFL, O_NONBLOCK);
+        clients->push_back (new_client);
+        *max_sd = std::max (*max_sd, new_socket);
+        (*number_of_clients)++;
+        write (new_socket, "Welcome to the server\n", 22);
+        write (new_socket, "Enter the password\n", 19);
+    }
+    else
+        //close new_socket?
+        ;
 }
 
 void start_irc(int port, std::string password)
@@ -64,7 +85,7 @@ void start_irc(int port, std::string password)
         FD_ZERO(&read_fds);
         FD_SET(server_fd, &read_fds);
 
-        for (std::vector<clien>::iterator it = clients.begin(); it != clients.end(); ++it)
+        for (ITERATOR it = clients.begin(); it != clients.end(); ++it)
             FD_SET((*it).sd, &read_fds);
         activity = select(max_sd + 1, &read_fds, NULL, NULL, NULL);
         if ((activity < 0) && (errno!=EINTR))
@@ -72,19 +93,7 @@ void start_irc(int port, std::string password)
         if (FD_ISSET(server_fd, &read_fds)) {
             if ((new_socket = accept(server_fd, (SOCKADDR*)&server_address, (socklen_t*)&address_length))<0)
                 print_error ("Socket creation error");
-            fcntl(new_socket, F_SETFL, O_NONBLOCK);
-            max_sd = std::max (max_sd, new_socket);
-            if (CheckClientExists(clients, new_socket) == 0)
-            {
-                if (number_of_clients >= MAX_CLIENTS)
-                    exit(0); // a changer en fonction qui close toute les socket
-                printf("New client connected\n");
-                clien new_client (new_socket);
-                clients.push_back(new_client);
-                write(new_socket, "Welcome to the server\n", 22);
-                write(new_socket, "Enter the password\n", 19);
-                number_of_clients++;
-            }
+            createClient (new_socket, &clients, &max_sd, &number_of_clients);
         }
         for (ITERATOR it = clients.begin(); it != clients.end(); it++) {
             memset(buffer, 0, BUFFER_SIZE);
