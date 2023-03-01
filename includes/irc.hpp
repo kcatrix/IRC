@@ -1,54 +1,30 @@
-#pragma once
+#ifndef irc_HPP
+# define irc_HPP
 
-# include <iostream>
-# include <cstring>
-# include <vector>
-# include <cstdlib>
-#include <cerrno>
-#include <cstdio>
-# include <string>
-# include <fcntl.h>
-# include <unistd.h>
-#include <sys/time.h>
-#include <sys/types.h>
-#include <netdb.h>
-#include <sys/socket.h>
-#include <netinet/in.h>
-#include <sys/select.h>
-#include <arpa/inet.h>
-# include "serv.hpp"
-# include "client.hpp"
+# include "clien.hpp"
 # include "utils.hpp"
+# include "Server.hpp"
+# include <iostream>
+# include <vector>
+# include <string>
+# include <netdb.h>
+# include <unistd.h>
+# include <fcntl.h>
+# include <sys/time.h>
+# include <sys/types.h>
+# include <sys/socket.h>
+# include <sys/select.h>
+# include <netinet/in.h>
+# include <arpa/inet.h>
 
-const int MAX_CLIENTS = 10;
-const int BUFFER_SIZE = 1024;
+void    start_irc (int port, std::string password);
+void    getInfoClient(clien* new_client, char *buffer, std::string password);
 
-class irc
-{
-    public :
-
-        irc( void );
-        irc( irc const & );
-        irc & operator=( irc const & cp );
-        ~irc( void );
-        //--------------------Fonction-----------------------------------------------------------------------------------------
-
-        int init(int argc, char** argv);
-        int removeStringVector(std::vector<std::string>& myVector, const char* target);
-        void copyVector(const std::vector<std::string> &src, std::vector<std::string> &dst);
-
-        //------------------------VARIABLE---------------------------------------------------------------------------------------
-
-        std::vector<std::string> line;
-        std::vector<std::string> all_commands;
-};
-
-void    start_irc (int port, std::string pasword);
-
-    template <class T>
-void    printVector(std::vector<T>& myVector)
-{
+template <class T>
+void    printVector (std::vector<T>& myVector) {
     std::cout << "Taille du vecteur : " << myVector.size() << "\n";
     for (long unsigned int i = 0; i < myVector.size(); i++)
         std::cout << "   value "  << i << " == " <<  myVector[i] << std::endl;
 }
+
+#endif
