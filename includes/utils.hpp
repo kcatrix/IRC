@@ -1,3 +1,4 @@
+#include <vector>
 #pragma once
 
 void    print_error (std::string error_message);

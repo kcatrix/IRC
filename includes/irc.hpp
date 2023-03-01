@@ -5,6 +5,9 @@
 # include "utils.hpp"
 # include "Server.hpp"
 # include <iostream>
+# include <cerrno>
+# include <cstring>
+# include <stdlib.h>
 # include <vector>
 # include <string>
 # include <netdb.h>
