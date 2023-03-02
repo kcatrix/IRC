@@ -1,0 +1,24 @@
+accept: who can send private messages to us, [-nick] to remove, no argument to list all users accepted
+away: set status as away, sending an afk message to users if they message
+cycle: leave and rejoin and channel
+disconnect: disconnect from the server (=quit if only 1 server)
+help: lists commands or /help [command] to describe command usage
+invite: invites nick to channel
+list: lists channels on the server
+motd: displays welcome message of a server
+names: displays users in channel
+notify: notifies when a nick comes online
+oper: upgrade onself to op
+silence: silence a user (can't send mp to you)
+unsilence: ..
+topic: displays/set the topic of a channel
+ts: displays list of channels you're on and their topic
+wall: send message to all channel operators
+
+OP
+ban [channel] [nick]: ban user from channel
+unban: ..
+op: upgrade user to op status
+deop: ..
+die: terminate irc server
+kill: remove nick from server
