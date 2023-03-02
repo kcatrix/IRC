@@ -24,7 +24,7 @@ clien::clien(std::string str1, std::string str2, int sd)
 
 clien::~clien( void )
 {
-	std::cout << "Clien destroyed" << std::endl; 
+	//std::cout << "Clien destroyed" << std::endl; 
 	return; 
 }
 
