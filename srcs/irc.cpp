@@ -47,21 +47,16 @@ int     getInfoClient (clien* new_client, char* buffer, std::string password) {
 
 void    createClient (int new_socket, VECTOR* clients, int* max_sd, int* number_of_clients) {
     clien new_client (new_socket);
-
-    if (CheckClientExists(*clients, new_socket) == 0)
-    {
-        if (*number_of_clients >= MAX_CLIENTS)
-            exit(0); // a changer en fonction qui close toute les socket
-        std::cout << "New client connected" << std::endl;
-        fcntl(new_socket, F_SETFL, O_NONBLOCK);
-        clients->push_back (new_client);
-        *max_sd = std::max (*max_sd, new_socket);
-        (*number_of_clients)++;
-        write (new_socket, "Welcome to the server\n", 22);
-        write (new_socket, "Enter the password\n", 19);
-    }
-    else {};
-        //close new_socket?
+     if (*number_of_clients >= MAX_CLIENTS)
+         exit(0); // a changer en fonction qui close toute les socket
+     std::cout << "New client connected" << std::endl;
+     fcntl(new_socket, F_SETFL, O_NONBLOCK);
+     clients->push_back (new_client);
+     *max_sd = std::max (*max_sd, new_socket);
+     (*number_of_clients)++;
+     write (new_socket, "Welcome to the server\n", 22);
+     write (new_socket, "Enter the password\n", 19);
+    
 }
 
 void redirectFonction(int newsocket, char *buffer, std::vector<clien> client_tab, std::string password)
