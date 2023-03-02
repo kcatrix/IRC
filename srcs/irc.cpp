@@ -256,12 +256,8 @@ void start_irc(int port, std::string password)
                 else if (valread == -1 && errno == EAGAIN)
                     print_error ("Reading failure");
                 else {
-                    for (ITERATOR it = clients.begin (); it != clients.end (); it++)
-                        if ((*it).sd == new_socket) {
-							std::cout << "client socket =" <<  (*it).sd << "current socket " << new_socket << std::endl;
-                            if (getInfoClient(it.base(), buffer, password, clients) == 0) // .base() pas risque ?
-                                redirectFonction((*it).sd, buffer, &clients, password);
-                        }
+                    if (getInfoClient(it.base(), buffer, password, clients) == 0) // .base() pas risque ?
+                        redirectFonction((*it).sd, buffer, &clients, password);
                     buffer[valread] = '\0';
                     getpeername((*it).sd, (SOCKADDR*)&server_address, (socklen_t*)&address_length);
                     std::cout << buffer << std::endl;
