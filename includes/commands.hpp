@@ -3,9 +3,9 @@
 #include <vector>
 #include "irc.hpp"
 
-void msg(clien executer, char *buffer, std::vector<clien> clients);
-void nick(clien executer, char *buffer, std::vector<clien> *clients);
-void quit(clien executer);
-void ping(clien executer, char *buffer);
-void modt(clien executer);
-void away(clien executer, char *buffer);
+void msg(User executer, char *buffer, std::vector<User> users);
+void nick(User executer, char *buffer, std::vector<User> *users);
+void quit(User executer);
+void ping(User executer, char *buffer);
+void modt(User executer);
+void away(User executer, char *buffer);

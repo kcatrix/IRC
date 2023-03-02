@@ -2,9 +2,9 @@
 
 // ------------------------    Gestion doublons Nick / User --------------------------------------
 
-int checkdoublonnick(char *tocheck, std::vector<clien> clients, int sd) //doublon nick
+int checkdoublonnick(char *tocheck, std::vector<User> users, int sd) //doublon nick
 {
-    for (ITERATOR it = clients.begin (); it != clients.end (); it++)
+    for (ITERATOR it = users.begin (); it != users.end (); it++)
     {
 		if((*it).nickname.compare(tocheck) == 0)
 		{
@@ -18,9 +18,9 @@ int checkdoublonnick(char *tocheck, std::vector<clien> clients, int sd) //doublo
 	return 0;
 }
 
-int checkdoublonuser(char *tocheck, std::vector<clien> clients, int sd) //doublon user
+int checkdoublonuser(char *tocheck, std::vector<User> users, int sd) //doublon user
 {
-    for (ITERATOR it = clients.begin (); it != clients.end (); it++)
+    for (ITERATOR it = users.begin (); it != users.end (); it++)
     {
 		if((*it).nickname.compare(tocheck) == 0)
 		{

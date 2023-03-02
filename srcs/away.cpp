@@ -1,7 +1,7 @@
 #include "../includes/irc.hpp"
 
 
-void away(clien executer, char *buffer)
+void away(User executer, char *buffer)
 {
 	char **buffspli = ft_split(buffer, ' ');
 	if (buffspli[1] == NULL)

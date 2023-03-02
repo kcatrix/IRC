@@ -21,7 +21,7 @@ void        Server::create_socket (void) {
         print_error ("Server socket creation error");
     if (bind (_server_fd, (SOCKADDR*) &_address, sizeof(_address)) < 0)
         print_error ("Server socket binding error");
-    if (listen (_server_fd, MAX_CLIENTS) < 0)
+    if (listen (_server_fd, MAX_USERS) < 0)
         print_error ("Server socket listening error");
     fcntl(_server_fd, F_SETFL, O_NONBLOCK);
     std::cout << "Listening on port " << _port << std::endl;
