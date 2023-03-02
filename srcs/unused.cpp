@@ -82,9 +82,5 @@ int CheckClientExiste(std::vector<clien> client_tab, int new_socket)
 
 void redirectFonction(int newsocket, char *buffer, std::vector<clien> client_tab, std::string password)
 {
-    (void)newsocket;
-    (void)buffer;
-    (void)password;
-    (void)client_tab;
-    send(newsocket, "test1", 5, 0);
+    
 }*/

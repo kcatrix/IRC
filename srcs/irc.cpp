@@ -26,21 +26,23 @@ void    setNickname (clien* new_client, char* buffer) {
     write(new_client->sd, "Enter a command: \n", 19);
 }
 
-void    getInfoClient (clien* new_client, char* buffer, std::string password) {
+int     getInfoClient (clien* new_client, char* buffer, std::string password) {
     removeInvisibleChars(buffer);
 
     if (new_client->password == "") {
         checkPassword (new_client, buffer, password);
-        return;
+        return 1;
     }
     else if (new_client->username == "") {
         setUsername (new_client, buffer);
-        return;
+        return 1;
     }
     else if (new_client->nickname == "") {
         setNickname (new_client, buffer);
-        return;
+        return 1;
     }
+    else
+        return 0;
 }
 
 void    createClient (int new_socket, VECTOR* clients, int* max_sd, int* number_of_clients) {
@@ -61,6 +63,37 @@ void    createClient (int new_socket, VECTOR* clients, int* max_sd, int* number_
     else
         //close new_socket?
         ;
+}
+
+void redirectFonction(int newsocket, char *buffer, std::vector<clien> client_tab, std::string password)
+{
+    (void)newsocket;
+    (void)buffer;
+    (void)password;
+    (void)client_tab;
+
+    // il faut d'abbord split le buffer sur l'espace pour avoir argv[0]
+    
+        // if (strcmp(buffer_spli, "/nick") == 0)
+        //     nick(client_tab[newsocket], buffer);
+        // else if (strcmp(buffer_spli, "/join") == 0)
+        //     join(client_tab[newsocket], buffer);
+        // else if (strcmp(buffer_spli, "/part") == 0)
+        //     part(client_tab[newsocket], buffer);
+        // else if (strcmp(buffer_spli, "/users") == 0)
+        //     users(client_tab[newsocket], buffer);
+        // else if (strcmp(buffer_spli, "/msg") == 0)
+        //     msg(client_tab[newsocket], buffer);
+        // else if (strcmp(buffer_spli, "/names") == 0)
+        //     names(client_tab[newsocket], buffer);
+        // else if (strcmp(buffer_spli, "/list") == 0)
+        //     list(client_tab[newsocket], buffer);
+        // else if (strcmp(buffer_spli, "/quit") == 0)
+        //     quit(client_tab[newsocket], buffer);
+        // else
+        //     write(client_tab[newsocket].sd, "Command not found\n", 18);
+
+            write(newsocket, "Redirect non fini \n", 19);
 }
 
 void start_irc(int port, std::string password)
@@ -108,8 +141,8 @@ void start_irc(int port, std::string password)
                 else {
                     for (ITERATOR it = clients.begin (); it != clients.end (); it++)
                         if ((*it).sd == new_socket) {
-                            getInfoClient(it.base (), buffer, password);
-                            //redirectFonction((*it).sd, buffer, clients, password);    
+                            if (getInfoClient(it.base (), buffer, password) == 0)
+                                redirectFonction((*it).sd, buffer, clients, password);
                         }
                     buffer[valread] = '\0';
                     getpeername((*it).sd, (SOCKADDR*)&server_address, (socklen_t*)&address_length);

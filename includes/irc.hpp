@@ -21,7 +21,7 @@
 # include <arpa/inet.h>
 
 void    start_irc (int port, std::string password);
-void    getInfoClient(clien* new_client, char *buffer, std::string password);
+int     getInfoClient(clien* new_client, char *buffer, std::string password);
 
 template <class T>
 void    printVector (std::vector<T>& myVector) {
