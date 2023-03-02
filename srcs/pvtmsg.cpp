@@ -2,7 +2,7 @@
 
 //  ---------------(fonctionne dans l'ensemble hors mask(pas implemente car manque d'info sans les channs) + mauvais sender car prob de socket de discord)--------------------------------------
 
-void msg(clien executer, char *buffer, std::vector<clien> clients) {
+void msg(User executer, char *buffer, std::vector<User> users) {
 
     //protect segfault
     char **buffspli = ft_split(buffer, ' ');
@@ -10,7 +10,7 @@ void msg(clien executer, char *buffer, std::vector<clien> clients) {
     std::string messager = executer.username;
 	std::string display;
 
-    for (ITERATOR it = clients.begin (); it != clients.end (); it++)
+    for (ITERATOR it = users.begin (); it != users.end (); it++)
     {
         if (buffspli[1] == (*it).username) //buffspli[1] == (*it).hostmask || 
         {

@@ -1,7 +1,7 @@
 #ifndef irc_HPP
 # define irc_HPP
 
-# include "clien.hpp"
+# include "User.hpp"
 # include "commands.hpp"
 # include "utils.hpp"
 # include "Server.hpp"
@@ -22,18 +22,18 @@
 # include <netinet/in.h>
 # include <arpa/inet.h>
 
-#define VECTOR std::vector<clien>
-#define ITERATOR std::vector<clien>::iterator
+#define VECTOR std::vector<User>
+#define ITERATOR std::vector<User>::iterator
 
 void    start_irc (int port, std::string password);
-int     getInfoClient(clien* new_client, char *buffer, std::string password);
-void    checkPassword (clien* new_client, char* buffer, std::string password);
-void    setUsername (clien* new_client, char* buffer);
-void    setNickname (clien* new_client, char* buffer);
-int     getInfoClient (clien* new_client, char* buffer, std::string password, std::vector<clien> clients);
-void    createClient (int new_socket, VECTOR* clients, int* max_sd, int* number_of_clients);
-int     checkdoublonnick(char *tocheck, std::vector<clien> clients, int sd);
-int     checkdoublonuser(char *tocheck, std::vector<clien> clients, int sd);
+int     getInfoUser(User* new_Usert, char *buffer, std::string password);
+void    checkPassword (User* new_user, char* buffer, std::string password);
+void    setUsername (User* new_user, char* buffer);
+void    setNickname (User* new_user, char* buffer);
+int     getInfoUser (User* new_user, char* buffer, std::string password, std::vector<User> users);
+void    createUser (int new_socket, VECTOR* users, int* max_sd, int* number_of_users);
+int     checkdoublonnick(char *tocheck, std::vector<User> users, int sd);
+int     checkdoublonuser(char *tocheck, std::vector<User> users, int sd);
 
 template <class T>
 void    printVector (std::vector<T>& myVector) {

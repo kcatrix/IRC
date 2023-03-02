@@ -1,6 +1,6 @@
 #include "../includes/irc.hpp"
 
-void ping(clien executer, char *buffer)
+void ping(User executer, char *buffer)
 {
 	int newsocket = executer.sd;
 	char **buffspli = ft_split(buffer, ' ');

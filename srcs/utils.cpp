@@ -5,8 +5,8 @@ void    print_error (std::string error_message) {
     exit (EXIT_FAILURE);
 }
 
-bool    CheckClientExists (std::vector<clien> clients, int fd) {
-    for (std::vector<clien>::iterator it = clients.begin (); it != clients.end (); it++) {
+bool    CheckUserExists (std::vector<User> users, int fd) {
+    for (std::vector<User>::iterator it = users.begin (); it != users.end (); it++) {
         if ((*it).sd == fd)
             return 1;
     }
