@@ -2,6 +2,6 @@
 
 #include "irc.hpp"
 
-void msg(int newsocket, char *buffer, std::vector<clien> clients);
-void nick(int newsocket, char *buffer, std::vector<clien> *clients);
-void quit(int newsocket, std::vector<clien> clients);
+void msg(clien executer, char *buffer, std::vector<clien> clients);
+void nick(clien executer, char *buffer, std::vector<clien> *clients);
+void quit(clien executer);

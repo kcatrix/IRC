@@ -2,16 +2,16 @@
 
 //  ---------------------------------    Redir function  --------------------------------------
 
-void redirectFonction(int newsocket, char *buffer, std::vector<clien>* client_tab, std::string password)
+void redirectFonction(clien executer, char *buffer, std::vector<clien>* client_tab, std::string password)
 {
     (void)password;
     char **bufferspli = ft_split(buffer, ' ');
     if (strcmp(bufferspli[0], "pvtmsg") == 0)
-        msg(newsocket, buffer, *client_tab);
+        msg(executer, buffer, *client_tab);
     else if (strcmp(bufferspli[0], "nick") == 0)
-        nick(newsocket, buffer, client_tab);
+        nick(executer, buffer, client_tab);
     else if (strcmp(buffer, "QUIT") == 0)
-        quit(newsocket, *client_tab);
+        quit(executer);
     // il faut d'abbord split le buffer sur l'espace pour avoir argv[0]
     
         // if (strcmp(buffer_spli, "/nick") == 0)
@@ -33,7 +33,7 @@ void redirectFonction(int newsocket, char *buffer, std::vector<clien>* client_ta
         // else
         //     write(client_tab[newsocket].sd, "Command not found\n", 18);
 
-    write(newsocket, "Redirect non fini \n", 19);
+    write(executer.sd, "Redirect non fini \n", 19);
     free_tab(bufferspli);
 }
 
@@ -80,7 +80,7 @@ void start_irc(int port, std::string password)
                     print_error ("Reading failure");
                 else {
                     if (getInfoClient(it.base(), buffer, password, clients) == 0) // .base() pas risque ?
-                        redirectFonction((*it).sd, buffer, &clients, password);
+                        redirectFonction(*it, buffer, &clients, password);
                     buffer[valread] = '\0';
                     getpeername((*it).sd, (SOCKADDR*)&server_address, (socklen_t*)&address_length);
                     std::cout << buffer << std::endl;
