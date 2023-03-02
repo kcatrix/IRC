@@ -3,6 +3,7 @@
 clien::clien( void )
 { 
 	this->sd = 0;
+	this->OP = false;
 	return; 
 }
 

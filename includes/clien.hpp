@@ -17,6 +17,7 @@ class clien
 		std::string username;
 		std::string nickname;
 		std::string password;
+		bool OP;
 		int sd;
 };
 
