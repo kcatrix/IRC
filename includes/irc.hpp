@@ -5,6 +5,7 @@
 # include "commands.hpp"
 # include "utils.hpp"
 # include "Server.hpp"
+#include <signal.h>
 # include <iostream>
 # include <cerrno>
 # include <cstring>

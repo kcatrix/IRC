@@ -5,6 +5,8 @@
 void redirectFonction(clien executer, char *buffer, std::vector<clien>* client_tab, std::string password)
 {
     (void)password;
+    if (strlen(buffer) <= 0)
+        return ;
     char **bufferspli = ft_split(buffer, ' ');
     if (strcmp(bufferspli[0], "pvtmsg") == 0)
         msg(executer, buffer, *client_tab);
@@ -32,10 +34,9 @@ void redirectFonction(clien executer, char *buffer, std::vector<clien>* client_t
         //     list(client_tab[newsocket], buffer);
         // else if (strcmp(buffer_spli, "/quit") == 0)
         //     quit(client_tab[newsocket], buffer);
-        // else
-        //     write(client_tab[newsocket].sd, "Command not found\n", 18);
+    else
+        write(executer.sd, "Command not found\n", 18);
 
-    write(executer.sd, "Redirect non fini \n", 19);
     free_tab(bufferspli);
 }
 

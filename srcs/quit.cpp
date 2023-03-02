@@ -7,6 +7,8 @@ void quit(clien executer)
 
     message = "Goodbye " + executer.username + " " + executer.nickname + " !\n";
     write(executer.sd, message.c_str(), message.length());
-    //close((*it).sd); //provoque une erreur de select
+    // kill(executer.sd, SIGINT); tentative d'arnaque échouer :(  l'envoi d'un ctrl+c au client ne fait absolument rien sans grande suprise cordialement
+    close(executer.sd); //provoque une erreur de select
+    return ;
     //clients.erase(it); //fait segfault
 }
