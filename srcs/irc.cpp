@@ -60,9 +60,8 @@ void    createClient (int new_socket, VECTOR* clients, int* max_sd, int* number_
         write (new_socket, "Welcome to the server\n", 22);
         write (new_socket, "Enter the password\n", 19);
     }
-    else
+    else {};
         //close new_socket?
-        ;
 }
 
 void redirectFonction(int newsocket, char *buffer, std::vector<clien> client_tab, std::string password)
