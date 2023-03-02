@@ -12,4 +12,5 @@ void ping(clien executer, char *buffer)
 	std::string tokken = buffspli[1];
 	std::string message = "PONG " + tokken + "\n";
 	write(newsocket, message.c_str(), message.length() + 1);
+	free_tab(buffspli);
 }
