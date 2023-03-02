@@ -12,6 +12,8 @@ void redirectFonction(clien executer, char *buffer, std::vector<clien>* client_t
         nick(executer, buffer, client_tab);
     else if (strcmp(buffer, "QUIT") == 0)
         quit(executer);
+    else if (strcmp(bufferspli[0], "PING") == 0)
+        ping(executer, buffer);
     // il faut d'abbord split le buffer sur l'espace pour avoir argv[0]
     
         // if (strcmp(buffer_spli, "/nick") == 0)
