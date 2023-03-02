@@ -11,6 +11,9 @@ clien::clien( void )
 clien::clien(int sd)
 { 
 	this->sd = sd;
+	this->OP = false;
+	this->away = false;
+
 	std::cout << "Clien created sd = " << sd << std::endl;
 	return; 
 }

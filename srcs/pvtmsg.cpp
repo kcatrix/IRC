@@ -14,6 +14,16 @@ void msg(clien executer, char *buffer, std::vector<clien> clients) {
     {
         if (buffspli[1] == (*it).username) //buffspli[1] == (*it).hostmask || 
         {
+            std::cout << "message envoyé a " << (*it).username << std::endl;
+
+            std::cout << "away == " << (*it).away << std::endl; 
+            if ((*it).away == true )// ne fonctionne pas car pas de away == false meme aprés fonction away           
+            {
+                message = (*it).away_message + '\n';
+                write(executer.sd, message.c_str(), message.length() + 1);
+                free_tab(buffspli);
+                return ;
+            } 
             if(buffspli[2])
                 display = buffspli[2];
 			for(int y = 3; buffspli[y] != NULL; y++)

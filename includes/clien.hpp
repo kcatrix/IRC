@@ -2,6 +2,7 @@
 # define CLIEN_HPP
 
 # include <string>
+# include <vector>
 
 class clien
 {
@@ -18,6 +19,7 @@ class clien
 		std::string nickname;
 		std::string password;
 		std::string away_message;
+		std::vector<std::string> accept;
 		bool away;
 		bool OP;
 		int sd;
