@@ -4,6 +4,7 @@ clien::clien( void )
 { 
 	this->sd = 0;
 	this->OP = false;
+	this->away = false;
 	return; 
 }
 

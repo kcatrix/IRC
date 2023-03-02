@@ -5,7 +5,7 @@ disconnect: disconnect from the server (=quit if only 1 server)
 help: lists commands or /help [command] to describe command usage
 invite: invites nick to channel
 list: lists channels on the server
-motd: displays welcome message of a server
+motd: displays welcome message of a server            ok 
 names: displays users in channel
 notify: notifies when a nick comes online
 oper: upgrade onself to op
