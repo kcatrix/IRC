@@ -1,5 +1,9 @@
 #include "../includes/irc.hpp"
 
+void    print_message (int sd, std::string message) {
+    write (sd, message.c_str (), message.length ());
+}
+
 void    print_error (std::string error_message) {
     std::cout << error_message << std::endl;
     exit (EXIT_FAILURE);

@@ -1,7 +1,9 @@
 #ifndef SERVER_HPP
 # define SERVER_HPP
 
+# include "User.hpp"
 # include <string>
+# include <vector>
 # include <netinet/in.h>
 
 typedef struct sockaddr_in SOCKADDR_IN;
@@ -18,6 +20,9 @@ class Server {
                                      _address (cpy._address), _password (cpy._password) { }
 
         virtual ~Server (void);
+
+        std::vector<User>       users;
+        std::vector<Channel>    channels;
 
         int         getFd (void);
         int         getAddressLength (void);
