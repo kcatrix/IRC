@@ -33,7 +33,7 @@ void    setUsername (User* new_user, char* buffer);
 void    setNickname (User* new_user, char* buffer);
 int     getInfoUser (User* new_user, char* buffer, std::string password, std::vector<User> users);
 void    createUser (int new_socket, VECTOR* users, int* max_sd, int* number_of_users);
-int     checkdoublonnick(char *tocheck, std::vector<User> users, int sd);
+int     checkDuplicateNick(std::string to_check, std::vector<User> users, int sd);
 int     checkdoublonuser(char *tocheck, std::vector<User> users, int sd);
 
 template <class T>

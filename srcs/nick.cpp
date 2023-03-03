@@ -1,20 +1,18 @@
 #include "../includes/irc.hpp"
 
 //  ----- a potentiellement modifier lors de la refonte du log de base du user -----------
-void nick(User executer, char *buffer, std::vector<User> *users){ 
+void nick(User& executer, std::vector<std::string> bufferSplit, std::vector<User> users){ 
 
-	char **buffspli = ft_split(buffer, ' ');
-    if(buffspli[1] == NULL || (buffspli[1] != NULL && buffspli[2] != NULL))
-        write(executer.sd, "Votre entree n'est pas valide ! (nick <Nickname>)\n", 51);
-    else
-    {
-        if(checkdoublonnick(buffspli[1], *users, executer.sd) == 1)
+    if(bufferSplit[1].empty () == 1 or (bufferSplit[1].empty () == 0 and bufferSplit[2].empty () == 0)) {
+        print_message (executer.sd, "Votre entree n'est pas valide ! (/NICK <new nickname>)\n");
+        return;
+    }
+    else {
+        if(checkDuplicateNick(bufferSplit[1], users, executer.sd) == 1)
             return ;
-        executer.nickname = buffspli[1];
-        write(executer.sd, "nick name :", 11);
-        write (executer.sd, executer.nickname.c_str(), executer.nickname.length());
+        executer.nickname = bufferSplit[1];
+        print_message (executer.sd, "new nickname: " + executer.nickname + "\n");
     }
     // write(newsocket, user_tab[i].nickname.c_str(), user_tab[i].nickname.length());
-	free_tab(buffspli);
 }
 

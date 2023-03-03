@@ -12,8 +12,8 @@ void redirectFonction(User executer, char *buffer, std::vector<User>* users_tab,
     std::vector<std::string> bufferSplit = splitString (string_buffer);
     if (bufferSplit[0] == "/PVTMSG" or bufferSplit[0] == "/w")
         msg(executer, bufferSplit, *users_tab);
-    else if (strcmp(bufferspli[0], "/NICK") == 0)
-        nick(executer, buffer, users_tab);
+    else if (bufferSplit[0] == "/NICK")
+        nick(executer, bufferSplit, *users_tab);
     else if (strcmp(buffer, "/QUIT") == 0)
         quit(executer);
     else if (strcmp(bufferspli[0], "/PING") == 0)

@@ -2,16 +2,16 @@
 
 // ------------------------    Gestion doublons Nick / User --------------------------------------
 
-int checkdoublonnick(char *tocheck, std::vector<User> users, int sd) //doublon nick
+int checkDuplicateNick(std::string to_check, std::vector<User> users, int sd) //doublon nick
 {
     for (ITERATOR it = users.begin (); it != users.end (); it++)
     {
-		if((*it).nickname.compare(tocheck) == 0)
+		if((*it).nickname == to_check)
 		{
 			if(sd == (*it).sd)
-				write(sd, "This is already your nickname !\n", 32);
+                print_message (sd, "This is already your nickname!\n");
 			else
-				write(sd, "nickname already in use, please try an other one\n", 49);
+				print_message (sd, "Nickname already in use, please try an other one\n");
 			return 1;
 		}
 	}

@@ -38,8 +38,8 @@ int     getInfoUser (User* new_user, char* buffer, std::string password, std::ve
         return 1;
     }
     else if (new_user->nickname == "") {
-        if(checkdoublonnick(buffer, users, new_user->sd) == 1)
-			return 1;
+        //if(checkDuplicateNick(buffer, users, new_user->sd) == 1)
+		//	return 1;
         setNickname (new_user, buffer);
         return 1;
     }
