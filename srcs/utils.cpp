@@ -213,3 +213,24 @@ char	*ft_strdup(const char *s1)
 	dest[i] = '\0';
 	return (dest);
 }
+
+std::vector<std::string> splitString(const std::string& str) {
+    std::vector<std::string> result;
+
+    std::string::size_type start = 0;
+    std::string::size_type end = str.find(" ");
+
+    while (end != std::string::npos) {
+        if (end > start) {
+            result.push_back(str.substr(start, end - start));
+        }
+        start = end + 1;
+        end = str.find(" ", start);
+    }
+
+    if (start < str.size()) {
+        result.push_back(str.substr(start));
+    }
+
+    return result;
+}

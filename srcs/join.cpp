@@ -1,19 +1,28 @@
 #include "../includes/irc.hpp"
 
-void    createChannel (std::string nickname, char* name, Server& irc_server) {
-    std::string channel_name (name);
-    std::cout << "sent name: " << name << std::endl;
+void    createChannel (User executer, std::string channel_name, Server& irc_server) {
     Channel     new_channel (channel_name);
-    std::cout << "channel name entered: " << channel_name << ", new channel called: " << new_channel.channel_name << std::endl;
 
-    std::cout << "number of channels: " << irc_server.channels.size () << std::endl;
-    new_channel.chan_users.push_back (nickname);
+    new_channel.chan_users.push_back (executer.nickname);
     irc_server.channels.push_back (new_channel);
-    std::cout << "number of channels: " << irc_server.channels.size () << std::endl;
-    std::cout << "The channel " << irc_server.channels.front().channel_name << " was created." << std::endl;
-    std::cout << "List of channels: " << std::endl;
+    std::cout << "The channel " << irc_server.channels.back ().channel_name << " was created by " << irc_server.channels.back ().chan_users.back () << std::endl;
+    print_message (executer.sd, "You created the channel #" + irc_server.channels.back ().channel_name + "\n");
+}
+
+int     findChannel (std::string channel_name, Server& irc_server) {
     for (std::vector<Channel>::iterator it = irc_server.channels.begin (); it != irc_server.channels.end (); it++) {
-        std::cout << "current channel name: " << (*it).channel_name << ", looking for: " << channel_name << std::endl;
+        if ((*it).channel_name == channel_name)
+            return 1;
+    }
+    return 0;
+}
+
+void    addUser (User executer, std::string channel_name, Server& irc_server) {
+    for (std::vector<Channel>::iterator it = irc_server.channels.begin (); it != irc_server.channels.end (); it++) {
+        if ((*it).channel_name == channel_name) {
+            (*it).chan_users.push_back (executer.nickname);
+            print_message (executer.sd, "You joined the channel #" + (*it).channel_name + "\n");
+        }
     }
 }
 
@@ -24,11 +33,16 @@ void    join (User executer, char* buffer, Server& irc_server) {
         return;
     }
     std::string channel_name (buffspli[1]);
-    for (std::vector<Channel>::iterator it = irc_server.channels.begin (); it != irc_server.channels.end (); it++) {
-        if ((*it).channel_name == channel_name) {
-            print_message (executer.sd, "You joined the channel" + channel_name);
-            return;
-        }
+    if (findChannel (channel_name, irc_server) == 0)
+        createChannel (executer, channel_name, irc_server);
+    else {
+        addUser (executer, channel_name, irc_server);
+        //(*it).chan_users.push_back (executer.nickname);
+        print_message (executer.sd, "You joined the channel #" + channel_name + "\n");
+        return;
     }
-    createChannel (channel_name, buffspli[1], irc_server);
+    std::cout << "List of channels: " << std::endl;
+    for (std::vector<Channel>::iterator it = irc_server.channels.begin (); it != irc_server.channels.end (); it++)
+        std::cout << (*it).channel_name << std::endl;
+    std::cout << "end of list" << std::endl;
 }
