@@ -9,12 +9,12 @@ void    createChannel (User executer, std::string channel_name, Server& irc_serv
     print_message (executer.sd, "You created the channel #" + irc_server.channels.back ().channel_name + "\n");
 }
 
-int     findChannel (std::string channel_name, Server& irc_server) {
+Channel     findChannel (std::string channel_name, Server& irc_server) {
     for (std::vector<Channel>::iterator it = irc_server.channels.begin (); it != irc_server.channels.end (); it++) {
         if ((*it).channel_name == channel_name)
-            return 1;
+            return *it;
     }
-    return 0;
+    return Channel ();
 }
 
 void    addUser (User executer, std::string channel_name, Server& irc_server) {
@@ -33,7 +33,8 @@ void    join (User executer, char* buffer, Server& irc_server) {
         return;
     }
     std::string channel_name (buffspli[1]);
-    if (findChannel (channel_name, irc_server) == 0)
+    Channel to_join = findChannel (channel_name, irc_server);
+    if (to_join.channel_name.empty () == 1)
         createChannel (executer, channel_name, irc_server);
     else {
         addUser (executer, channel_name, irc_server);
