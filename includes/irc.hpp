@@ -1,10 +1,6 @@
 #ifndef irc_HPP
 # define irc_HPP
 
-# include "User.hpp"
-# include "commands.hpp"
-# include "utils.hpp"
-# include "Server.hpp"
 #include <signal.h>
 # include <iostream>
 # include <cerrno>
@@ -21,6 +17,11 @@
 # include <sys/select.h>
 # include <netinet/in.h>
 # include <arpa/inet.h>
+# include "User.hpp"
+# include "Channel.hpp"
+# include "Server.hpp"
+# include "commands.hpp"
+# include "utils.hpp"
 
 #define VECTOR std::vector<User>
 #define ITERATOR std::vector<User>::iterator

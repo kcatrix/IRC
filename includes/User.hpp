@@ -16,6 +16,8 @@ class User
 		std::string username;
 		std::string nickname;
 		std::string password;
+		std::string away_message;
+		bool        away;
 		bool        OP;
 		int         sd;
 };

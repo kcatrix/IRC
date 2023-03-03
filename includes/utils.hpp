@@ -2,9 +2,11 @@
 #pragma once
 
 void    print_error (std::string error_message);
+void    print_message (int sd, std::string message);
 bool    CheckUserExists (std::vector<User> users, int fd);
 void    removeInvisibleChars(char* str);
 int     removeStringVector(std::vector<std::string>& myVector, const char* target);
+std::vector<std::string>     splitString(const std::string& string);
 
 
 

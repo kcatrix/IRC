@@ -3,7 +3,7 @@ CC = g++
 
 RM = rm -f
 
-CFLAGS = -Wall -Wextra  -std=c++98 
+CFLAGS = -Wall -Wextra  -std=c++98
 
 NAME = ircserv
 

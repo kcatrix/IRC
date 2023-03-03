@@ -1,6 +1,7 @@
 #include "../includes/irc.hpp"
 
 Server::Server (int port, std::string password) {
+    users.reserve (10);
     _port = port;
     _password = password;
     init_address ();
@@ -35,5 +36,8 @@ int         Server::getAddressLength (void) { return this->_addrlen; }
 
 std::string Server::getPassword (void) { return this->_password; }
 
-Server::~Server (void) { close (_server_fd); }
-
+Server::~Server (void) { 
+    users.clear ();
+    channels.clear ();
+    close (_server_fd);
+}

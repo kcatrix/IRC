@@ -2,7 +2,7 @@
 
 //  ---------------------------------    Redir function  --------------------------------------
 
-void redirectFonction(User executer, char *buffer, std::vector<User>* users_tab, std::string password)
+void redirectFonction(User executer, char *buffer, std::vector<User>* users_tab, Server& irc_server, std::string password)
 {
     (void)password;
     if (strlen(buffer) <= 0)
@@ -16,12 +16,17 @@ void redirectFonction(User executer, char *buffer, std::vector<User>* users_tab,
         quit(executer);
     else if (strcmp(bufferspli[0], "/PING") == 0)
         ping(executer, buffer);
+    else if (strcmp(bufferspli[0], "/MODT") == 0)
+        modt(executer);
+    else if (strcmp(bufferspli[0], "/AWAY") == 0)
+        away(executer, buffer);
+    else if (strcmp(bufferspli[0], "/join") == 0) {
+        join(executer, buffer, irc_server);
+    }
     // il faut d'abbord split le buffer sur l'espace pour avoir argv[0]
     
         // if (strcmp(buffer_spli, "/nick") == 0)
         //     nick(users_tab[newsocket], buffer);
-        // else if (strcmp(buffer_spli, "/join") == 0)
-        //     join(users_tab[newsocket], buffer);
         // else if (strcmp(buffer_spli, "/part") == 0)
         //     part(users_tab[newsocket], buffer);
         // else if (strcmp(buffer_spli, "/users") == 0)
@@ -35,7 +40,7 @@ void redirectFonction(User executer, char *buffer, std::vector<User>* users_tab,
         // else if (strcmp(buffer_spli, "/quit") == 0)
         //     quit(users_tab[newsocket], buffer);
     else
-        write(executer.sd, "Command not found\n", 18);
+        print_message (executer.sd, "Unknown command.\n");
 
     free_tab(bufferspli);
 }
@@ -51,13 +56,12 @@ void start_irc(int port, std::string password)
     ITERATOR  supp;
     fd_set    read_fds;
     char      buffer[BUFFER_SIZE];
-    VECTOR    users(0);
     SOCKADDR_IN   server_address = irc_server.getAddress ();
 
     while (true) {
         FD_ZERO(&read_fds);
         FD_SET(server_fd, &read_fds);
-        for (ITERATOR it = users.begin(); it != users.end(); ++it)
+        for (ITERATOR it = irc_server.users.begin(); it != irc_server.users.end(); ++it)
             FD_SET((*it).sd, &read_fds);
         activity = select(max_sd + 1, &read_fds, NULL, NULL, NULL);
         if ((activity < 0) && (errno!=EINTR))
@@ -65,9 +69,9 @@ void start_irc(int port, std::string password)
         if (FD_ISSET(server_fd, &read_fds)) {
             if ((new_socket = accept(server_fd, (SOCKADDR*)&server_address, (socklen_t*)&address_length))<0)
                 print_error ("Socket creation error");
-			createUser (new_socket, &users, &max_sd, &number_of_users);
+			createUser (new_socket, &irc_server.users, &max_sd, &number_of_users);
         }
-        for (ITERATOR it = users.begin(); it != users.end(); it++) {
+        for (ITERATOR it = irc_server.users.begin(); it != irc_server.users.end(); it++) {
             memset(buffer, 0, BUFFER_SIZE);
             if (FD_ISSET((*it).sd, &read_fds)) {
                 valread = read((*it).sd, buffer, BUFFER_SIZE);
@@ -82,17 +86,16 @@ void start_irc(int port, std::string password)
                 else if (valread == -1 && errno == EAGAIN)
                     print_error ("Reading failure");
                 else {
-                    if (getInfoUser(it.base(), buffer, password, users) == 0) // .base() pas risque ?
-                        redirectFonction(*it, buffer, &users, password);
+                    if (getInfoUser(it.base(), buffer, password, irc_server.users) == 0) // .base() pas risque ?
+                        redirectFonction(*it, buffer, &irc_server.users, irc_server, password);
                     buffer[valread] = '\0';
                     getpeername((*it).sd, (SOCKADDR*)&server_address, (socklen_t*)&address_length);
-                    std::cout << buffer << std::endl;
                 }
             }
         }
         if (sup > 0){
             close(sup);
-            users.erase(supp);
+            irc_server.users.erase(supp);
             sup = -1;
         }
     }

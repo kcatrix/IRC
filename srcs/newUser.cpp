@@ -5,25 +5,24 @@
 void    checkPassword (User* new_user, char* buffer, std::string password) {
         if (password.compare(buffer) == 0) {
             new_user->password = buffer;
-            write(new_user->sd, "Enter your username: ", 21);
+            print_message (new_user->sd, "Enter your username: ");
         }
         else
-            write(new_user->sd, "Wrong password, try again: ", 27);
+            print_message (new_user->sd, "Wrong password, try again: ");
 }
 
 void    setUsername (User* new_user, char* buffer) {
 
         new_user->username = buffer;
-        write(new_user->sd, "Enter your nickname: ", 21);
+        print_message (new_user->sd, "Enter your nickname: ");
 }
 
 void    setNickname (User* new_user, char* buffer) {
     std::string message;
 
     new_user->nickname = buffer;
-    message = "Welcome " + new_user->username + " " + new_user->nickname + " !\n";
-    write(new_user->sd, message.c_str(), message.length());
-    write(new_user->sd, "Enter a command: \n", 19);
+    print_message (new_user->sd, "Welcome to our server, " + new_user->nickname + " !\n");
+    print_message (new_user->sd, "Type /help to see a list of the available commands.\n");
 }
 
 int     getInfoUser (User* new_user, char* buffer, std::string password, std::vector<User> users) {
@@ -52,12 +51,11 @@ void    createUser (int new_socket, VECTOR* users, int* max_sd, int* number_of_u
     User new_user (new_socket);
      if (*number_of_users >= MAX_USERS)
          exit(0); // a changer en fonction qui close toute les socket
-     std::cout << "New user connected" << std::endl;
+     std::cout << "A new user joined the server." << std::endl;
      fcntl(new_socket, F_SETFL, O_NONBLOCK);
      users->push_back (new_user);
      *max_sd = std::max (*max_sd, new_socket);
      (*number_of_users)++;
-     write (new_socket, "Welcome to the server\n", 22);
-     write (new_socket, "Enter the password\n", 19);
+     print_message (new_user.sd, "Enter the password to access this server.\n");
     
 }
