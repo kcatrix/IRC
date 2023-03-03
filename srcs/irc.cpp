@@ -7,9 +7,11 @@ void redirectFonction(User executer, char *buffer, std::vector<User>* users_tab,
     (void)password;
     if (strlen(buffer) <= 0)
         return ;
+    std::string string_buffer (buffer);
     char **bufferspli = ft_split(buffer, ' ');
-    if (strcmp(bufferspli[0], "/PVTSMG") == 0)
-        msg(executer, buffer, *users_tab);
+    std::vector<std::string> bufferSplit = splitString (string_buffer);
+    if (bufferSplit[0] == "/PVTMSG" or bufferSplit[0] == "/w")
+        msg(executer, bufferSplit, *users_tab);
     else if (strcmp(bufferspli[0], "/NICK") == 0)
         nick(executer, buffer, users_tab);
     else if (strcmp(buffer, "/QUIT") == 0)
@@ -20,9 +22,8 @@ void redirectFonction(User executer, char *buffer, std::vector<User>* users_tab,
         modt(executer);
     else if (strcmp(bufferspli[0], "/AWAY") == 0)
         away(executer, buffer);
-    else if (strcmp(bufferspli[0], "/join") == 0) {
-        join(executer, buffer, irc_server);
-    }
+    else if (bufferSplit[0] == "/join")
+        join(executer, bufferSplit, irc_server);
     // il faut d'abbord split le buffer sur l'espace pour avoir argv[0]
     
         // if (strcmp(buffer_spli, "/nick") == 0)

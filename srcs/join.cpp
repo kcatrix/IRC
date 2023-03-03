@@ -38,16 +38,14 @@ void    addUser (User executer, Channel to_join, Server& irc_server) {
     }
 }
 
-void    join (User executer, char* buffer, Server& irc_server) {
-	char **buffspli = ft_split(buffer, ' ');
-    if(buffspli[1] == NULL || (buffspli[1] != NULL && buffspli[2] != NULL)) {
+void    join (User executer, std::vector<std::string> bufferSplit, Server& irc_server) {
+    if(bufferSplit[1].empty () == 1 or (bufferSplit[1].empty () == 0 and bufferSplit[2].empty () == 0)) {
         print_message (executer.sd, "Votre entree n'est pas valide ! (join <channel name>)\n");
         return;
     }
-    std::string channel_name (buffspli[1]);
-    Channel to_join = findChannel (channel_name, irc_server);
+    Channel to_join = findChannel (bufferSplit[1], irc_server);
     if (to_join.channel_name.empty () == 1)
-        createChannel (executer, channel_name, irc_server);
+        createChannel (executer, bufferSplit[1], irc_server);
     else
         addUser (executer, to_join, irc_server);
 }
