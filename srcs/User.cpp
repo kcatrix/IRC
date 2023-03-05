@@ -1,26 +1,10 @@
 #include "../includes/irc.hpp"
 
-User::User( void )
-{ 
-	this->sd = 0;
+User::User(int sd) { 
+	this->sd = sd;
 	this->OP = false;
 	this->away = false;
-	return; 
-}
-
-User::User(int sd)
-{ 
-	this->sd = sd;
 	std::cout << "User created sd = " << sd << std::endl;
-	return; 
-}
-
-User::User(std::string str1, std::string str2, int sd)
-{ 
-	this->username = str1;
-	this->nickname = str2;
-	this->sd = sd;
-	std::cout << "User created" << std::endl;
 	return; 
 }
 

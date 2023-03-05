@@ -5,21 +5,15 @@
 class User
 {
 	public:
-		User();
-		User(int sd);
-		User(std::string str1, std::string str2, int sd);
+		User (int sd);
 		User (const User& cpy) : username (cpy.username), nickname (cpy.nickname), password (cpy.password),
         away_message (cpy.away_message), away (cpy.away), OP (cpy.OP), sd (cpy.sd) { }
-		User & operator=( User const & cp);
-		~User();
+		User & operator=(User const & cp);
+		virtual ~User (void);
 
 		std::string getUsername(void);
 		void        clear_user(void);
         USER_ITERATOR         findUser (CHANNEL_ITERATOR channel);
-        void        addUser (CHANNEL_ITERATOR it);
-        void        removeUser (CHANNEL_ITERATOR it);
-
-
 
 		std::string username;
 		std::string nickname;
@@ -28,4 +22,8 @@ class User
 		bool        away;
 		bool        OP;
 		int         sd;
+
+    private:
+
+		User (void) { }
 };

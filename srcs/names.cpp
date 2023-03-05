@@ -9,6 +9,8 @@ void    printNames (int sd, std::string channel_name, Server& irc_server) {
             print_message (sd, current_user->nickname);
             if (current_user->OP == true)
                 print_message (sd, " (OP)\n");
+            else
+                print_message (sd, "\n");
         }
     }
 }

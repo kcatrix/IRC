@@ -33,12 +33,16 @@ void    printJoin (int sd) {
     print_message (sd, "Use: /join <channel>.\nJoin a channel. If the channel doesn't exist, you will create it and be automatically promoted to operator of this channel.\n");
 }
 
-/*void    printHelp (int sd) {
-    print_message (sd, "Use: /help <command>.\nDisplays the function of the command. If nothing is entered, a list of available commands will be displayed.\n");
-}
-
 void    printPart (int sd) {
     print_message (sd, "Use: /part <channel>.\nLeave a channel.\n");
+}
+
+void    printNames (int sd) {
+    print_message (sd, "Use: /names <channel1> <channel2>.\nLists the users present in the listed channels.\n");
+}
+
+/*void    printHelp (int sd) {
+    print_message (sd, "Use: /help <command>.\nDisplays the function of the command. If nothing is entered, a list of available commands will be displayed.\n");
 }
 
 void    printList (int sd) {
@@ -58,13 +62,13 @@ void    printHelp (int sd, std::string command) {
         printAway (sd);
     else if (command == "join")
         printJoin (sd);
+    else if (command == "names")
+        printNames (sd);
   /*  else if (command == "help")
         printHelp (sd);
     else if (command == "part")
         printPart (sd);
     else if (command == "list")
-        printList (sd);
-    else if (command == "names")
         printList (sd);*/
 }
 
