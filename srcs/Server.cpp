@@ -48,8 +48,8 @@ void    Server::assignCommands (std::vector<std::string>& commands_list) {
     commands_list.push_back ("/join");
     commands_list.push_back ("/part");
     commands_list.push_back ("/names");
-    /*commands_list.push_back ("/help");
-    commands_list.push_back ("/list");*/
+    commands_list.push_back ("/list");
+    /*commands_list.push_back ("/help");*/
 }
 
 Server::~Server (void) { 
