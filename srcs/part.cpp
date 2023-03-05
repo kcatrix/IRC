@@ -1,6 +1,6 @@
 #include "../includes/irc.hpp"
 
-void    part (User executer, std::vector<std::string> bufferSplit, Server& irc_server) {
+/*void    part (User executer, std::vector<std::string> bufferSplit, Server& irc_server) {
     if(bufferSplit[1].empty () == 1)
         print_message (executer.sd, "Not enough parameters given.\n");
     else {
@@ -12,4 +12,4 @@ void    part (User executer, std::vector<std::string> bufferSplit, Server& irc_s
         else
             executer.removeUser (to_quit);
     }
-}
+}*/

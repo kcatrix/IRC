@@ -1,13 +1,19 @@
 #include "../includes/irc.hpp"
 
-void    join (User executer, std::vector<std::string> bufferSplit, Server& irc_server) {
+void    join (User executer, STRING_VECTOR bufferSplit, Server& irc_server) {
     if(bufferSplit[1].empty () == 1)
         print_message (executer.sd, "Not enough parameters given.\n");
     else {
         CHANNEL_ITERATOR to_join = findChannel (bufferSplit[1], irc_server);
         if (to_join == irc_server.channels.end ())
             createChannel (executer, bufferSplit[1], irc_server);
-        else
-            executer.addUser (to_join);
+        else {
+            if (executer.findUser (to_join) == to_join->chan_users.end ()) {
+                print_message (executer.sd, "You joined the channel #" + to_join->channel_name + "\n");
+                to_join->chan_users.push_back (executer);
+            }
+            else
+                print_message (executer.sd, "You are already on the channel #" + to_join->channel_name + "\n");
+        }
     }
 }

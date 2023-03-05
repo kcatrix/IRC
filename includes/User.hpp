@@ -8,6 +8,8 @@ class User
 		User();
 		User(int sd);
 		User(std::string str1, std::string str2, int sd);
+		User (const User& cpy) : username (cpy.username), nickname (cpy.nickname), password (cpy.password),
+        away_message (cpy.away_message), away (cpy.away), OP (cpy.OP), sd (cpy.sd) { }
 		User & operator=( User const & cp);
 		~User();
 

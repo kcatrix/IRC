@@ -30,28 +30,42 @@ void    printAway (int sd) {
 }
 
 void    printJoin (int sd) {
-    print_message (sd, "Use: /join <#channel>.\nJoin a channel. If the channel doesn't exist, you will create it and be automatically promoted to operator of this channel.\n");
+    print_message (sd, "Use: /join <channel>.\nJoin a channel. If the channel doesn't exist, you will create it and be automatically promoted to operator of this channel.\n");
 }
 
-void    printHelp (int sd) {
+/*void    printHelp (int sd) {
     print_message (sd, "Use: /help <command>.\nDisplays the function of the command. If nothing is entered, a list of available commands will be displayed.\n");
 }
 
+void    printPart (int sd) {
+    print_message (sd, "Use: /part <channel>.\nLeave a channel.\n");
+}
+
+void    printList (int sd) {
+    print_message (sd, "Use: /list.\nLists the channels on the server.\n");
+}*/
+
 void    printHelp (int sd, std::string command) {
-    if (command == "w")
+    if (command == "pvtmsg" or "w")
         printPvtmsg (sd);
-    if (command == "nick")
+    else if (command == "nick")
         printNick (sd);
-    if (command == "quit")
+    else if (command == "quit")
         printQuit (sd);
-    if (command == "motd")
+    else if (command == "motd")
         printMotd (sd);
-    if (command == "away")
+    else if (command == "away")
         printAway (sd);
-    if (command == "join")
+    else if (command == "join")
         printJoin (sd);
-    if (command == "help")
+  /*  else if (command == "help")
         printHelp (sd);
+    else if (command == "part")
+        printPart (sd);
+    else if (command == "list")
+        printList (sd);
+    else if (command == "names")
+        printList (sd);*/
 }
 
 void    help (User executer, STRING_VECTOR bufferSplit, STRING_VECTOR commands_list) {

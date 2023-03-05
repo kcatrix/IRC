@@ -38,6 +38,7 @@ int         Server::getAddressLength (void) { return this->_addrlen; }
 std::string Server::getPassword (void) { return this->_password; }
 
 void    Server::assignCommands (std::vector<std::string>& commands_list) {
+    commands_list.push_back ("/pvtmsg");
     commands_list.push_back ("/w");
     commands_list.push_back ("/nick");
     commands_list.push_back ("/quit");
@@ -45,9 +46,10 @@ void    Server::assignCommands (std::vector<std::string>& commands_list) {
     commands_list.push_back ("/motd");
     commands_list.push_back ("/away");
     commands_list.push_back ("/join");
-    commands_list.push_back ("/help");
+    /*commands_list.push_back ("/help");
     commands_list.push_back ("/part");
     commands_list.push_back ("/list");
+    commands_list.push_back ("/names");*/
 }
 
 Server::~Server (void) { 
