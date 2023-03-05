@@ -2,6 +2,25 @@
 
 //  ---------------------------------    Redir function  --------------------------------------
 
+void    createChannel (User executer, std::string channel_name, Server& irc_server) {
+    Channel     new_channel (channel_name);
+
+    new_channel.chan_users.push_back (executer.nickname);
+    irc_server.channels.push_back (new_channel);
+    std::cout << "The channel " << irc_server.channels.back ().channel_name << " was created by " << irc_server.channels.back ().chan_users.back () << std::endl;
+    print_message (executer.sd, "You created the channel #" + irc_server.channels.back ().channel_name + "\n");
+}
+
+CHANNEL_ITERATOR     findChannel (std::string channel_name, Server& irc_server) {
+    CHANNEL_ITERATOR    current_channel = irc_server.channels.begin ();
+    while (current_channel != irc_server.channels.end ()) {
+        if ((*current_channel).channel_name == channel_name)
+            return current_channel;
+        current_channel++;
+    }
+    return current_channel;
+}
+
 int     checkCommand (int sd, std::string to_check, Server& irc_server) {
     for (STRING_ITERATOR it = irc_server.commands_list.begin (); it != irc_server.commands_list.end (); it++)
         if (to_check == *it)

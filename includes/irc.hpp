@@ -8,6 +8,10 @@
 # define CHANNEL_VECTOR std::vector<Channel>
 # define CHANNEL_ITERATOR std::vector<Channel>::iterator
 
+class User;
+class Channel;
+class Server;
+
 # include <signal.h>
 # include <iostream>
 # include <cerrno>
@@ -40,6 +44,8 @@ void    createUser (int new_socket, USER_VECTOR* users, int* max_sd, int* number
 int     checkDuplicateNick(std::string to_check, std::vector<User> users, int sd);
 int     checkdoublonuser(char *tocheck, std::vector<User> users, int sd);
 int     checkCommand(int sd, std::string to_check, Server& irc_server);
+void    createChannel (User executer, std::string channel_name, Server& irc_server);
+CHANNEL_ITERATOR     findChannel (std::string channel_name, Server& irc_server);
 
 template <class T>
 void    printVector (std::vector<T>& myVector) {

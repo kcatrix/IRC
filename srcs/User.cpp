@@ -50,3 +50,20 @@ std::string User::getUsername(void)
 {
 	return this->username;
 }
+
+int     User::findUser (CHANNEL_ITERATOR channel) {
+    for (STRING_ITERATOR current_user = channel->chan_users.begin (); current_user != channel->chan_users.end (); current_user++) {
+        if (*current_user == nickname)
+            return 1;
+    }
+    return 0;
+}
+
+void    User::addUser (CHANNEL_ITERATOR it) {
+    if (findUser (it) == 0) {
+        (*it).chan_users.push_back (nickname);
+        print_message (sd, "You joined the channel #" + (*it).channel_name + "\n");
+    }
+    else
+        print_message (sd, "You are already in the channel #" + (*it).channel_name + "\n");
+}
