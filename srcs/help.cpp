@@ -58,6 +58,6 @@ void    help (User executer, STRING_VECTOR bufferSplit, Server& irc_server) {
     if (bufferSplit[1].empty ())
         printCommandsList (executer.sd, irc_server.commands_list);
     else
-        printHelp (executer.sd, bufferSplit[0]);
+        printHelp (executer.sd, bufferSplit[1]);
     return;
 }
