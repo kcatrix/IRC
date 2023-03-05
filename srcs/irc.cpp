@@ -2,29 +2,38 @@
 
 //  ---------------------------------    Redir function  --------------------------------------
 
-void redirectFonction(User executer, char *buffer, std::vector<User>* users_tab, Server& irc_server, std::string password)
+int     checkCommand (int sd, std::string to_check, Server& irc_server) {
+    for (STRING_ITERATOR it = irc_server.commands_list.begin (); it != irc_server.commands_list.end (); it++)
+        if (to_check == *it)
+            return 1;
+    print_message (sd, "Unknown command.\n");
+    return 0;
+}
+
+void    redirectFonction(User executer, char *buffer, std::vector<User>* users_tab, Server& irc_server)
 {
-    (void)password;
     std::string string_buffer (buffer);
     if (string_buffer.empty ())
         return ;
     std::vector<std::string> bufferSplit = splitString (string_buffer);
-    if (bufferSplit[0] == "/pvtmsg" or bufferSplit[0] == "/w")
-        msg(executer, bufferSplit, *users_tab);
-    else if (bufferSplit[0] == "/nick")
-        nick(executer, bufferSplit, *users_tab);
-    else if (bufferSplit[0] == "/quit")
-        quit(executer);
-    else if (bufferSplit[0] == "/ping")
-        ping(executer, bufferSplit);
-    else if (bufferSplit[0] == "/motd")
-        motd(executer);
-    else if (bufferSplit[0] == "/away")
-        away(executer, bufferSplit);
-    else if (bufferSplit[0] == "/join")
-        join(executer, bufferSplit, irc_server);
-    else if (bufferSplit[0] == "/help")
-        help(executer, irc_server);
+    if (checkCommand (executer.sd, bufferSplit[0], irc_server) == 1) {
+        if (bufferSplit[0] == "/pvtmsg" or bufferSplit[0] == "/w")
+            msg(executer, bufferSplit, *users_tab);
+        else if (bufferSplit[0] == "/nick")
+            nick(executer, bufferSplit, *users_tab);
+        else if (bufferSplit[0] == "/quit")
+            quit(executer);
+        else if (bufferSplit[0] == "/ping")
+            ping(executer, bufferSplit);
+        else if (bufferSplit[0] == "/motd")
+            motd(executer);
+        else if (bufferSplit[0] == "/away")
+            away(executer, bufferSplit);
+        else if (bufferSplit[0] == "/join")
+            join(executer, bufferSplit, irc_server);
+        else if (bufferSplit[0] == "/help")
+            help(executer, bufferSplit[1], irc_server);
+    }
     
         // else if (strcmp(buffer_spli, "/part") == 0)
         //     part(users_tab[newsocket], buffer);
@@ -34,8 +43,6 @@ void redirectFonction(User executer, char *buffer, std::vector<User>* users_tab,
         //     names(users_tab[newsocket], buffer);
         // else if (strcmp(buffer_spli, "/list") == 0)
         //     list(users_tab[newsocket], buffer);
-    else
-        print_message (executer.sd, "Unknown command.\n");
 }
 
 void start_irc(int port, std::string password)
@@ -80,7 +87,7 @@ void start_irc(int port, std::string password)
                     print_error ("Reading failure");
                 else {
                     if (getInfoUser(it.base(), buffer, password, irc_server.users) == 0)
-                        redirectFonction(*it, buffer, &irc_server.users, irc_server, password);
+                        redirectFonction(*it, buffer, &irc_server.users, irc_server);
                     buffer[valread] = '\0';
                     getpeername((*it).sd, (SOCKADDR*)&server_address, (socklen_t*)&address_length);
                 }

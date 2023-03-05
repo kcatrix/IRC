@@ -25,6 +25,8 @@
 
 #define VECTOR std::vector<User>
 #define ITERATOR std::vector<User>::iterator
+#define STRING_VECTOR std::vector<std::string>
+#define STRING_ITERATOR std::vector<std::string>::iterator
 
 void    start_irc (int port, std::string password);
 int     getInfoUser(User* new_Usert, char *buffer, std::string password);
@@ -35,6 +37,7 @@ int     getInfoUser (User* new_user, char* buffer, std::string password, std::ve
 void    createUser (int new_socket, VECTOR* users, int* max_sd, int* number_of_users);
 int     checkDuplicateNick(std::string to_check, std::vector<User> users, int sd);
 int     checkdoublonuser(char *tocheck, std::vector<User> users, int sd);
+int     checkCommand(int sd, std::string to_check, Server& irc_server);
 
 template <class T>
 void    printVector (std::vector<T>& myVector) {
