@@ -1,7 +1,5 @@
 #include "../includes/irc.hpp"
-
-// ------------------------    Gestion entree infos users (a modifier pour coller au user protocol + J'ai rajoute une protect doublon en attendant) --------------------------------------
-
+// ------------------------    Gestion entree infos users (a modifier pour coller au user protocol + J'ai rajoute une protect doublon en attendant) -------------------------------------- 
 void    checkPassword (User* new_user, char* buffer, std::string password) {
         if (password.compare(buffer) == 0) {
             new_user->password = buffer;
@@ -27,7 +25,7 @@ void    setNickname (User* new_user, char* buffer) {
 
 int     getInfoUser (User* new_user, char* buffer, std::string password, std::vector<User> users) {
     removeInvisibleChars(buffer);
-    if (new_user->password == "") {
+/*    if (new_user->password == "") {
         checkPassword (new_user, buffer, password);
         return 1;
     }
@@ -37,9 +35,12 @@ int     getInfoUser (User* new_user, char* buffer, std::string password, std::ve
         setUsername (new_user, buffer);
         return 1;
     }
-    else if (new_user->nickname == "") {
+    else*/ if (new_user->nickname == "") {
         //if(checkDuplicateNick(buffer, users, new_user->sd) == 1)
 		//	return 1;
+        (void)password;
+        (void)users;
+      //  print_message (new_user->sd, "Enter your nickname: ");
         setNickname (new_user, buffer);
         return 1;
     }
@@ -56,6 +57,6 @@ void    createUser (int new_socket, VECTOR* users, int* max_sd, int* number_of_u
      users->push_back (new_user);
      *max_sd = std::max (*max_sd, new_socket);
      (*number_of_users)++;
-     print_message (new_user.sd, "Enter the password to access this server.\n");
+     //print_message (new_user.sd, "Enter the password to access this server.\n");
     
 }

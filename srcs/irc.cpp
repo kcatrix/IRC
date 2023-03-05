@@ -5,45 +5,35 @@
 void redirectFonction(User executer, char *buffer, std::vector<User>* users_tab, Server& irc_server, std::string password)
 {
     (void)password;
-    if (strlen(buffer) <= 0)
-        return ;
     std::string string_buffer (buffer);
-    char **bufferspli = ft_split(buffer, ' ');
+    if (string_buffer.empty ())
+        return ;
     std::vector<std::string> bufferSplit = splitString (string_buffer);
     if (bufferSplit[0] == "/PVTMSG" or bufferSplit[0] == "/w")
         msg(executer, bufferSplit, *users_tab);
     else if (bufferSplit[0] == "/NICK")
         nick(executer, bufferSplit, *users_tab);
-    else if (strcmp(buffer, "/QUIT") == 0)
+    else if (bufferSplit[0] == "/QUIT")
         quit(executer);
-    else if (strcmp(bufferspli[0], "/PING") == 0)
-        ping(executer, buffer);
-    else if (strcmp(bufferspli[0], "/MODT") == 0)
-        modt(executer);
-    else if (strcmp(bufferspli[0], "/AWAY") == 0)
-        away(executer, buffer);
+    else if (bufferSplit[0] == "/PING")
+        ping(executer, bufferSplit);
+    else if (bufferSplit[0] == "/MOTD")
+        motd(executer);
+    else if (bufferSplit[0] == "/AWAY")
+        away(executer, bufferSplit);
     else if (bufferSplit[0] == "/join")
         join(executer, bufferSplit, irc_server);
-    // il faut d'abbord split le buffer sur l'espace pour avoir argv[0]
     
-        // if (strcmp(buffer_spli, "/nick") == 0)
-        //     nick(users_tab[newsocket], buffer);
         // else if (strcmp(buffer_spli, "/part") == 0)
         //     part(users_tab[newsocket], buffer);
         // else if (strcmp(buffer_spli, "/users") == 0)
         //     users(users_tab[newsocket], buffer);
-        // else if (strcmp(buffer_spli, "/msg") == 0)
-        //     msg(users_tab[newsocket], buffer);
         // else if (strcmp(buffer_spli, "/names") == 0)
         //     names(users_tab[newsocket], buffer);
         // else if (strcmp(buffer_spli, "/list") == 0)
         //     list(users_tab[newsocket], buffer);
-        // else if (strcmp(buffer_spli, "/quit") == 0)
-        //     quit(users_tab[newsocket], buffer);
     else
         print_message (executer.sd, "Unknown command.\n");
-
-    free_tab(bufferspli);
 }
 
 void start_irc(int port, std::string password)
@@ -87,7 +77,7 @@ void start_irc(int port, std::string password)
                 else if (valread == -1 && errno == EAGAIN)
                     print_error ("Reading failure");
                 else {
-                    if (getInfoUser(it.base(), buffer, password, irc_server.users) == 0) // .base() pas risque ?
+                    if (getInfoUser(it.base(), buffer, password, irc_server.users) == 0)
                         redirectFonction(*it, buffer, &irc_server.users, irc_server, password);
                     buffer[valread] = '\0';
                     getpeername((*it).sd, (SOCKADDR*)&server_address, (socklen_t*)&address_length);

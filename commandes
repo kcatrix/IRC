@@ -1,7 +1,6 @@
 accept: who can send private messages to us, [-nick] to remove, no argument to list all users accepted
 away: set status as away, sending an afk message to users if they message            ok
 cycle: leave and rejoin and channel
-disconnect: disconnect from the server (=quit if only 1 server)
 help: lists commands or /help [command] to describe command usage
 invite: invites nick to channel
 list: lists channels on the server
