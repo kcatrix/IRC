@@ -15,7 +15,7 @@ void    redirectFonction(User executer, char *buffer, std::vector<User>* users_t
     std::string string_buffer (buffer);
     if (string_buffer.empty ())
         return ;
-    std::vector<std::string> bufferSplit = splitString (string_buffer);
+    STRING_VECTOR bufferSplit = splitString (string_buffer);
     if (checkCommand (executer.sd, bufferSplit[0], irc_server) == 1) {
         if (bufferSplit[0] == "/w")
             msg(executer, bufferSplit, *users_tab);
@@ -33,10 +33,10 @@ void    redirectFonction(User executer, char *buffer, std::vector<User>* users_t
             join(executer, bufferSplit, irc_server);
         else if (bufferSplit[0] == "/help")
             help(executer, bufferSplit, irc_server);
+         else if (bufferSplit[0] == "/part")
+             part(executer, bufferSplit, irc_server);
     }
     
-        // else if (strcmp(buffer_spli, "/part") == 0)
-        //     part(users_tab[newsocket], buffer);
         // else if (strcmp(buffer_spli, "/users") == 0)
         //     users(users_tab[newsocket], buffer);
         // else if (strcmp(buffer_spli, "/names") == 0)

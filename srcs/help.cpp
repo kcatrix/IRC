@@ -55,8 +55,9 @@ void    printHelp (int sd, std::string command) {
 }
 
 void    help (User executer, STRING_VECTOR bufferSplit, Server& irc_server) {
-    if (command.empty ())
+    if (bufferSplit[1].empty ())
         printCommandsList (executer.sd, irc_server.commands_list);
-    printHelp (executer.sd, command);
+    else
+        printHelp (executer.sd, bufferSplit[0]);
     return;
 }

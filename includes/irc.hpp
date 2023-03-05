@@ -1,7 +1,12 @@
 #ifndef irc_HPP
 # define irc_HPP
 
-#include <signal.h>
+# define VECTOR std::vector<User>
+# define ITERATOR std::vector<User>::iterator
+# define STRING_VECTOR std::vector<std::string>
+# define STRING_ITERATOR std::vector<std::string>::iterator
+
+# include <signal.h>
 # include <iostream>
 # include <cerrno>
 # include <cstring>
@@ -22,11 +27,6 @@
 # include "Server.hpp"
 # include "commands.hpp"
 # include "utils.hpp"
-
-#define VECTOR std::vector<User>
-#define ITERATOR std::vector<User>::iterator
-#define STRING_VECTOR std::vector<std::string>
-#define STRING_ITERATOR std::vector<std::string>::iterator
 
 void    start_irc (int port, std::string password);
 int     getInfoUser(User* new_Usert, char *buffer, std::string password);
