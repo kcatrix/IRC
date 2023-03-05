@@ -52,17 +52,17 @@ void    redirectFonction(User executer, char *buffer, std::vector<User>* users_t
             join (executer, bufferSplit, irc_server);
          else if (bufferSplit[0] == "/part")
              part (executer, bufferSplit, irc_server);
-        for (CHANNEL_ITERATOR it = irc_server.channels.begin (); it != irc_server.channels.end (); it++) {
+         else if (bufferSplit[0] == "/names")
+             names (executer, bufferSplit, irc_server);
+/*        for (CHANNEL_ITERATOR it = irc_server.channels.begin (); it != irc_server.channels.end (); it++) {
             for (USER_ITERATOR uit = it->chan_users.begin (); uit != it->chan_users.end (); uit++) {
                 print_message (executer.sd, it->channel_name + " " + uit->nickname + "\n");
             }
-        }
+        }*/
     /*    else if (bufferSplit[0] == "/help")
             help (executer, bufferSplit, irc_server.commands_list);
          else if (bufferSplit[0] == "/list")
-             list (executer, irc_server.channels);
-         else if (bufferSplit[0] == "/names")
-             names (executer, bufferSplit, irc_server);*/
+             list (executer, irc_server.channels);*/
     }
     
         // else if (strcmp(buffer_spli, "/users") == 0)
