@@ -53,7 +53,7 @@ void start_irc(int port, std::string password)
     int       new_socket, activity, valread, sup = -1;
     int       max_sd = server_fd;
     int       number_of_users = 0;
-    ITERATOR  supp;
+    USER_ITERATOR  supp;
     fd_set    read_fds;
     char      buffer[BUFFER_SIZE];
     SOCKADDR_IN   server_address = irc_server.getAddress ();
@@ -61,7 +61,7 @@ void start_irc(int port, std::string password)
     while (true) {
         FD_ZERO(&read_fds);
         FD_SET(server_fd, &read_fds);
-        for (ITERATOR it = irc_server.users.begin(); it != irc_server.users.end(); ++it)
+        for (USER_ITERATOR it = irc_server.users.begin(); it != irc_server.users.end(); ++it)
             FD_SET((*it).sd, &read_fds);
         activity = select(max_sd + 1, &read_fds, NULL, NULL, NULL);
         if ((activity < 0) && (errno!=EINTR))
@@ -71,7 +71,7 @@ void start_irc(int port, std::string password)
                 print_error ("Socket creation error");
 			createUser (new_socket, &irc_server.users, &max_sd, &number_of_users);
         }
-        for (ITERATOR it = irc_server.users.begin(); it != irc_server.users.end(); it++) {
+        for (USER_ITERATOR it = irc_server.users.begin(); it != irc_server.users.end(); it++) {
             memset(buffer, 0, BUFFER_SIZE);
             if (FD_ISSET((*it).sd, &read_fds)) {
                 valread = read((*it).sd, buffer, BUFFER_SIZE);

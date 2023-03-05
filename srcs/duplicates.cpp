@@ -4,7 +4,7 @@
 
 int checkDuplicateNick(std::string to_check, std::vector<User> users, int sd) //doublon nick
 {
-    for (ITERATOR it = users.begin (); it != users.end (); it++)
+    for (USER_ITERATOR it = users.begin (); it != users.end (); it++)
     {
 		if((*it).nickname == to_check)
 		{
@@ -20,7 +20,7 @@ int checkDuplicateNick(std::string to_check, std::vector<User> users, int sd) //
 
 int checkdoublonuser(char *tocheck, std::vector<User> users, int sd) //doublon user
 {
-    for (ITERATOR it = users.begin (); it != users.end (); it++)
+    for (USER_ITERATOR it = users.begin (); it != users.end (); it++)
     {
 		if((*it).nickname.compare(tocheck) == 0)
 		{

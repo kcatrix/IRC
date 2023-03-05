@@ -7,7 +7,7 @@ void msg(User executer, std::vector<std::string> bufferSplit, std::vector<User> 
     //protect segfault
 	std::string message;
 
-    for (ITERATOR it = users.begin (); it != users.end (); it++)
+    for (USER_ITERATOR it = users.begin (); it != users.end (); it++)
     {
         if (bufferSplit[1] == (*it).nickname) //buffspli[1] == (*it).hostmask || 
         {

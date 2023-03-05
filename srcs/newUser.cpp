@@ -48,7 +48,7 @@ int     getInfoUser (User* new_user, char* buffer, std::string password, std::ve
         return 0;
 }
 
-void    createUser (int new_socket, VECTOR* users, int* max_sd, int* number_of_users) {
+void    createUser (int new_socket, USER_VECTOR* users, int* max_sd, int* number_of_users) {
     User new_user (new_socket);
      if (*number_of_users >= MAX_USERS)
          exit(0); // a changer en fonction qui close toute les socket

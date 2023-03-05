@@ -1,10 +1,12 @@
 #ifndef irc_HPP
 # define irc_HPP
 
-# define VECTOR std::vector<User>
-# define ITERATOR std::vector<User>::iterator
+# define USER_VECTOR std::vector<User>
+# define USER_ITERATOR std::vector<User>::iterator
 # define STRING_VECTOR std::vector<std::string>
 # define STRING_ITERATOR std::vector<std::string>::iterator
+# define CHANNEL_VECTOR std::vector<Channel>
+# define CHANNEL_ITERATOR std::vector<Channel>::iterator
 
 # include <signal.h>
 # include <iostream>
@@ -34,7 +36,7 @@ void    checkPassword (User* new_user, char* buffer, std::string password);
 void    setUsername (User* new_user, char* buffer);
 void    setNickname (User* new_user, char* buffer);
 int     getInfoUser (User* new_user, char* buffer, std::string password, std::vector<User> users);
-void    createUser (int new_socket, VECTOR* users, int* max_sd, int* number_of_users);
+void    createUser (int new_socket, USER_VECTOR* users, int* max_sd, int* number_of_users);
 int     checkDuplicateNick(std::string to_check, std::vector<User> users, int sd);
 int     checkdoublonuser(char *tocheck, std::vector<User> users, int sd);
 int     checkCommand(int sd, std::string to_check, Server& irc_server);
