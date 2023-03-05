@@ -51,9 +51,11 @@ void    redirectFonction(User executer, char *buffer, std::vector<User>* users_t
         else if (bufferSplit[0] == "/join")
             join(executer, bufferSplit, irc_server);
         else if (bufferSplit[0] == "/help")
-            help(executer, bufferSplit, irc_server);
+            help(executer, bufferSplit, irc_server.commands_list);
          else if (bufferSplit[0] == "/part")
              part(executer, bufferSplit, irc_server);
+         else if (bufferSplit[0] == "/list")
+             list(executer, irc_server.channels);
     }
     
         // else if (strcmp(buffer_spli, "/users") == 0)

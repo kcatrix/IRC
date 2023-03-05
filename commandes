@@ -1,6 +1,5 @@
 accept: who can send private messages to us, [-nick] to remove, no argument to list all users accepted
 away: set status as away, sending an afk message to users if they message            ok
-cycle: leave and rejoin and channel
 help: lists commands or /help [command] to describe command usage
 invite: invites nick to channel
 list: lists channels on the server
@@ -10,8 +9,7 @@ notify: notifies when a nick comes online
 oper: upgrade onself to op
 silence: silence a user (can't send mp to you)
 unsilence: ..
-topic: displays/set the topic of a channel
-ts: displays list of channels you're on and their topic
+ts: displays list of channels
 wall: send message to all channel operators
 
 OP
