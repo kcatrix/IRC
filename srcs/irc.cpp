@@ -35,6 +35,7 @@ void    redirectFonction(User executer, char *buffer, std::vector<User>* users_t
     if (string_buffer.empty ())
         return ;
     STRING_VECTOR bufferSplit = splitString (string_buffer);
+    print_message (executer.sd, "Command: " + bufferSplit[0] + " " + bufferSplit[1] + "\n");
     if (checkCommand (executer.sd, bufferSplit[0], irc_server) == 1) {
         if (bufferSplit[0] == "/pvtmsg" or bufferSplit[0] == "/w")
             msg(executer, bufferSplit, *users_tab);
@@ -56,8 +57,8 @@ void    redirectFonction(User executer, char *buffer, std::vector<User>* users_t
              names (executer, bufferSplit, irc_server);
          else if (bufferSplit[0] == "/list")
              list (executer, irc_server.channels);
-    /*    else if (bufferSplit[0] == "/help")
-            help (executer, bufferSplit, irc_server.commands_list);*/
+        else if (bufferSplit[0] == "/help")
+            help (executer, bufferSplit, irc_server.commands_list);
     }
     
         // else if (strcmp(buffer_spli, "/users") == 0)

@@ -45,13 +45,13 @@ void    printList (int sd) {
     print_message (sd, "Use: /list.\nLists the channels on the server.\n");
 }
 
-/*void    printHelp (int sd) {
+void    printHelp (int sd) {
     print_message (sd, "Use: /help <command>.\nDisplays the function of the command. If nothing is entered, a list of available commands will be displayed.\n");
-}*/
+}
 
 
 void    printHelp (int sd, std::string command) {
-    if (command == "pvtmsg" or "w")
+    if (command == "pvtmsg" or command == "w")
         printPvtmsg (sd);
     else if (command == "nick")
         printNick (sd);
@@ -69,12 +69,12 @@ void    printHelp (int sd, std::string command) {
         printNames (sd);
     else if (command == "list")
         printList (sd);
-  /*  else if (command == "help")
-        printHelp (sd);*/
+    else if (command == "help")
+        printHelp (sd);
 }
 
 void    help (User executer, STRING_VECTOR bufferSplit, STRING_VECTOR commands_list) {
-    if (bufferSplit[1].empty ())
+    if (bufferSplit[1].empty () == 1)
         printCommandsList (executer.sd, commands_list);
     else
         printHelp (executer.sd, bufferSplit[1]);

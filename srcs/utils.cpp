@@ -232,5 +232,6 @@ std::vector<std::string> splitString(const std::string& str) {
         result.push_back(str.substr(start));
     }
 
+    result.push_back ("");
     return result;
 }
