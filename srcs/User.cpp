@@ -60,13 +60,3 @@ USER_ITERATOR     User::findUser (CHANNEL_ITERATOR channel) {
     }
     return current_user;
 }
-
-/*void    User::removeUser (CHANNEL_ITERATOR channel) {
-    USER_ITERATOR   user = findUser (channel);
-    if (user == channel->chan_users.end ())
-        print_message (sd, channel->channel_name + ": You're not on that channel\n");
-    else {
-        channel->chan_users.erase (user);
-        print_message (sd, "You left the channel #" + channel->channel_name + "\n");
-    }
-}*/
