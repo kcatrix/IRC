@@ -5,9 +5,9 @@
 void    createChannel (User executer, std::string channel_name, Server& irc_server) {
     Channel     new_channel (channel_name);
 
-    new_channel.chan_users.push_back (executer.nickname);
+    new_channel.chan_users.push_back (executer);
     irc_server.channels.push_back (new_channel);
-    std::cout << "The channel " << irc_server.channels.back ().channel_name << " was created by " << irc_server.channels.back ().chan_users.back () << std::endl;
+    std::cout << "The channel " << irc_server.channels.back ().channel_name << " was created by " << irc_server.channels.back ().chan_users.back ().nickname << std::endl;
     print_message (executer.sd, "You created the channel #" + irc_server.channels.back ().channel_name + "\n");
 }
 

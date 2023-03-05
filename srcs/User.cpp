@@ -51,19 +51,32 @@ std::string User::getUsername(void)
 	return this->username;
 }
 
-int     User::findUser (CHANNEL_ITERATOR channel) {
-    for (STRING_ITERATOR current_user = channel->chan_users.begin (); current_user != channel->chan_users.end (); current_user++) {
-        if (*current_user == nickname)
-            return 1;
+USER_ITERATOR     User::findUser (CHANNEL_ITERATOR channel) {
+    USER_ITERATOR   current_user = channel->chan_users.begin ();
+    while (current_user != channel->chan_users.end ()) {
+        if (current_user->nickname == nickname)
+            return current_user;
+        current_user++;
     }
-    return 0;
+    return current_user;
 }
 
-void    User::addUser (CHANNEL_ITERATOR it) {
-    if (findUser (it) == 0) {
-        (*it).chan_users.push_back (nickname);
-        print_message (sd, "You joined the channel #" + (*it).channel_name + "\n");
+void    User::addUser (CHANNEL_ITERATOR channel) {
+    USER_ITERATOR   user = findUser (channel);
+    if (user == channel->chan_users.end ()) {
+        channel->chan_users.push_back ((*user));
+        print_message (sd, "You joined the channel #" + channel->channel_name + "\n");
     }
     else
-        print_message (sd, "You are already in the channel #" + (*it).channel_name + "\n");
+        print_message (sd, "You are already in the channel #" + channel->channel_name + "\n");
+}
+
+void    User::removeUser (CHANNEL_ITERATOR channel) {
+    USER_ITERATOR   user = findUser (channel);
+    if (user == channel->chan_users.end ())
+        print_message (sd, channel->channel_name + ": You're not on that channel\n");
+    else {
+        channel->chan_users.erase (user);
+        print_message (sd, "You left the channel #" + channel->channel_name + "\n");
+    }
 }

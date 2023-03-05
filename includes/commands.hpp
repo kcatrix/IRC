@@ -1,7 +1,5 @@
 #pragma once
 
-#include <vector>
-#include <string>
 #include "irc.hpp"
 
 void msg(User executer, STRING_VECTOR bufferSplit, std::vector<User> users);

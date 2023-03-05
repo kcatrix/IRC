@@ -1,6 +1,6 @@
 #pragma once
 
-#include <vector>
+#include "irc.hpp"
 
 class Channel {
 
@@ -11,6 +11,6 @@ class Channel {
         Channel (const Channel& cpy);
         virtual ~Channel (void);
 
-        std::string                 channel_name; 
-        std::vector<std::string>    chan_users;
+        std::string channel_name; 
+        USER_VECTOR chan_users;
 };

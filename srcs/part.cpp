@@ -9,7 +9,7 @@ void    part (User executer, std::vector<std::string> bufferSplit, Server& irc_s
             print_message (executer.sd, bufferSplit[1] + ": No such channel.\n");
             return;
         }
- //       else
-//            executer.removeUser (to_quit);
+        else
+            executer.removeUser (to_quit);
     }
 }

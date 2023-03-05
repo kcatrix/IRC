@@ -1,10 +1,6 @@
-#ifndef SERVER_HPP
-# define SERVER_HPP
+#pragma once
 
-# include "User.hpp"
-# include <string>
-# include <vector>
-# include <netinet/in.h>
+# include "irc.hpp"
 
 typedef struct sockaddr_in SOCKADDR_IN;
 typedef struct sockaddr SOCKADDR;
@@ -48,5 +44,3 @@ class Server {
         void    create_socket (void);
         void    assignCommands (std::vector<std::string>& commands_list);
 };
-
-#endif

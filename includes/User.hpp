@@ -1,7 +1,6 @@
 #pragma once
 
-# include <string>
-# include "Channel.hpp"
+# include "irc.hpp"
 
 class User
 {
@@ -14,8 +13,9 @@ class User
 
 		std::string getUsername(void);
 		void        clear_user(void);
-        int         findUser (CHANNEL_ITERATOR channel);
+        USER_ITERATOR         findUser (CHANNEL_ITERATOR channel);
         void        addUser (CHANNEL_ITERATOR it);
+        void        removeUser (CHANNEL_ITERATOR it);
 
 
 
