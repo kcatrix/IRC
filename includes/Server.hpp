@@ -21,8 +21,9 @@ class Server {
 
         virtual ~Server (void);
 
-        std::vector<User>       users;
-        std::vector<Channel>    channels;
+        std::vector<User>           users;
+        std::vector<Channel>        channels;
+        std::vector<std::string>    commands_list;
 
         int         getFd (void);
         int         getAddressLength (void);
@@ -45,6 +46,7 @@ class Server {
 
         void    init_address (void);
         void    create_socket (void);
+        void    assignCommands (std::vector<std::string>& commands_list);
 };
 
 #endif

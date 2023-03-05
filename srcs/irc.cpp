@@ -9,20 +9,22 @@ void redirectFonction(User executer, char *buffer, std::vector<User>* users_tab,
     if (string_buffer.empty ())
         return ;
     std::vector<std::string> bufferSplit = splitString (string_buffer);
-    if (bufferSplit[0] == "/PVTMSG" or bufferSplit[0] == "/w")
+    if (bufferSplit[0] == "/pvtmsg" or bufferSplit[0] == "/w")
         msg(executer, bufferSplit, *users_tab);
-    else if (bufferSplit[0] == "/NICK")
+    else if (bufferSplit[0] == "/nick")
         nick(executer, bufferSplit, *users_tab);
-    else if (bufferSplit[0] == "/QUIT")
+    else if (bufferSplit[0] == "/quit")
         quit(executer);
-    else if (bufferSplit[0] == "/PING")
+    else if (bufferSplit[0] == "/ping")
         ping(executer, bufferSplit);
-    else if (bufferSplit[0] == "/MOTD")
+    else if (bufferSplit[0] == "/motd")
         motd(executer);
-    else if (bufferSplit[0] == "/AWAY")
+    else if (bufferSplit[0] == "/away")
         away(executer, bufferSplit);
     else if (bufferSplit[0] == "/join")
         join(executer, bufferSplit, irc_server);
+    else if (bufferSplit[0] == "/help")
+        help(executer, irc_server);
     
         // else if (strcmp(buffer_spli, "/part") == 0)
         //     part(users_tab[newsocket], buffer);

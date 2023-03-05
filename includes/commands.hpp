@@ -11,4 +11,4 @@ void ping(User executer, std::vector<std::string> bufferSplit);
 void motd(User executer);
 void away(User executer, std::vector<std::string> bufferSplit);
 void join(User executer, std::vector<std::string> bufferSplit, Server& irc_server);
-void help(User executer, std::vector<std::string> bufferSplit);
+void help(User executer, Server& irc_server);
