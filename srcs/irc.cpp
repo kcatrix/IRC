@@ -3,12 +3,20 @@
 //  ---------------------------------    Redir function  --------------------------------------
 
 void    createChannel (User executer, std::string channel_name, Server& irc_server) {
-    Channel     new_channel (channel_name);
 
-    new_channel.chan_users.push_back (executer);
-    irc_server.channels.push_back (new_channel);
-    std::cout << "The channel " << irc_server.channels.back ().channel_name << " was created by " << irc_server.channels.back ().chan_users.back ().nickname << std::endl;
-    print_message (executer.sd, "You created the channel #" + irc_server.channels.back ().channel_name + "\n");
+    if(channel_name[0] == '#')
+    {
+        Channel     new_channel (channel_name);
+
+        new_channel.ope.push_back(executer.nickname);
+        new_channel.chan_users.push_back (executer);
+        irc_server.channels.push_back (new_channel);
+        std::cout << "The channel " << irc_server.channels.back ().channel_name << " was created by " << irc_server.channels.back ().chan_users.back ().nickname << std::endl;
+        print_message (executer.sd, "You created the channel " + irc_server.channels.back ().channel_name + "\n");
+    }
+    else
+        print_message (executer.sd, "The channel you want to join / create must start with # !\n");
+
 }
 
 CHANNEL_ITERATOR     findChannel (std::string channel_name, Server& irc_server) {
@@ -29,7 +37,7 @@ int     checkCommand (int sd, std::string to_check, Server& irc_server) {
     return 0;
 }
 
-void    redirectFonction(User executer, char *buffer, std::vector<User>* users_tab, Server& irc_server)
+void    redirectFonction(User &executer, char *buffer, std::vector<User>* users_tab, Server& irc_server)
 {
     std::string string_buffer (buffer);
     if (string_buffer.empty ())
@@ -38,7 +46,7 @@ void    redirectFonction(User executer, char *buffer, std::vector<User>* users_t
     print_message (executer.sd, "Command: " + bufferSplit[0] + " " + bufferSplit[1] + "\n");
     if (checkCommand (executer.sd, bufferSplit[0], irc_server) == 1) {
         if (bufferSplit[0] == "/pvtmsg" or bufferSplit[0] == "/w")
-            msg(executer, bufferSplit, *users_tab);
+            msg(executer, bufferSplit, *users_tab, irc_server);
         else if (bufferSplit[0] == "/nick")
             nick(executer, bufferSplit, *users_tab);
         else if (bufferSplit[0] == "/quit")
@@ -49,14 +57,22 @@ void    redirectFonction(User executer, char *buffer, std::vector<User>* users_t
             motd(executer);
         else if (bufferSplit[0] == "/away")
             away(executer, bufferSplit);
+		else if (bufferSplit[0] == "/op")
+			op (executer, bufferSplit, irc_server);
+		else if (bufferSplit[0] == "/deop")
+			deop (executer, bufferSplit, irc_server);
         else if (bufferSplit[0] == "/join")
             join (executer, bufferSplit, irc_server);
-         else if (bufferSplit[0] == "/part")
-             part (executer, bufferSplit, irc_server);
-         else if (bufferSplit[0] == "/names")
-             names (executer, bufferSplit, irc_server);
-         else if (bufferSplit[0] == "/list")
-             list (executer, irc_server.channels);
+        else if (bufferSplit[0] == "/kick")
+            kick (executer, bufferSplit, irc_server);
+        else if (bufferSplit[0] == "/ban")
+            ban (executer, bufferSplit, irc_server);
+        else if (bufferSplit[0] == "/part")
+            part (executer, bufferSplit, irc_server);
+        else if (bufferSplit[0] == "/names")
+            names (executer, bufferSplit, irc_server);
+        else if (bufferSplit[0] == "/list")
+            list (executer, irc_server.channels);
         else if (bufferSplit[0] == "/help")
             help (executer, bufferSplit, irc_server.commands_list);
     }

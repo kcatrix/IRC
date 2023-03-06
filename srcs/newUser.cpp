@@ -41,6 +41,11 @@ int     getInfoUser (User* new_user, char* buffer, std::string password, std::ve
         (void)password;
         (void)users;
       //  print_message (new_user->sd, "Enter your nickname: ");
+        if(isalpha(buffer[0]) == 0)
+        {
+            print_message (new_user->sd, "Error: Your nickname must start with alphabetic char \n");
+            return 1;
+        }
         setNickname (new_user, buffer);
         return 1;
     }
