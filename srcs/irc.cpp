@@ -59,11 +59,6 @@ void    redirectFonction(User executer, char *buffer, std::vector<User>* users_t
              list (executer, irc_server.channels);
         else if (bufferSplit[0] == "/help")
             help (executer, bufferSplit, irc_server.commands_list);
-        else if (bufferSplit[0] == "/op")
-            op(executer, bufferSplit, *users_tab);
-        else if (bufferSplit[0] == "/deop")
-            deop(executer, bufferSplit, *users_tab);
-
     }
     
         // else if (strcmp(buffer_spli, "/users") == 0)
