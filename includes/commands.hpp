@@ -13,3 +13,5 @@ void help(User executer, STRING_VECTOR bufferSplit, STRING_VECTOR commands_list)
 void part (User executer, STRING_VECTOR bufferSplit, Server& irc_server);
 void list (User executer, CHANNEL_VECTOR& channels);
 void names (User executer, STRING_VECTOR bufferSplit, Server& irc_server);
+void op(User executer, STRING_VECTOR bufferSplit, std::vector<User> users);
+void deop(User executer, STRING_VECTOR bufferSplit, std::vector<User> users);
