@@ -9,6 +9,14 @@ void    printPvtmsg (int sd) {
     print_message (sd, "Use: /w <nickname>.\nSend a private message (whisper) to a user.\n");
 }
 
+void    printOP (int sd) {
+    print_message (sd, "Use: /op <nickname>.\nPromote a user to operator.\n");
+}
+
+void    printDeop (int sd) {
+    print_message (sd, "Use: /deop <nickname>.\nDemote a user from operator.\n");
+}
+
 void    printNick (int sd) {
     print_message (sd, "Use: /nick <nickname>.\nChange your current nickname.\n");
 }
@@ -71,6 +79,10 @@ void    printHelp (int sd, std::string command) {
         printList (sd);
     else if (command == "help")
         printHelp (sd);
+    else if (command == "op")
+        printOP (sd);
+    else if (command == "deop")
+        printDeop (sd);
 }
 
 void    help (User executer, STRING_VECTOR bufferSplit, STRING_VECTOR commands_list) {
