@@ -1,36 +1,58 @@
 #ifndef irc_HPP
 # define irc_HPP
+
+# define USER_VECTOR std::vector<User>
+# define USER_ITERATOR std::vector<User>::iterator
+# define STRING_VECTOR std::vector<std::string>
+# define STRING_ITERATOR std::vector<std::string>::iterator
+# define CHANNEL_VECTOR std::vector<Channel>
+# define CHANNEL_ITERATOR std::vector<Channel>::iterator
+
+class User;
+class Channel;
+class Server;
+
+# include <signal.h>
 # include <iostream>
+# include <cerrno>
 # include <cstring>
+# include <stdlib.h>
 # include <vector>
-# include <cstdlib>
 # include <string>
+# include <netdb.h>
+# include <unistd.h>
+# include <fcntl.h>
+# include <sys/time.h>
+# include <sys/types.h>
+# include <sys/socket.h>
+# include <sys/select.h>
+# include <netinet/in.h>
+# include <arpa/inet.h>
+# include "User.hpp"
+# include "Channel.hpp"
+# include "Server.hpp"
+# include "commands.hpp"
+# include "utils.hpp"
 
-class irc
-{
-	public :
+void    start_irc (int port, std::string password);
+int     getInfoUser(User* new_Usert, char *buffer, std::string password);
+void    checkPassword (User* new_user, char* buffer, std::string password);
+void    setUsername (User* new_user, char* buffer);
+void    setNickname (User* new_user, char* buffer);
+int     getInfoUser (User* new_user, char* buffer, std::string password, std::vector<User> users);
+void    createUser (int new_socket, USER_VECTOR* users, int* max_sd, int* number_of_users);
+int     checkDuplicateNick(std::string to_check, std::vector<User> users, int sd);
+int     checkdoublonuser(char *tocheck, std::vector<User> users, int sd);
+int     checkCommand(int sd, std::string to_check, Server& irc_server);
+void    createChannel (User executer, std::string channel_name, Server& irc_server);
+CHANNEL_ITERATOR     findChannel (std::string channel_name, Server& irc_server);
 
-	irc( void );
-	irc( irc const & );
-	irc & operator=( irc const & cp );
-	~irc( void );
-//--------------------Fonction-----------------------------------------------------------------------------------------
+template <class T>
+void    printVector (std::vector<T>& myVector) {
+    std::cout << "Taille du vecteur : " << myVector.size() << "\n";
+    for (long unsigned int i = 0; i < myVector.size(); i++)
+        std::cout << "   value "  << i << " == " <<  myVector[i] << std::endl;
+}
 
-	int init(int argc, char** argv);
-	int removeStringVector(std::vector<std::string>& myVector, const char* target);
-	void printVector(std::vector<std::string>& myVector);
-	void printVector(std::vector<int>& myVector);
-	void copyVector(const std::vector<std::string> &src, std::vector<std::string> &dst);
-
-//------------------------VARIABLE---------------------------------------------------------------------------------------
-
-	std::vector<std::string> line;
-	std::vector<std::string> all_commands;
-	int port;
-	std::string mdp;
-	int client_tab_iterator;
-
-};
 
 #endif
-

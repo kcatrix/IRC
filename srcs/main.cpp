@@ -1,12 +1,10 @@
-#include"../includes/irc.hpp"
-#include"../includes/serv.hpp"
+#include "../includes/irc.hpp"
 
-int	main(int argc,char **argv)
+int main(int argc,char **argv)
 {
-	irc irc;
-	
-	
-	if (irc.init(argc,argv) == 0)
-		server(&irc);
+    if (argc != 3 || std::atoi(argv[1]) == 0)
+        print_error ("Wrong arguments. Use: ./ircserv <port> <password>.");
+
+    start_irc (std::atoi(argv[1]), argv[2]);
 	// parse(&irc)
 }
