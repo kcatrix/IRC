@@ -4,16 +4,9 @@
 
 int checkDuplicateNick(std::string to_check, std::vector<User> users, int sd) //doublon nick
 {
-    for (USER_ITERATOR it = users.begin (); it != users.end (); it++)
-    {
+    for (USER_ITERATOR it = users.begin (); it != users.end (); it++) {
 		if((*it).nickname == to_check)
-		{
-			if(sd == (*it).sd)
-                print_message (sd, "This is already your nickname!\n");
-			else
-				print_message (sd, "Nickname already in use, please try an other one\n");
 			return 1;
-		}
 	}
 	return 0;
 }

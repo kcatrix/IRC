@@ -1,7 +1,13 @@
 #include "../includes/irc.hpp"
 
+User::User (void) : username (""), nickname (""), password (""), logInPwd (""), away_message (""), away (false), OP (false) ,
+                    online (false), sd (0), x(0) { 
+                        ignored.reserve (MAX_USERS);
+}
+
 User::User(int sd)
 { 
+    x = 0;
     this->away = 0;
 	this->sd = sd;
 	return; 
@@ -17,7 +23,15 @@ User & User::operator=( User const & cp )
 {
 	this->username = cp.username;
 	this->nickname = cp.nickname;
+    password = cp.password;
+    logInPwd = cp.logInPwd;
+    away_message = cp.away_message;
+    ignored = cp.ignored;
+    away = cp.away;
+    OP = cp.OP;
+    online = cp.online;
 	this->sd = cp.sd;
+    this->x = cp.x;
 	return *this;
 }
 

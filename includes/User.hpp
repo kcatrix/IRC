@@ -5,9 +5,10 @@
 class User
 {
 	public:
+		User (void);
 		User (int sd);
 		User (const User& cpy) : username (cpy.username), nickname (cpy.nickname), password (cpy.password),
-        away_message (cpy.away_message), away (cpy.away), OP (cpy.OP), sd (cpy.sd) { }
+        logInPwd (cpy.logInPwd), away_message (cpy.away_message), away (cpy.away), OP (cpy.OP), online (cpy.online), sd (cpy.sd) { }
 		User & operator=(User const & cp);
 		virtual ~User (void);
 
@@ -20,15 +21,14 @@ class User
 		std::string username;
 		std::string nickname;
 		std::string password;
+		std::string logInPwd;
 		std::string away_message;
 		USER_VECTOR ignored;
 		bool        away;
 		bool        OP;
+		bool        online;
 		int         sd;
-
-    private:
-
-		User (void);
+        int         x;
 };
 
 template <class U1, class U2>
