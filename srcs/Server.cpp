@@ -1,6 +1,6 @@
 #include "../includes/irc.hpp"
 
-Server::Server (int port, std::string password) {
+Server::Server (const int port, const std::string password) {
     assignCommands (commands_list);
     users.reserve (10);
     _port = port;
@@ -29,13 +29,13 @@ void        Server::create_socket (void) {
     std::cout << "Listening on port " << _port << std::endl;
 }
 
-int         Server::getFd (void) { return this->_server_fd; }
+int         Server::getFd (void) const { return this->_server_fd; }
 
-SOCKADDR_IN Server::getAddress (void) { return this->_address; }
+SOCKADDR_IN Server::getAddress (void) const { return this->_address; }
 
-int         Server::getAddressLength (void) { return this->_addrlen; }
+int         Server::getAddressLength (void) const { return this->_addrlen; }
 
-std::string Server::getPassword (void) { return this->_password; }
+std::string Server::getPassword (void) const { return this->_password; }
 
 void    Server::assignCommands (std::vector<std::string>& commands_list) {
     commands_list.push_back ("/pvtmsg");
@@ -62,5 +62,10 @@ void    Server::assignCommands (std::vector<std::string>& commands_list) {
 Server::~Server (void) { 
     users.clear ();
     channels.clear ();
+    commands_list.clear ();
+    _port = 0;
     close (_server_fd);
+    _server_fd = 0;
+    _addrlen = 0;
+    _password.clear ();
 }

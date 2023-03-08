@@ -91,7 +91,7 @@ void start_irc(int port, std::string password)
     Server    irc_server (port, password); 
     int       server_fd = irc_server.getFd ();
     int       address_length = irc_server.getAddressLength ();
-    int       new_socket, activity, valread, sup = -1;
+    int       new_socket, activity, valread;
     int       max_sd = server_fd;
     int       number_of_users = 0;
     fd_set    read_fds;

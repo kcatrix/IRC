@@ -13,7 +13,7 @@ void nick(User& executer, std::vector<std::string> bufferSplit, std::vector<User
             print_message (executer.sd, "Error: Your nickname must start with alphabetic char \n");
             return;
         }
-        if(checkDuplicateNick(bufferSplit[1], users, executer.sd) == 1)
+        if(checkDuplicateNick(bufferSplit[1], users) == 1)
             return ;
         executer.nickname = bufferSplit[1];
         print_message (executer.sd, "new nickname: " + executer.nickname + "\n");

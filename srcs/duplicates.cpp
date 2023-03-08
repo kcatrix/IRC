@@ -2,7 +2,7 @@
 
 // ------------------------    Gestion doublons Nick / User --------------------------------------
 
-int checkDuplicateNick(std::string to_check, std::vector<User> users, int sd) //doublon nick
+int checkDuplicateNick(std::string to_check, std::vector<User> users)
 {
     for (USER_ITERATOR it = users.begin (); it != users.end (); it++) {
 		if((*it).nickname == to_check)

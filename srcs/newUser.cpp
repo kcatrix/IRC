@@ -37,7 +37,7 @@ int     getInfoUser (User* new_user, char* buffer, std::string password, std::ve
       checkPassword (new_user, buffer, password);
       return 1;
       }*/
-    if (((new_user->nickname == "" and checkDuplicateNick(buffer, users, new_user->sd) == 1) || new_user->x >= 1) && new_user->x != 1000) {
+    if (((new_user->nickname == "" and checkDuplicateNick(buffer, users) == 1) || new_user->x >= 1) && new_user->x != 1000) {
         User john = findUser (buffer, users);
         if(new_user->x == 0)
         {

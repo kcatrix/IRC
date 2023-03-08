@@ -1,29 +1,18 @@
 #include "../includes/irc.hpp"
 
-User::User (void) : username (""), nickname (""), password (""), logInPwd (""), away_message (""), away (false), OP (false) ,
-                    online (false), sd (0), x(0) { 
-                        ignored.reserve (MAX_USERS);
+User::User (void) : username (""), nickname (""), password (""), logInPwd (""), away_message (""), away (false), OP (false) , online (false), sd (0), x(0) { 
+    ignored.reserve (1);
 }
 
-User::User(int sd)
-{ 
-    x = 0;
-    this->away = 0;
-	this->sd = sd;
-	return; 
+User::User (int sd) : username (""), nickname (""), password (""), logInPwd (""), away_message (""), away (false), OP (false) , online (false), sd (sd), x(0) { 
+    ignored.reserve (1);
 }
 
-User::~User( void )
-{
-	//std::cout << "User destroyed" << std::endl; 
-	return; 
-}
+User::User (const User& cpy) : username (cpy.username), nickname (cpy.nickname), password (cpy.password), logInPwd (cpy.logInPwd), away_message (cpy.away_message), ignored (cpy.ignored), away (cpy.away), OP (cpy.OP), online (cpy.online), sd (cpy.sd), x(cpy.x) { }
 
-User & User::operator=( User const & cp )
-{
-    this->ignored = cp.ignored;
-	this->username = cp.username;
-	this->nickname = cp.nickname;
+User& User::operator=( User const & cp ) {
+	username = cp.username;
+	nickname = cp.nickname;
     password = cp.password;
     logInPwd = cp.logInPwd;
     away_message = cp.away_message;
@@ -31,23 +20,26 @@ User & User::operator=( User const & cp )
     away = cp.away;
     OP = cp.OP;
     online = cp.online;
-	this->sd = cp.sd;
-    this->x = cp.x;
+	sd = cp.sd;
+    x = cp.x;
 	return *this;
 }
 
-void User::clear_user(void)
-{
-	std::cout << "User cleared" << std::endl;
-	this->username.clear();
-	this->nickname.clear();
-	this->sd = 0;
+User::~User(void) {
+	username.clear ();
+	nickname.clear ();
+	password.clear ();
+	logInPwd.clear ();
+	away_message.clear ();
+    ignored.clear ();
+    away = false;
+    OP = false;
+    online = false;
+	sd = 0;
+    x = 0;
 }
 
-std::string User::getUsername(void)
-{
-	return this->username;
-}
+std::string User::getUsername(void) const { return username; }
 
 USER_ITERATOR     User::findUser (CHANNEL_ITERATOR channel) {
     USER_ITERATOR   current_user = channel->chan_users.begin ();
@@ -61,10 +53,8 @@ USER_ITERATOR     User::findUser (CHANNEL_ITERATOR channel) {
 
 void    User::addUser (CHANNEL_ITERATOR channel) {
     USER_ITERATOR   user = findUser (channel);
-    if (user == channel->chan_users.end ()) {
-        //channel->chan_users.push_back ((*user));
+    if (user == channel->chan_users.end ())
         print_message (sd, "You joined the channel #" + channel->channel_name + "\n");
-    }
     else
         print_message (sd, "You are already on the channel #" + channel->channel_name + "\n");
     

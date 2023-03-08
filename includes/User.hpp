@@ -6,17 +6,15 @@ class User
 {
 	public:
 		User (void);
-		User (int sd);
-		User (const User& cpy) : username (cpy.username), nickname (cpy.nickname), password (cpy.password),
-        logInPwd (cpy.logInPwd), away_message (cpy.away_message), away (cpy.away), OP (cpy.OP), online (cpy.online), sd (cpy.sd) { }
+		User (const int sd);
+		User (const User& cpy);
 		User & operator=(User const & cp);
 		virtual ~User (void);
 
-		std::string getUsername(void);
-        void    addUser (CHANNEL_ITERATOR channel);
-        void    removeUser (CHANNEL_ITERATOR channel);
-		void        clear_user(void);
-        USER_ITERATOR         findUser (CHANNEL_ITERATOR channel);
+		std::string getUsername (void) const;
+        void        addUser (CHANNEL_ITERATOR channel);
+        void        removeUser (CHANNEL_ITERATOR channel);
+        USER_ITERATOR   findUser (CHANNEL_ITERATOR channel);
 
 		std::string username;
 		std::string nickname;
@@ -29,7 +27,8 @@ class User
 		bool        online;
 		int         sd;
         int         x;
+
+        bool    operator== (const User& rhs) const { return this->nickname == rhs.nickname; }
+        bool    operator!= (const User& rhs) const { return !(*this == rhs); }
 };
 
-template <class U1, class U2>
-bool    operator== (const U1& lhs, const U2 rhs) { return lhs.nickname == rhs.nickname; }

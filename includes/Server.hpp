@@ -11,7 +11,7 @@ class Server {
 
     public:
 
-        Server (int port, std::string password);
+        Server (const int port, const std::string password);
         Server (const Server& cpy) : _port (cpy._port), _server_fd (cpy._server_fd), _addrlen (cpy._addrlen), \
                                      _address (cpy._address), _password (cpy._password) { }
 
@@ -21,10 +21,10 @@ class Server {
         std::vector<Channel>        channels;
         std::vector<std::string>    commands_list;
 
-        int         getFd (void);
-        int         getAddressLength (void);
-        SOCKADDR_IN getAddress (void);
-        std::string getPassword (void);
+        int         getFd (void) const;
+        int         getAddressLength (void) const;
+        SOCKADDR_IN getAddress (void) const;
+        std::string getPassword (void) const;
 
     private:
 
