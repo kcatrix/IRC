@@ -9,14 +9,6 @@ void    printPvtmsg (int sd) {
     print_message (sd, "Use: /w <nickname>.\nSend a private message (whisper) to a user.\n");
 }
 
-void    printOP (int sd) {
-    print_message (sd, "Use: /op <nickname>.\nPromote a user to operator.\n");
-}
-
-void    printDeop (int sd) {
-    print_message (sd, "Use: /deop <nickname>.\nDemote a user from operator.\n");
-}
-
 void    printNick (int sd) {
     print_message (sd, "Use: /nick <nickname>.\nChange your current nickname.\n");
 }
@@ -24,10 +16,6 @@ void    printNick (int sd) {
 void    printQuit (int sd) {
     print_message (sd, "Use: /quit <reason>.\nDisconnect from the server and notifies other users sharing at least one channel with you. If you write a reason, it will be sent along with the notification.\n");
 }
-
-/*void    printPing (int sd) {
-    print_message (sd, "Use: /w <nickname>.\nSend a private message (whisper) to the user <nickname>.\n");
-}*/
 
 void    printMotd (int sd) {
     print_message (sd, "Use: /motd.\nDisplays the message of the day of your IRC server.\n");
@@ -57,6 +45,37 @@ void    printHelp (int sd) {
     print_message (sd, "Use: /help <command>.\nDisplays the function of the command. If nothing is entered, a list of available commands will be displayed.\n");
 }
 
+void    printKick (int sd) {
+    print_message (sd, "Use: /kick <channel> <nickname> <reason>.\nKick a user from a channel. If a reason is given, it will be displayed to the user that was kicked.\n");
+}
+
+void    printBan (int sd) {
+    print_message (sd, "Use: /ban <channel> <nickname>.\nBan a user from the channel\n");
+}
+
+void    printOp (int sd) {
+    print_message (sd, "Use: /op <channel> <nickname>.\nPromotes a user to OP status in a channel.\n");
+}
+
+void    printDeop (int sd) {
+    print_message (sd, "Use: /deop <channel> <nickname>.\nDemotes a user from OP status in a channel.\n");
+}
+
+void    printInvite (int sd) {
+    print_message (sd, "Use: /invite <channel> <nickname>.\nInvites a user to a channel.\n");
+}
+
+void    printIgnore (int sd) {
+    print_message (sd, "Use: /ignore <nickname>.\nMakes all messages from a user invisible to you, in a channel or in private.\n");
+}
+
+void    printAccept (int sd) {
+    print_message (sd, "Use: /accept <nickname>.\nRemoves the ignore status of a user.\n");
+}
+
+void    printIdentify (int sd) {
+    print_message (sd, "Use: /identify <password>.\nAssigns a password to your nickname.\n");
+}
 
 void    printHelp (int sd, std::string command) {
     if (command == "pvtmsg" or command == "w")
@@ -65,6 +84,20 @@ void    printHelp (int sd, std::string command) {
         printNick (sd);
     else if (command == "quit")
         printQuit (sd);
+    else if (command == "kick")
+        printKick (sd);
+    else if (command == "ban")
+        printBan (sd);
+    else if (command == "op")
+        printOp (sd);
+    else if (command == "deop")
+        printDeop (sd);
+    else if (command == "invite")
+        printInvite (sd);
+    else if (command == "ignore")
+        printIgnore (sd);
+    else if (command == "accept")
+        printAccept (sd);
     else if (command == "motd")
         printMotd (sd);
     else if (command == "away")
@@ -79,10 +112,8 @@ void    printHelp (int sd, std::string command) {
         printList (sd);
     else if (command == "help")
         printHelp (sd);
-    else if (command == "op")
-        printOP (sd);
-    else if (command == "deop")
-        printDeop (sd);
+    else if (command == "identify")
+        printIdentify (sd);
 }
 
 void    help (User executer, STRING_VECTOR bufferSplit, STRING_VECTOR commands_list) {
