@@ -11,6 +11,8 @@ class Channel {
         Channel (const Channel& cpy);
         virtual ~Channel (void);
 
-        std::string channel_name; 
+        std::string channel_name;
         USER_VECTOR chan_users;
+		STRING_VECTOR ope;
+		STRING_VECTOR banned;
 };
