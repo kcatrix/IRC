@@ -1,18 +1,12 @@
 #include "../includes/irc.hpp"
 
-// ------------------------    Gestion doublons Nick / User --------------------------------------
-
-int checkDuplicateNick(std::string to_check, std::vector<User> users)
-{
-    for (USER_ITERATOR it = users.begin (); it != users.end (); it++) {
-		if((*it).nickname == to_check)
-			return 1;
-	}
-	return 0;
+int checkDuplicateNick (std::string to_check, USER_VECTOR users) {
+    if (getUser (users, to_check).nickname == "")
+        return 0;
+    return 1;
 }
 
-int checkdoublonuser(char *tocheck, std::vector<User> users, int sd) //doublon user
-{
+int checkDuplicateUser (std::string to_check, USER_VECTOR users, int sd) {
     for (USER_ITERATOR it = users.begin (); it != users.end (); it++)
     {
 		if((*it).nickname.compare(tocheck) == 0)

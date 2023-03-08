@@ -1,18 +1,13 @@
 #include "../includes/irc.hpp"
 
-static int opequit(User executer, CHANNEL_ITERATOR &to_quit)
-{
-    for (STRING_ITERATOR it = to_quit->ope.begin (); it != to_quit->ope.end (); it++)
-	{
-        if(executer.nickname == (*it))
-        {
+static void opequit(User executer, CHANNEL_ITERATOR &to_quit) {
+    for (STRING_ITERATOR it = to_quit->ope.begin (); it != to_quit->ope.end (); it++) {
+        if(executer.nickname == it) {
             to_quit->ope.erase(it);
-            return 0;
+            return ;
         }
     }
-    return 1;
 }
-
 
 void    part (User executer, std::vector<std::string> bufferSplit, Server& irc_server) {
     if(bufferSplit[1].empty () == 1)
