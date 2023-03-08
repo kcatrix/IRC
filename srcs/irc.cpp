@@ -64,6 +64,8 @@ void    redirectFonction(User &executer, char *buffer, std::vector<User>* users_
             join (executer, bufferSplit, irc_server);
         else if (bufferSplit[0] == "/kick")
             kick (executer, bufferSplit, irc_server);
+        else if (bufferSplit[0] == "/invite")
+            invite (executer, bufferSplit, irc_server);
         else if (bufferSplit[0] == "/ban")
             ban (executer, bufferSplit, irc_server);
         else if (bufferSplit[0] == "/part")
@@ -74,7 +76,7 @@ void    redirectFonction(User &executer, char *buffer, std::vector<User>* users_
             list (executer, irc_server.channels);
         else if (bufferSplit[0] == "/help")
             help (executer, bufferSplit, irc_server.commands_list);
-    }
+}
     
         // else if (strcmp(buffer_spli, "/users") == 0)
         //     users(users_tab[newsocket], buffer);

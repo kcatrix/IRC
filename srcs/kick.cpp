@@ -10,9 +10,9 @@ static int	isOpe(STRING_VECTOR ope, User executer)
 	return (1);
 }
 
-static int isInChan(User executer, USER_VECTOR &chan_user, STRING_VECTOR bufferSplit)
+static int isInChan(User executer, CHANNEL_ITERATOR &kick, STRING_VECTOR bufferSplit)
 {
-	for (USER_ITERATOR it = chan_user.begin (); it != chan_user.end (); it++)
+	for (USER_ITERATOR it = kick->chan_users.begin (); it != kick->chan_users.end (); it++)
 	{
 		if((*it).nickname == bufferSplit[2])
 		{
@@ -20,7 +20,15 @@ static int isInChan(User executer, USER_VECTOR &chan_user, STRING_VECTOR bufferS
             for(int y = 4; bufferSplit[y].empty () == 0; y++)
                 message = message + " " + bufferSplit[y];
 			print_message ((*it).sd, "Kicked from channel " + bufferSplit[1] + " by " + executer.nickname + " : " + message + "\n");
-			chan_user.erase(it);
+			kick->chan_users.erase(it);
+			for (STRING_ITERATOR itr = kick->ope.begin (); itr != kick->ope.end (); itr++)
+			{
+				if((*it).nickname == (*itr))
+				{
+					kick->ope.erase(itr);
+					return 1;
+				}
+			}
 			return (1);
 		}
 	}
@@ -43,7 +51,7 @@ void    kick (User executer, STRING_VECTOR bufferSplit, Server& irc_server) {
 			}
 			else
 			{
-				if(isInChan(executer, kick_from->chan_users, bufferSplit) == 0)
+				if(isInChan(executer, kick_from, bufferSplit) == 0)
 					print_message (executer.sd, "No user : " + bufferSplit[2] + " in channel : " + bufferSplit[1] +  "\n");
 			}
 			//find user in chann

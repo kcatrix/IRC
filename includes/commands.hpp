@@ -17,3 +17,4 @@ void kick (User executer, STRING_VECTOR bufferSplit, Server& irc_server);
 void ban (User executer, STRING_VECTOR bufferSplit, Server& irc_server);
 void op (User executer, STRING_VECTOR bufferSplit, Server& irc_server);
 void deop (User executer, STRING_VECTOR bufferSplit, Server& irc_server);
+void invite (User executer, STRING_VECTOR bufferSplit, Server& irc_server);

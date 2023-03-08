@@ -2,6 +2,16 @@
 
 //  ---------------(fonctionne dans l'ensemble hors mask(pas implemente car manque d'info sans les channs) + mauvais sender car prob de socket de discord)--------------------------------------
 
+
+static int isIgnored(USER_ITERATOR tocheck, User executer)
+{
+    for (USER_ITERATOR it = tocheck->ignored.begin (); it != tocheck->ignored.end (); it++)
+	{
+        if((*it).nickname == executer.nickname)
+            return 1;
+    }
+    return 0;
+}
 static int isInChan(User executer, CHANNEL_ITERATOR chan)
 {
 	for (USER_ITERATOR it = chan->chan_users.begin (); it != chan->chan_users.end (); it++)
@@ -25,18 +35,21 @@ void msg(User executer, std::vector<std::string> bufferSplit, std::vector<User> 
         {
             if (bufferSplit[1] == (*it).nickname) //buffspli[1] == (*it).hostmask || 
             {
-                std::cout << "away == " << (*it).away << std::endl; 
-                if ((*it).away == true )// ne fonctionne pas car pas de away == false meme aprés fonction away           
+                if(isIgnored((*it), executer) == 0)
                 {
-                    message = (*it).away_message + '\n';
-                    print_message ((*it).sd, message);
-                    return ;
-                } 
-                if(bufferSplit[2].empty () == 0)
-                    message = bufferSplit[2];
-                for(int y = 3; bufferSplit[y].empty () == 0; y++)
-                    message = message + " " + bufferSplit[y];
-                print_message ((*it).sd, "<" + executer.nickname + "> " + message + "\n");
+                    std::cout << "away == " << (*it).away << std::endl; 
+                    if ((*it).away == true )// ne fonctionne pas car pas de away == false meme aprés fonction away           
+                    {
+                        message = (*it).away_message + '\n'; 
+                        print_message ((*it).sd, message);
+                        return ;
+                    }
+                    if(bufferSplit[2].empty () == 0)
+                        message = bufferSplit[2];
+                    for(int y = 3; bufferSplit[y].empty () == 0; y++)
+                        message = message + " " + bufferSplit[y];
+                    print_message ((*it).sd, "<" + executer.nickname + "> " + message + "\n");
+                }
             }
         }
     }
@@ -49,18 +62,21 @@ void msg(User executer, std::vector<std::string> bufferSplit, std::vector<User> 
         {
             for (USER_ITERATOR it = to_send->chan_users.begin (); it != to_send->chan_users.end (); it++)
             {
-                std::cout << "away == " << (*it).away << std::endl; 
-                if ((*it).away == true )// ne fonctionne pas car pas de away == false meme aprés fonction away           
+                if(isIgnored((*it), executer) == 0)
                 {
-                    message = (*it).away_message + '\n';
-                    print_message ((*it).sd, message);
-                    return ;
-                } 
-                if(bufferSplit[2].empty () == 0)
-                    message = bufferSplit[2];
-                for(int y = 3; bufferSplit[y].empty () == 0; y++)
-                    message = message + " " + bufferSplit[y];
-                print_message ((*it).sd, "<" + executer.nickname + "> " + message + "\n");
+                    std::cout << "away == " << (*it).away << std::endl; 
+                    if ((*it).away == true )// ne fonctionne pas car pas de away == false meme aprés fonction away           
+                    {
+                        message = (*it).away_message + '\n';
+                        print_message ((*it).sd, message);
+                        return ;
+                    } 
+                    if(bufferSplit[2].empty () == 0)
+                        message = bufferSplit[2];
+                    for(int y = 3; bufferSplit[y].empty () == 0; y++)
+                        message = message + " " + bufferSplit[y];
+                    print_message ((*it).sd, "<" + executer.nickname + "> " + message + "\n");
+                }
             }
         }
     }

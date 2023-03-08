@@ -21,6 +21,14 @@ static int isInChan(User executer, CHANNEL_ITERATOR &chan, STRING_VECTOR bufferS
             for(int y = 4; bufferSplit[y].empty () == 0; y++)
                 message = message + " " + bufferSplit[y];
 			print_message ((*it).sd, "Banned from channel " + bufferSplit[1] + " by " + executer.nickname + " : " + message + "\n");
+			for (STRING_ITERATOR itr = chan->ope.begin (); itr != chan->ope.end (); itr++)
+			{
+				if((*it).nickname == (*itr))
+				{
+					chan->ope.erase(itr);
+					return 1;
+				}
+			}
 			chan->chan_users.erase(it);
 			return (1);
 		}
