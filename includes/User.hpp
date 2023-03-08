@@ -13,6 +13,7 @@ class User
 
 		std::string getUsername (void) const;
         void        addUser (CHANNEL_ITERATOR channel);
+        User    getUser (USER_VECTOR users, std::string nickname);
         void        removeUser (CHANNEL_ITERATOR channel);
         USER_ITERATOR   findUser (CHANNEL_ITERATOR channel);
 
@@ -29,6 +30,6 @@ class User
         int         x;
 
         bool    operator== (const User& rhs) const { return this->nickname == rhs.nickname; }
-        bool    operator!= (const User& rhs) const { return !(*this == rhs); }
+        bool    operator!= (const User& rhs) { return !(*this == rhs); }
 };
 

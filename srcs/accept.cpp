@@ -8,16 +8,8 @@ static int isIgnored(const std::string nickname, USER_VECTOR ignored) {
     return 0;
 }
 
-static User getUser(Server& irc_server, const std::string to_ignore) {
-    for (USER_ITERATOR it = irc_server.users.begin (); it != irc_server.users.end (); it++) {
-        if(it->nickname == to_ignore)
-            return (*it);
-    }
-    return User();
-}
-
-void    accept (User &executer, std::string to_accept, Server& irc_server) {
-    User    ignored_user = getUser(irc_server, to_accept);
+void    accept (User& executer, std::string to_accept, Server& irc_server) {
+    User    ignored_user = getUser (irc_server.users, to_accept);
 
     if(ignored_user.nickname == "")
         print_message (executer.sd, "The user " + to_accept + " doesn't exist.\n");
@@ -32,7 +24,7 @@ void    accept (User &executer, std::string to_accept, Server& irc_server) {
 }
 
 void    ignore (User &executer, std::string to_ignore, Server& irc_server) {
-    User    ignored_user = getUser(irc_server, to_ignore);
+    User    ignored_user = getUser (irc_server.users, to_ignore);
 
     if(ignored_user.nickname == "")
         print_message (executer.sd, "The user " + to_ignore + " doesn't exist.\n");

@@ -1,7 +1,13 @@
 #include "../includes/irc.hpp"
 #include <errno.h>
 
-//  ---------------------------------    Redir function  --------------------------------------
+User    getUser (USER_VECTOR users, std::string nickname) {
+    for (USER_ITERATOR it = users.begin (); it != users.end (); it++) {
+        if(it->nickname == nickname)
+            return *it;
+    }
+    return User ();
+}
 
 void    createChannel (User executer, std::string channel_name, Server& irc_server) {
 

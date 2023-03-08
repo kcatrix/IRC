@@ -34,6 +34,7 @@ class Server;
 # include "commands.hpp"
 # include "utils.hpp"
 
+User    getUser (USER_VECTOR users, std::string nickname);
 void    start_irc (int port, std::string password);
 int     getInfoUser(User* new_Usert, char *buffer, std::string password);
 void    checkPassword (User* new_user, char* buffer, std::string password);

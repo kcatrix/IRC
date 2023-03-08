@@ -1,10 +1,10 @@
 #include "../includes/irc.hpp"
 
-void away(User& executer, STRING_VECTOR bufferSplit) {
+void    away (User& executer, STRING_VECTOR bufferSplit) {
 	if (executer.away == true) {
 		executer.away = false;
         print_message (executer.sd, "You are no longer marked as being away\n");
-		executer.away_message = ""; 
+		executer.away_message.clear ();
 	}
     else {
         std::string reason;
