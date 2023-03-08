@@ -43,7 +43,6 @@ void    redirectFonction(User &executer, char *buffer, std::vector<User>* users_
     if (string_buffer.empty ())
         return ;
     STRING_VECTOR bufferSplit = splitString (string_buffer);
-    print_message (executer.sd, "Command: " + bufferSplit[0] + " " + bufferSplit[1] + "\n");
     if (checkCommand (executer.sd, bufferSplit[0], irc_server) == 1) {
         if (bufferSplit[0] == "/pvtmsg" or bufferSplit[0] == "/w")
             msg(executer, bufferSplit, *users_tab, irc_server);
