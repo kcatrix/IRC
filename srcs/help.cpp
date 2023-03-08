@@ -2,7 +2,7 @@
 
 void    printCommandsList (int sd, STRING_VECTOR commands_list) {
     for (STRING_ITERATOR it = commands_list.begin (); it != commands_list.end (); it++)
-        print_message (sd, (*it).erase (0, 1) + "\n");
+        print_message (sd, it->erase (0, 1) + "\n");
 }
 
 void    printPvtmsg (int sd) {

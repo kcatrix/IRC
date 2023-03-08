@@ -2,7 +2,7 @@
 
 static void opequit(User executer, CHANNEL_ITERATOR &to_quit) {
     for (STRING_ITERATOR it = to_quit->ope.begin (); it != to_quit->ope.end (); it++) {
-        if(executer.nickname == it) {
+        if(executer.nickname == *it) {
             to_quit->ope.erase(it);
             return ;
         }
