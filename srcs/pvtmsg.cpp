@@ -1,8 +1,5 @@
 #include "../includes/irc.hpp"
 
-//  ---------------(fonctionne dans l'ensemble hors mask(pas implemente car manque d'info sans les channs) + mauvais sender car prob de socket de discord)--------------------------------------
-
-
 static int isIgnored(USER_ITERATOR tocheck, User executer)
 {
     for (USER_ITERATOR it = tocheck->ignored.begin (); it != tocheck->ignored.end (); it++)
@@ -24,8 +21,6 @@ static int isInChan(User executer, CHANNEL_ITERATOR chan)
 
 void msg(User &executer, std::vector<std::string> bufferSplit, std::vector<User> users, Server& irc_server) {
 
-    //protect segfault
-    (void)irc_server;
 	std::string message;
     if(bufferSplit[1].empty() == 1 || bufferSplit[2].empty() == 1)
         return ;
@@ -67,7 +62,7 @@ void msg(User &executer, std::vector<std::string> bufferSplit, std::vector<User>
                 if(isIgnored(it, executer) == 0)
                 {
                     std::cout << "away == " << (*it).away << std::endl; 
-                    if ((*it).away == true )// ne fonctionne pas car pas de away == false meme aprés fonction away           
+                    if ((*it).away == true )
                     {
                         message = (*it).away_message + '\n';
                         print_message ((*it).sd, message);
@@ -83,4 +78,3 @@ void msg(User &executer, std::vector<std::string> bufferSplit, std::vector<User>
         }
     }
 }
-
