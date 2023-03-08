@@ -42,6 +42,10 @@ void    Server::assignCommands (std::vector<std::string>& commands_list) {
     commands_list.push_back ("/w");
     commands_list.push_back ("/nick");
     commands_list.push_back ("/quit");
+    commands_list.push_back ("/kick");
+    commands_list.push_back ("/ban");
+    commands_list.push_back ("/op");
+    commands_list.push_back ("/deop");
 //    commands_list.push_back ("/ping");
     commands_list.push_back ("/motd");
     commands_list.push_back ("/away");

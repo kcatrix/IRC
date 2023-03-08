@@ -1,3 +1,4 @@
+
 #include "../includes/irc.hpp"
 
 void    print_message (int sd, std::string message) {
@@ -42,7 +43,6 @@ int     removeStringVector(std::vector<std::string>& myVector, const char* targe
     return(1);
 }
 
-
 void free_tab(char **str)
 {
 	int i = 0;
@@ -51,6 +51,7 @@ void free_tab(char **str)
 	{
 		free(str[i]);
 		i++;
+
 	}
 	free(str);
 }
@@ -66,7 +67,6 @@ size_t	ft_strlen(const char *s)
 	}
 	return (i);
 }
-
 
 char	*ft_substr(char const *s, unsigned int start, size_t len)
 {
@@ -151,6 +151,7 @@ char	**ft_split(char const *s, char c)
 	a[i] = NULL;
 	return (a);
 }
+
 
 
 static int	strl(const char *str)

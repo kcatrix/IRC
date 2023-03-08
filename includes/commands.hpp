@@ -2,7 +2,7 @@
 
 #include "irc.hpp"
 
-void msg(User executer, STRING_VECTOR bufferSplit, USER_VECTOR users);
+void msg(User executer, STRING_VECTOR bufferSplit, USER_VECTOR users, Server& irc_server);
 void nick(User& executer, STRING_VECTOR bufferSplit, USER_VECTOR users);
 void quit(User executer);
 void ping(User executer, STRING_VECTOR bufferSplit);
@@ -15,3 +15,7 @@ void list (User executer, CHANNEL_VECTOR& channels);
 void names (User executer, STRING_VECTOR bufferSplit, Server& irc_server);
 void accept (User executer, User ignored_user);
 void ignore (User executer, User ignored_user);
+void kick (User executer, STRING_VECTOR bufferSplit, Server& irc_server);
+void ban (User executer, STRING_VECTOR bufferSplit, Server& irc_server);
+void op (User executer, STRING_VECTOR bufferSplit, Server& irc_server);
+void deop (User executer, STRING_VECTOR bufferSplit, Server& irc_server);
