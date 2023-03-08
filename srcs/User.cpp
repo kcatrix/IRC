@@ -21,6 +21,7 @@ User::~User( void )
 
 User & User::operator=( User const & cp )
 {
+    this->ignored = cp.ignored;
 	this->username = cp.username;
 	this->nickname = cp.nickname;
     password = cp.password;

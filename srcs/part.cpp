@@ -1,5 +1,19 @@
 #include "../includes/irc.hpp"
 
+static int opequit(User executer, CHANNEL_ITERATOR &to_quit)
+{
+    for (STRING_ITERATOR it = to_quit->ope.begin (); it != to_quit->ope.end (); it++)
+	{
+        if(executer.nickname == (*it))
+        {
+            to_quit->ope.erase(it);
+            return 0;
+        }
+    }
+    return 1;
+}
+
+
 void    part (User executer, std::vector<std::string> bufferSplit, Server& irc_server) {
     if(bufferSplit[1].empty () == 1)
         print_message (executer.sd, "Not enough parameters given.\n");
@@ -14,8 +28,9 @@ void    part (User executer, std::vector<std::string> bufferSplit, Server& irc_s
             if (quitter == to_quit->chan_users.end ())
                 print_message (executer.sd, to_quit->channel_name + ": You're not on that channel\n");
             else {
-                print_message (executer.sd, "You left the channel #" + to_quit->channel_name + "\n");
+                print_message (executer.sd, "You left the channel " + to_quit->channel_name + "\n");
                 to_quit->chan_users.erase (quitter);
+                opequit(executer, to_quit);
             }
         }
     }

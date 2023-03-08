@@ -63,6 +63,12 @@ void    redirectFonction(User &executer, char *buffer, std::vector<User>* users_
             join (executer, bufferSplit, irc_server);
         else if (bufferSplit[0] == "/kick")
             kick (executer, bufferSplit, irc_server);
+        else if (bufferSplit[0] == "/invite")
+            invite (executer, bufferSplit, irc_server);
+        else if (bufferSplit[0] == "/ignore")
+            ignore (executer, bufferSplit[1], irc_server);
+        else if (bufferSplit[0] == "/accept")
+            accept (executer, bufferSplit[1], irc_server);
         else if (bufferSplit[0] == "/ban")
             ban (executer, bufferSplit, irc_server);
         else if (bufferSplit[0] == "/part")
@@ -73,9 +79,21 @@ void    redirectFonction(User &executer, char *buffer, std::vector<User>* users_
             list (executer, irc_server.channels);
         else if (bufferSplit[0] == "/help")
             help (executer, bufferSplit, irc_server.commands_list);
+<<<<<<< HEAD
         else if (bufferSplit[0] == "/identify")
             identify (executer, bufferSplit[1]);
     }
+=======
+}
+    
+        // else if (strcmp(buffer_spli, "/users") == 0)
+        //     users(users_tab[newsocket], buffer);
+/*        for (CHANNEL_ITERATOR it = irc_server.channels.begin (); it != irc_server.channels.end (); it++) {
+            for (USER_ITERATOR uit = it->chan_users.begin (); uit != it->chan_users.end (); uit++) {
+                print_message (executer.sd, it->channel_name + " " + uit->nickname + "\n");
+            }
+        }*/
+>>>>>>> main
 }
 
 extern int errno;
