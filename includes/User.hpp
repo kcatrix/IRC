@@ -12,6 +12,8 @@ class User
 		virtual ~User (void);
 
 		std::string getUsername(void);
+        void    addUser (CHANNEL_ITERATOR channel);
+        void    removeUser (CHANNEL_ITERATOR channel);
 		void        clear_user(void);
         USER_ITERATOR         findUser (CHANNEL_ITERATOR channel);
 
@@ -19,11 +21,15 @@ class User
 		std::string nickname;
 		std::string password;
 		std::string away_message;
+		USER_VECTOR ignored;
 		bool        away;
 		bool        OP;
 		int         sd;
 
     private:
 
-		User (void) { }
+		User (void);
 };
+
+template <class U1, class U2>
+bool    operator== (const U1& lhs, const U2 rhs) { return lhs.nickname == rhs.nickname; }
