@@ -1,5 +1,13 @@
 #include "../includes/irc.hpp"
 
+User::User(void)
+{
+    this->nickname = "";
+    this->username = "";
+    this->password = "";
+    this->away_message = "";
+}
+
 User::User(int sd)
 { 
     this->away = 0;
@@ -15,6 +23,7 @@ User::~User( void )
 
 User & User::operator=( User const & cp )
 {
+    this->ignored = cp.ignored;
 	this->username = cp.username;
 	this->nickname = cp.nickname;
 	this->sd = cp.sd;

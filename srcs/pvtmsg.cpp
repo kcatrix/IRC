@@ -22,7 +22,7 @@ static int isInChan(User executer, CHANNEL_ITERATOR chan)
 	return 0;
 }
 
-void msg(User executer, std::vector<std::string> bufferSplit, std::vector<User> users, Server& irc_server) {
+void msg(User &executer, std::vector<std::string> bufferSplit, std::vector<User> users, Server& irc_server) {
 
     //protect segfault
     (void)irc_server;
@@ -35,7 +35,9 @@ void msg(User executer, std::vector<std::string> bufferSplit, std::vector<User> 
         {
             if (bufferSplit[1] == (*it).nickname) //buffspli[1] == (*it).hostmask || 
             {
-                if(isIgnored((*it), executer) == 0)
+                for (USER_ITERATOR itr = it->ignored.begin (); itr != it->ignored.end (); itr++)
+                    return;
+                if(isIgnored(it, executer) == 0)
                 {
                     std::cout << "away == " << (*it).away << std::endl; 
                     if ((*it).away == true )// ne fonctionne pas car pas de away == false meme aprés fonction away           
@@ -62,7 +64,7 @@ void msg(User executer, std::vector<std::string> bufferSplit, std::vector<User> 
         {
             for (USER_ITERATOR it = to_send->chan_users.begin (); it != to_send->chan_users.end (); it++)
             {
-                if(isIgnored((*it), executer) == 0)
+                if(isIgnored(it, executer) == 0)
                 {
                     std::cout << "away == " << (*it).away << std::endl; 
                     if ((*it).away == true )// ne fonctionne pas car pas de away == false meme aprés fonction away           

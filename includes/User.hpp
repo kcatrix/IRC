@@ -5,9 +5,10 @@
 class User
 {
 	public:
+		User (void);
 		User (int sd);
 		User (const User& cpy) : username (cpy.username), nickname (cpy.nickname), password (cpy.password),
-        away_message (cpy.away_message), away (cpy.away), OP (cpy.OP), sd (cpy.sd) { }
+        away_message (cpy.away_message), ignored(cpy.ignored), away (cpy.away), OP (cpy.OP), sd (cpy.sd){ }
 		User & operator=(User const & cp);
 		virtual ~User (void);
 
@@ -28,7 +29,6 @@ class User
 
     private:
 
-		User (void);
 };
 
 template <class U1, class U2>

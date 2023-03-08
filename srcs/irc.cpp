@@ -66,6 +66,10 @@ void    redirectFonction(User &executer, char *buffer, std::vector<User>* users_
             kick (executer, bufferSplit, irc_server);
         else if (bufferSplit[0] == "/invite")
             invite (executer, bufferSplit, irc_server);
+        else if (bufferSplit[0] == "/ignore")
+            ignore (executer, bufferSplit[1], irc_server);
+        else if (bufferSplit[0] == "/accept")
+            accept (executer, bufferSplit[1], irc_server);
         else if (bufferSplit[0] == "/ban")
             ban (executer, bufferSplit, irc_server);
         else if (bufferSplit[0] == "/part")
@@ -118,7 +122,6 @@ void start_irc(int port, std::string password)
             if (FD_ISSET((*it).sd, &read_fds)) {
                 valread = read((*it).sd, buffer, BUFFER_SIZE);
                 if (valread == 0) {
-                    getpeername((*it).sd, (SOCKADDR*)&server_address, (socklen_t*)&address_length);
                     std::cout << "User disconnected: " << inet_ntoa(server_address.sin_addr) << ":" \
                         << ntohs(server_address.sin_port) << std::endl; // clear user non necessaire ?
                     number_of_users--;
@@ -131,7 +134,6 @@ void start_irc(int port, std::string password)
                     if (getInfoUser(it.base(), buffer, password, irc_server.users) == 0)
                         redirectFonction(*it, buffer, &irc_server.users, irc_server);
                     buffer[valread] = '\0';
-                    getpeername((*it).sd, (SOCKADDR*)&server_address, (socklen_t*)&address_length);
                 }
             }
         }

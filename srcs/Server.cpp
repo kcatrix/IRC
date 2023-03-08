@@ -47,6 +47,8 @@ void    Server::assignCommands (std::vector<std::string>& commands_list) {
     commands_list.push_back ("/op");
     commands_list.push_back ("/deop");
     commands_list.push_back ("/invite");
+    commands_list.push_back ("/ignore");
+    commands_list.push_back ("/accept");
 //    commands_list.push_back ("/ping");
     commands_list.push_back ("/motd");
     commands_list.push_back ("/away");
