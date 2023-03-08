@@ -1,10 +1,9 @@
 #include "../includes/irc.hpp"
 
-User::User(int sd) { 
+User::User(int sd)
+{ 
+    this->away = 0;
 	this->sd = sd;
-	this->OP = false;
-	this->away = false;
-	std::cout << "User created sd = " << sd << std::endl;
 	return; 
 }
 
@@ -43,4 +42,25 @@ USER_ITERATOR     User::findUser (CHANNEL_ITERATOR channel) {
         current_user++;
     }
     return current_user;
+}
+
+void    User::addUser (CHANNEL_ITERATOR channel) {
+    USER_ITERATOR   user = findUser (channel);
+    if (user == channel->chan_users.end ()) {
+        //channel->chan_users.push_back ((*user));
+        print_message (sd, "You joined the channel #" + channel->channel_name + "\n");
+    }
+    else
+        print_message (sd, "You are already on the channel #" + channel->channel_name + "\n");
+    
+}
+
+void    User::removeUser (CHANNEL_ITERATOR channel) {
+    USER_ITERATOR   user = findUser (channel);
+    if (user == channel->chan_users.end ())
+        print_message (sd, channel->channel_name + ": You're not on that channel\n");
+    else {
+        channel->chan_users.erase (user);
+        print_message (sd, "You left the channel #" + channel->channel_name + "\n");
+    }
 }
