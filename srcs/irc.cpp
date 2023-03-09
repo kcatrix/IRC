@@ -10,7 +10,6 @@ User    getUser (USER_VECTOR users, std::string nickname) {
 }
 
 void    createChannel (User executer, std::string channel_name, Server& irc_server) {
-
     if(channel_name[0] == '#')
     {
         Channel     new_channel (channel_name);
@@ -38,16 +37,13 @@ int     checkCommand (int sd, std::string to_check, Server& irc_server) {
     for (STRING_ITERATOR it = irc_server.commands_list.begin (); it != irc_server.commands_list.end (); it++)
         if (to_check == *it)
             return 1;
-    print_message (sd, "Unknown command.\n");
+    if (to_check.empty () == 0)
+        print_message (sd, "Unknown command.\n");
     return 0;
 }
 
-void    redirectFonction(User &executer, char *buffer, std::vector<User>* users_tab, Server& irc_server)
+void    redirectFonction (User &executer, STRING_VECTOR bufferSplit, std::vector<User>* users_tab, Server& irc_server)
 {
-    std::string string_buffer (buffer);
-    if (string_buffer.empty ())
-        return ;
-    STRING_VECTOR bufferSplit = splitString (string_buffer);
     if (checkCommand (executer.sd, bufferSplit[0], irc_server) == 1) {
         if (bufferSplit[0] == "/pvtmsg" or bufferSplit[0] == "/w")
             msg(executer, bufferSplit, *users_tab, irc_server);
@@ -105,30 +101,28 @@ void start_irc(int port, std::string password)
     SOCKADDR_IN   server_address = irc_server.getAddress ();
 
     while (true) {
-        FD_ZERO(&read_fds);
-        FD_SET(server_fd, &read_fds);
-        for (USER_ITERATOR it = irc_server.users.begin(); it != irc_server.users.end(); ++it) {
+        FD_ZERO (&read_fds);
+        FD_SET (server_fd, &read_fds);
+        for (USER_ITERATOR it = irc_server.users.begin (); it != irc_server.users.end (); ++it) {
             if (it->sd != 0)
-                FD_SET((*it).sd, &read_fds);
+                FD_SET (it->sd, &read_fds);
         }
-        activity = select(max_sd + 1, &read_fds, NULL, NULL, NULL);
-        if (activity < 0) {
-            std::cout << "error number: " << errno << std::endl;
+        if (activity = select (max_sd + 1, &read_fds, NULL, NULL, NULL) < 0)
             print_error ("Select error");
-        }
-        if (FD_ISSET(server_fd, &read_fds)) {
-            if ((new_socket = accept(server_fd, (SOCKADDR*)&server_address, (socklen_t*)&address_length))<0)
+        if (FD_ISSET (server_fd, &read_fds)) {
+            if ((new_socket = accept (server_fd, (SOCKADDR*)&server_address, (socklen_t*)&address_length))<0)
                 print_error ("Socket creation error");
 			createUser (new_socket, &irc_server.users, &max_sd, &number_of_users);
         }
-        for (USER_ITERATOR it = irc_server.users.begin(); it != irc_server.users.end(); it++) {
-            memset(buffer, 0, BUFFER_SIZE);
-            if (FD_ISSET((*it).sd, &read_fds)) {
-                valread = read((*it).sd, buffer, BUFFER_SIZE);
+        for (USER_ITERATOR it = irc_server.users.begin (); it != irc_server.users.end (); it++) {
+            memset (buffer, 0, BUFFER_SIZE);
+            if (FD_ISSET (it->sd, &read_fds)) {
+                valread = read (it->sd, buffer, BUFFER_SIZE);
+                std::string string_buffer (buffer);
                 if (valread == 0) {
                     it->online = false;
-                    std::cout << "User disconnected: " << inet_ntoa(server_address.sin_addr) << ":" \
-                        << ntohs(server_address.sin_port) << std::endl; // clear user non necessaire ?
+                    std::cout << "User " << it->nickname << " went offline. (" << inet_ntoa (server_address.sin_addr) << ":" \
+                        << ntohs (server_address.sin_port) << ")" << std::endl;
                     number_of_users--;
                     FD_CLR (it->sd, &read_fds);
                     close (it->sd);
@@ -137,10 +131,10 @@ void start_irc(int port, std::string password)
                 else if (valread == -1 && errno == EAGAIN)
                     print_error ("Reading failure");
                 else {
-                    if (getInfoUser(it.base(), buffer, password, irc_server.users) == 0){ 
-                        redirectFonction(*it, buffer, &irc_server.users, irc_server);
+                    STRING_VECTOR bufferSplit = splitString (string_buffer);
+                    if (getInfoUser (it.base (), bufferSplit, password, irc_server.users) == 0){ 
+                        redirectFonction (*it, bufferSplit, &irc_server.users, irc_server);
                     }
-                    buffer[valread] = '\0';
                 }
             }
         }

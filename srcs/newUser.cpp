@@ -15,10 +15,10 @@ void    setUsername (User* new_user, char* buffer) {
       //  print_message (new_user->sd, "Enter your nickname: ");
 }
 
-void    setNickname (User* new_user, char* buffer) {
+void    setNickname (User* new_user, std::string nickname) {
     std::string message;
 
-    new_user->nickname = buffer;
+    new_user->nickname = nickname;
     print_message (new_user->sd, "Welcome to our server, " + new_user->nickname + " !\n");
     print_message (new_user->sd, "Type /help to see a list of the available commands.\n");
 }
@@ -31,14 +31,13 @@ User    findUser (std::string nickname, USER_VECTOR users) {
     return User ();
 }
 
-int     getInfoUser (User* new_user, char* buffer, std::string password, std::vector<User> users) {
-    removeInvisibleChars(buffer);
+int     getInfoUser (User* new_user, STRING_VECTOR bufferSplit, std::string password, std::vector<User> users) {
     /*if (new_user->password == "") {
       checkPassword (new_user, buffer, password);
       return 1;
       }*/
-    if (((new_user->nickname == "" and checkDuplicateNick(buffer, users) == 1) || new_user->x >= 1) && new_user->x != 1000) {
-        User john = findUser (buffer, users);
+    if (((new_user->nickname == "" and checkDuplicateNick(bufferSplit[0], users) == 1) || new_user->x >= 1) && new_user->x != 1000) {
+        User john = findUser (bufferSplit[0], users);
         if(new_user->x == 0)
         {
             if (john.online == true) {
@@ -51,12 +50,12 @@ int     getInfoUser (User* new_user, char* buffer, std::string password, std::ve
             new_user->x++;
             if(new_user->x == 1)
             {
-                new_user->nickname = buffer;
+                new_user->nickname = bufferSplit[0];
                 print_message (new_user->sd, "Enter your password to log in: ");
                 return 1;
             }
             User john = findUser(new_user->nickname, users);
-            if (john.logInPwd == static_cast<std::string>(buffer)) 
+            if (john.logInPwd == static_cast<std::string>(bufferSplit[0])) 
             {
                 print_message (new_user->sd, "Welcome back, " + john.nickname + ".\n");
                 *new_user = john;
@@ -72,7 +71,7 @@ int     getInfoUser (User* new_user, char* buffer, std::string password, std::ve
     }
     else if(new_user->x != 1000 && new_user->nickname == "")
     {
-        setNickname (new_user, buffer);
+        setNickname (new_user, bufferSplit[0]);
         return 1;
     }
     (void)password;
