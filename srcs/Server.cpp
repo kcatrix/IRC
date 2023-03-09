@@ -44,6 +44,7 @@ void    Server::assignCommands (std::vector<std::string>& commands_list) {
     commands_list.push_back ("/quit");
     commands_list.push_back ("/kick");
     commands_list.push_back ("/ban");
+    commands_list.push_back ("/unban");
     commands_list.push_back ("/op");
     commands_list.push_back ("/deop");
     commands_list.push_back ("/invite");
@@ -57,6 +58,7 @@ void    Server::assignCommands (std::vector<std::string>& commands_list) {
     commands_list.push_back ("/list");
     commands_list.push_back ("/help");
     commands_list.push_back ("/identify");
+    commands_list.push_back ("/userhost");
 }
 
 Server::~Server (void) { 

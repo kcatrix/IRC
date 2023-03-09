@@ -69,6 +69,10 @@ void    redirectFonction (User &executer, STRING_VECTOR bufferSplit, Server& irc
             accept (executer, bufferSplit[1], irc_server);
         else if (bufferSplit[0] == "/ban")
             ban (executer, bufferSplit, irc_server);
+        else if (bufferSplit[0] == "/unban")
+            unban (executer, bufferSplit, irc_server);
+        else if (bufferSplit[0] == "/userhost")
+            userhost (executer, bufferSplit, irc_server);
         else if (bufferSplit[0] == "/part")
             part (executer, bufferSplit, irc_server);
         else if (bufferSplit[0] == "/names")
