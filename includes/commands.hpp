@@ -5,7 +5,6 @@
 void msg(User &executer, STRING_VECTOR bufferSplit, USER_VECTOR users, Server& irc_server);
 void nick(User& executer, STRING_VECTOR bufferSplit, USER_VECTOR users);
 void quit(User& executer);
-void ping(User executer, STRING_VECTOR bufferSplit);
 void motd(User executer);
 void away(User& executer, STRING_VECTOR bufferSplit);
 void join(User executer, STRING_VECTOR bufferSplit, Server& irc_server);
