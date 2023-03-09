@@ -1,20 +1,23 @@
 #include "../includes/irc.hpp"
 
 User    findUser (std::string nickname, USER_VECTOR users) {
+
     for (USER_ITERATOR user = users.begin (); user != users.end (); user++) {
         if (user->nickname == nickname)
+        {
             return *user;
+        }
     }
     return User ();
 }
 
-void clean_compare(User &Compare, Server& irc_server)
+static void removecompare(USER_VECTOR &users, std::string compare)
 {
-    for(USER_ITERATOR user = irc_server.users.begin(); user != irc_server.users.end(); user++)
-    {
-        if (Compare.nickname == user->nickname)
+    for (USER_ITERATOR user = users.begin (); user != users.end (); user++) {
+        if (user->nickname == compare)
         {
-            irc_server.users.erase(user);
+            user->nickname = "";
+            return;
         }
     }
 }
@@ -40,10 +43,13 @@ void    setUsername (User& new_user, std::string username) {
     new_user.info = WELCOME;
 }
 
+
 void    setNickname (User& new_user, std::string entry, Server& irc_server) {
     User    compare = findUser (entry, irc_server.users);
 
-    if (isalpha (entry[0]) == 0)
+    if(compare.sd == -1 || compare.sd == -2)
+        new_user.info = NICK_TAKEN;
+    else if (isalpha (entry[0]) == 0)
         new_user.info = INVALID_NICK;
     else if (compare.nickname.empty () == 1) {
         new_user.nickname = entry;
@@ -54,13 +60,9 @@ void    setNickname (User& new_user, std::string entry, Server& irc_server) {
         if (compare.online == true)
             new_user.info = NICK_TAKEN;
         else {
+            new_user = compare;
+            removecompare(irc_server.users, compare.nickname);
             new_user.online = true;
-            //compare.online = true; // eco+ fix
-            new_user.username = compare.username; // rajout d'info
-            new_user.nickname = compare.nickname;
-            new_user.away_message = compare.away_message;
-            new_user.logInPwd = compare.logInPwd;
-            //clean_compare(compare, irc_server);
             new_user.info = KNOWN_USER;
         }
     }

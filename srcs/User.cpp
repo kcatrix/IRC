@@ -19,7 +19,6 @@ User& User::operator=( User const & cp ) {
     away = cp.away;
     OP = cp.OP;
     online = cp.online;
-	sd = cp.sd; 
     x = cp.x;
     info = cp.info;
 	return *this;
@@ -33,7 +32,6 @@ User::~User(void) {
     ignored.clear ();
     away = false;
     OP = false;
-    online = false;
 	sd = 0;
     x = 0;
     info = 0;

@@ -121,6 +121,8 @@ void    askInput (const int sd, int& info_status) {
         info_status = WAIT_COMMAND;
 }
 
+
+
 void    readInfo (User& user, STRING_VECTOR bufferSplit, Server& irc_server);
 
 void startIrc (const int port, const std::string password) {
@@ -166,6 +168,8 @@ void startIrc (const int port, const std::string password) {
                     std::string string_buffer (buffer);
                     STRING_VECTOR bufferSplit = splitString (string_buffer);
                     readInfo (*it, bufferSplit, irc_server);
+                    if (it->info == KNOWN_USER)
+                        it->online = true;
                     askInput (it->sd, it->info);
                     if (it->info == WAIT_COMMAND)
                         redirectFonction (*it, bufferSplit, irc_server);

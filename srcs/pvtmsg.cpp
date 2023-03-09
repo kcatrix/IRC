@@ -64,7 +64,14 @@ void msg(User &executer, std::vector<std::string> bufferSplit, std::vector<User>
         {
             for (USER_ITERATOR it = to_send->chan_users.begin (); it != to_send->chan_users.end (); it++)
             {
-                if(isIgnored(it, executer) == 0)
+                USER_ITERATOR itr = users.begin();
+                while(itr != users.end())
+                {
+                    if (itr->nickname == it->nickname)
+                        break;
+                    itr++;
+                }
+                if(isIgnored(itr, executer) == 0)
                 {
                     if ((*it).away == true )
                     {
