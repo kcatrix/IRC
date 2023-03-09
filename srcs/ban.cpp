@@ -66,3 +66,4 @@ void    ban (User executer, STRING_VECTOR bufferSplit, Server& irc_server) {
         }
 	}
 }
+
