@@ -35,7 +35,7 @@ class Server;
 
 User    getUser (USER_VECTOR users, std::string nickname);
 void    start_irc (const int port, const std::string password);
-int     getInfoUser(User* new_User, STRING_VECTOR bufferSplit, std::string password, USER_VECTOR users);
+int     getInfoUser(User& new_User, STRING_VECTOR bufferSplit, Server& irc_server);
 void    checkPassword (User* new_user, char* buffer, std::string password);
 void    setUsername (User* new_user, char* buffer);
 void    setNickname (User* new_user, char* buffer);

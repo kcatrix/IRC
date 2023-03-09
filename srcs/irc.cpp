@@ -39,13 +39,12 @@ int     checkCommand (int sd, std::string to_check, Server& irc_server) {
     return 0;
 }
 
-void    redirectFonction (User &executer, STRING_VECTOR bufferSplit, std::vector<User>* users_tab, Server& irc_server)
-{
+void    redirectFonction (User &executer, STRING_VECTOR bufferSplit, Server& irc_server) {
     if (checkCommand (executer.sd, bufferSplit[0], irc_server) == 1) {
         if (bufferSplit[0] == "/pvtmsg" or bufferSplit[0] == "/w")
-            msg(executer, bufferSplit, *users_tab, irc_server);
+            msg(executer, bufferSplit, irc_server.users, irc_server);
         else if (bufferSplit[0] == "/nick")
-            nick(executer, bufferSplit, *users_tab);
+            nick(executer, bufferSplit, irc_server.users);
         else if (bufferSplit[0] == "/quit")
             quit(executer);
         else if (bufferSplit[0] == "/ping")
@@ -112,22 +111,21 @@ void start_irc (const int port, const std::string password) {
             memset (buffer, 0, BUFFER_SIZE);
             if (FD_ISSET (it->sd, &read_fds)) {
                 valread = read (it->sd, buffer, BUFFER_SIZE);
-                std::string string_buffer (buffer);
                 if (valread == 0) {
                     it->online = false;
-                    std::cout << "User " << it->nickname << " went offline. (" << inet_ntoa (server_address.sin_addr) << ":" \
-                        << ntohs (server_address.sin_port) << ")" << std::endl;
+                    std::cout << "User " << it->nickname << " went offline" << std::endl;
                     number_of_users--;
                     FD_CLR (it->sd, &read_fds);
                     close (it->sd);
                     it->sd = 0;
                 }
-                else if (valread == -1 && errno == EAGAIN)
+                else if (valread == -1)
                     print_error ("Reading failure");
                 else {
+                    std::string string_buffer (buffer);
                     STRING_VECTOR bufferSplit = splitString (string_buffer);
-                    if (getInfoUser (it.base (), bufferSplit, password, irc_server.users) == 0){ 
-                        redirectFonction (*it, bufferSplit, &irc_server.users, irc_server);
+                    if (getInfoUser (*it, bufferSplit, irc_server) == 0){ 
+                        redirectFonction (*it, bufferSplit, irc_server);
                     }
                 }
             }
