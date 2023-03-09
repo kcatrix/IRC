@@ -11,6 +11,11 @@ class User;
 class Channel;
 class Server;
 
+typedef struct sockaddr_in SOCKADDR_IN;
+typedef struct sockaddr SOCKADDR;
+const int MAX_USERS = 10;
+const int BUFFER_SIZE = 1024;
+
 # include <signal.h>
 # include <iostream>
 # include <cerrno>
@@ -34,21 +39,11 @@ class Server;
 # include "utils.hpp"
 
 User    getUser (USER_VECTOR users, std::string nickname);
-void    start_irc (const int port, const std::string password);
+void    startIrc (const int port, const std::string password);
 int     getInfoUser(User& new_User, STRING_VECTOR bufferSplit, Server& irc_server);
-void    checkPassword (User* new_user, char* buffer, std::string password);
-void    setUsername (User* new_user, char* buffer);
-void    setNickname (User* new_user, char* buffer);
 void    createUser (int new_socket, USER_VECTOR& users, int& max_sd, int& number_of_users);
-int     checkDuplicateNick(std::string to_check, std::vector<User> users);
-int     checkdoublonuser(char *tocheck, std::vector<User> users, int sd);
+int     checkDuplicateNick(std::string to_check, USER_VECTOR users);
+int     checkDuplicateUser(std::string to_check, USER_VECTOR users);
 int     checkCommand(int sd, std::string to_check, Server& irc_server);
 void    createChannel (User executer, std::string channel_name, Server& irc_server);
 CHANNEL_ITERATOR     findChannel (std::string channel_name, Server& irc_server);
-
-template <class T>
-void    printVector (std::vector<T>& myVector) {
-    std::cout << "Taille du vecteur : " << myVector.size() << "\n";
-    for (long unsigned int i = 0; i < myVector.size(); i++)
-        std::cout << "   value "  << i << " == " <<  myVector[i] << std::endl;
-}

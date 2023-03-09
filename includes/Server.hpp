@@ -2,11 +2,6 @@
 
 # include "irc.hpp"
 
-typedef struct sockaddr_in SOCKADDR_IN;
-typedef struct sockaddr SOCKADDR;
-const int MAX_USERS = 10;
-const int BUFFER_SIZE = 1024;
-
 class Server {
 
     public:

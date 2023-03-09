@@ -20,7 +20,7 @@ void    createChannel (User executer, std::string channel_name, Server& irc_serv
         print_message (executer.sd, "You created the channel " + irc_server.channels.back ().channel_name + "\n");
 }
 
-CHANNEL_ITERATOR     findChannel (std::string channel_name, Server& irc_server) {
+CHANNEL_ITERATOR     findChannel (const std::string channel_name, const Server& irc_server) {
     CHANNEL_ITERATOR    current_channel = irc_server.channels.begin ();
     while (current_channel != irc_server.channels.end ()) {
         if (current_channel->channel_name == channel_name)
@@ -82,7 +82,7 @@ void    redirectFonction (User &executer, STRING_VECTOR bufferSplit, Server& irc
     }
 }
 
-void start_irc (const int port, const std::string password) {
+void startIrc (const int port, const std::string password) {
     Server    irc_server (port, password); 
     int       server_fd = irc_server.getFd ();
     int       address_length = irc_server.getAddressLength ();
