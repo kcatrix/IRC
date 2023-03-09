@@ -19,7 +19,6 @@ class User
 
 		std::string username;
 		std::string nickname;
-		std::string password;
 		std::string logInPwd;
 		std::string away_message;
 		USER_VECTOR ignored;
@@ -28,6 +27,7 @@ class User
 		bool        online;
 		int         sd;
         int         x;
+        int         info;
 
         bool    operator== (const User& rhs) const { return this->nickname == rhs.nickname; }
         bool    operator!= (const User& rhs) { return !(*this == rhs); }

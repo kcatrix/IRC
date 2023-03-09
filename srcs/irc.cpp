@@ -20,7 +20,7 @@ void    createChannel (User executer, std::string channel_name, Server& irc_serv
         print_message (executer.sd, "You created the channel " + irc_server.channels.back ().channel_name + "\n");
 }
 
-CHANNEL_ITERATOR     findChannel (const std::string channel_name, const Server& irc_server) {
+CHANNEL_ITERATOR     findChannel (std::string channel_name, Server& irc_server) {
     CHANNEL_ITERATOR    current_channel = irc_server.channels.begin ();
     while (current_channel != irc_server.channels.end ()) {
         if (current_channel->channel_name == channel_name)
@@ -82,6 +82,47 @@ void    redirectFonction (User &executer, STRING_VECTOR bufferSplit, Server& irc
     }
 }
 
+void    askInput (const int sd, int& info_status) {
+    if (info_status == NEW_CONNEXION) {
+        print_message (sd, "Enter the password to access this server: ");
+        info_status = ENTER_SERVPWD;
+    }
+    else if (info_status == SERVPWD_OK)
+        print_message (sd, "Enter your nickname: ");
+    else if (info_status == WRONG_SERVPWD) {
+        print_message (sd, "Wrong password. Try again: ");
+        info_status = ENTER_SERVPWD;
+    }
+    else if (info_status == NEW_USER)
+        print_message (sd, "Enter your username: ");
+    else if (info_status == NICK_TAKEN) {
+        print_message (sd, "Nickname already in use, please try another one: ");
+        info_status = SERVPWD_OK;
+    }
+    else if (info_status == KNOWN_USER)
+        print_message (sd, "Enter your password to log in: ");
+    else if (info_status == INVALID_NICK) {
+        print_message (sd, "Your nickname must start with a letter. Pick another one: ");
+        info_status = SERVPWD_OK;
+    }
+    else if (info_status == USERPWD_OK) {
+        print_message (sd, "Welcome back!\n");
+        info_status = INFO_OVER;
+    }
+    else if (info_status == WRONG_USERPWD) {
+        print_message (sd, "Wrong password. Try again: ");
+        info_status = KNOWN_USER;
+    }
+    else if (info_status == WELCOME) {
+        print_message (sd, "Welcome to our server! Type /help to see a list of the available commands.\n");
+        info_status = INFO_OVER;
+    }
+    else
+        info_status = WAIT_COMMAND;
+}
+
+void    readInfo (User& user, STRING_VECTOR bufferSplit, Server& irc_server);
+
 void startIrc (const int port, const std::string password) {
     Server    irc_server (port, password); 
     int       server_fd = irc_server.getFd ();
@@ -124,9 +165,10 @@ void startIrc (const int port, const std::string password) {
                 else {
                     std::string string_buffer (buffer);
                     STRING_VECTOR bufferSplit = splitString (string_buffer);
-                    if (getInfoUser (*it, bufferSplit, irc_server) == 0){ 
+                    readInfo (*it, bufferSplit, irc_server);
+                    askInput (it->sd, it->info);
+                    if (it->info == WAIT_COMMAND)
                         redirectFonction (*it, bufferSplit, irc_server);
-                    }
                 }
             }
         }

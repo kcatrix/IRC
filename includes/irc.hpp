@@ -16,6 +16,22 @@ typedef struct sockaddr SOCKADDR;
 const int MAX_USERS = 10;
 const int BUFFER_SIZE = 1024;
 
+enum    e_info_status {
+    NEW_CONNEXION,
+    ENTER_SERVPWD,
+    SERVPWD_OK,
+    WRONG_SERVPWD,
+    NEW_USER,
+    WELCOME,
+    NICK_TAKEN,
+    INVALID_NICK,
+    KNOWN_USER,
+    USERPWD_OK,
+    WRONG_USERPWD,
+    INFO_OVER,
+    WAIT_COMMAND
+};
+
 # include <signal.h>
 # include <iostream>
 # include <cerrno>

@@ -1,19 +1,18 @@
 #include "../includes/irc.hpp"
 
-User::User (void) : username (""), nickname (""), password (""), logInPwd (""), away_message (""), away (false), OP (false) , online (false), sd (0), x(0) { 
+User::User (void) : username (""), nickname (""), logInPwd (""), away_message (""), away (false), OP (false) , online (false), sd (0), x(0), info(0) { 
     ignored.reserve (1);
 }
 
-User::User (int sd) : username (""), nickname (""), password (""), logInPwd (""), away_message (""), away (false), OP (false) , online (false), sd (sd), x(0) { 
+User::User (int sd) : username (""), nickname (""), logInPwd (""), away_message (""), away (false), OP (false) , online (false), sd (sd), x(0), info(0) { 
     ignored.reserve (1);
 }
 
-User::User (const User& cpy) : username (cpy.username), nickname (cpy.nickname), password (cpy.password), logInPwd (cpy.logInPwd), away_message (cpy.away_message), ignored (cpy.ignored), away (cpy.away), OP (cpy.OP), online (cpy.online), sd (cpy.sd), x(cpy.x) { }
+User::User (const User& cpy) : username (cpy.username), nickname (cpy.nickname), logInPwd (cpy.logInPwd), away_message (cpy.away_message), ignored (cpy.ignored), away (cpy.away), OP (cpy.OP), online (cpy.online), sd (cpy.sd), x(cpy.x), info(cpy.info) { }
 
 User& User::operator=( User const & cp ) {
 	username = cp.username;
 	nickname = cp.nickname;
-    password = cp.password;
     logInPwd = cp.logInPwd;
     away_message = cp.away_message;
     ignored = cp.ignored;
@@ -22,13 +21,13 @@ User& User::operator=( User const & cp ) {
     online = cp.online;
 	sd = cp.sd;
     x = cp.x;
+    info = cp.info;
 	return *this;
 }
 
 User::~User(void) {
 	username.clear ();
 	nickname.clear ();
-	password.clear ();
 	logInPwd.clear ();
 	away_message.clear ();
     ignored.clear ();
@@ -37,6 +36,7 @@ User::~User(void) {
     online = false;
 	sd = 0;
     x = 0;
+    info = 0;
 }
 
 std::string User::getUsername(void) const { return username; }
