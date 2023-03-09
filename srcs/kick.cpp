@@ -49,6 +49,11 @@ void    kick (User executer, STRING_VECTOR bufferSplit, Server& irc_server) {
 			{
 				print_message (executer.sd, "You don't have enought right to kick from the channel :" + bufferSplit[1] + "\n");
 			}
+			else if (bufferSplit[2] == executer.nickname)
+			{
+				print_message (executer.sd, "You cannot kick yourself !\n");
+				return;
+			}
 			else
 			{
 				if(isInChan(executer, kick_from, bufferSplit) == 0)

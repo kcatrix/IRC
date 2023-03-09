@@ -11,7 +11,7 @@ User::User (int sd) : username (""), nickname (""), logInPwd (""), away_message 
 User::User (const User& cpy) : username (cpy.username), nickname (cpy.nickname), logInPwd (cpy.logInPwd), away_message (cpy.away_message), ignored (cpy.ignored), away (cpy.away), OP (cpy.OP), online (cpy.online), sd (cpy.sd), x(cpy.x), info(cpy.info) { }
 
 User& User::operator=( User const & cp ) {
-	username = cp.username;
+	username = cp.username; // potentiel pb ?
 	nickname = cp.nickname;
     logInPwd = cp.logInPwd;
     away_message = cp.away_message;
@@ -19,7 +19,7 @@ User& User::operator=( User const & cp ) {
     away = cp.away;
     OP = cp.OP;
     online = cp.online;
-	sd = cp.sd;
+	sd = cp.sd; 
     x = cp.x;
     info = cp.info;
 	return *this;

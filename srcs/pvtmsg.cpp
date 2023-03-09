@@ -19,26 +19,26 @@ static int isInChan(User executer, CHANNEL_ITERATOR chan)
 	return 0;
 }
 
-void msg(User &executer, std::vector<std::string> bufferSplit, std::vector<User> users, Server& irc_server) {
+void msg(User &executer, std::vector<std::string> bufferSplit, std::vector<User> users, Server& irc_server) { // si ignore avant de join le chann, pas de display pour lui
 
 	std::string message;
     if(bufferSplit[1].empty() == 1 || bufferSplit[2].empty() == 1)
+    {
+        print_message (executer.sd, "Not good number of arguments\n");
         return ;
+    }
     if (bufferSplit[1][0] != '#')
     {
         for (USER_ITERATOR it = users.begin (); it != users.end (); it++)
         {
             if (bufferSplit[1] == (*it).nickname) //buffspli[1] == (*it).hostmask || 
             {
-                for (USER_ITERATOR itr = it->ignored.begin (); itr != it->ignored.end (); itr++)
-                    return;
                 if(isIgnored(it, executer) == 0)
                 {
-                    std::cout << "away == " << (*it).away << std::endl; 
                     if ((*it).away == true )// ne fonctionne pas car pas de away == false meme aprés fonction away           
                     {
-                        message = (*it).away_message + '\n'; 
-                        print_message ((*it).sd, message);
+                        message = (*it).nickname + " is away :" + (*it).away_message + '\n'; 
+                        print_message (executer.sd, message);
                         return ;
                     }
                     if(bufferSplit[2].empty () == 0)
@@ -53,6 +53,11 @@ void msg(User &executer, std::vector<std::string> bufferSplit, std::vector<User>
     else
     {
         CHANNEL_ITERATOR to_send = findChannel (bufferSplit[1], irc_server);
+        if (to_send == irc_server.channels.end())
+        {
+            print_message (executer.sd, "This chan doesn't exist\n");
+            return;
+        }
         if(isInChan(executer, to_send) == 0)
             print_message (executer.sd, "You cannot send message in a channel you're not into\n");
         else
@@ -61,18 +66,19 @@ void msg(User &executer, std::vector<std::string> bufferSplit, std::vector<User>
             {
                 if(isIgnored(it, executer) == 0)
                 {
-                    std::cout << "away == " << (*it).away << std::endl; 
                     if ((*it).away == true )
                     {
                         message = (*it).away_message + '\n';
                         print_message ((*it).sd, message);
-                        return ;
-                    } 
-                    if(bufferSplit[2].empty () == 0)
-                        message = bufferSplit[2];
-                    for(int y = 3; bufferSplit[y].empty () == 0; y++)
-                        message = message + " " + bufferSplit[y];
-                    print_message ((*it).sd, "<" + executer.nickname + "> " + message + "\n");
+                    }
+                    else
+                    {
+                        if(bufferSplit[2].empty () == 0)
+                            message = bufferSplit[2];
+                        for(int y = 3; bufferSplit[y].empty () == 0; y++)
+                            message = message + " " + bufferSplit[y];
+                        print_message ((*it).sd, "<" + executer.nickname + "> " + message + "\n");
+                    }
                 }
             }
         }

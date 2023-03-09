@@ -19,3 +19,15 @@ op: upgrade user to op status
 deop: ..
 die: terminate irc server
 kill: remove nick from server
+
+
+
+
+
+Problems:	plusieurs chan crees au meme nom
+			aucuns users conserves en leur sein, 
+			pas de conservation de nick 
+			(fixed mais partage de sd avec le serv donc ouput en son sein 
+			lors d'un retour d'user / voir bug total du user)
+			Away sur le mauvais sd
+

@@ -8,6 +8,17 @@ User    findUser (std::string nickname, USER_VECTOR users) {
     return User ();
 }
 
+void clean_compare(User &Compare, Server& irc_server)
+{
+    for(USER_ITERATOR user = irc_server.users.begin(); user != irc_server.users.end(); user++)
+    {
+        if (Compare.nickname == user->nickname)
+        {
+            irc_server.users.erase(user);
+        }
+    }
+}
+
 void    checkUserPwd (User& known_user, std::string entry) {
     if (known_user.logInPwd == "")
         known_user.info = USERPWD_OK;
@@ -15,7 +26,6 @@ void    checkUserPwd (User& known_user, std::string entry) {
         known_user.info = USERPWD_OK;
     else
         known_user.info = WRONG_USERPWD;
-
 }
 
 void    checkServPwd (User& new_user, std::string entry, std::string password) {
@@ -35,7 +45,7 @@ void    setNickname (User& new_user, std::string entry, Server& irc_server) {
 
     if (isalpha (entry[0]) == 0)
         new_user.info = INVALID_NICK;
-    else if (compare.nickname.empty ()) {
+    else if (compare.nickname.empty () == 1) {
         new_user.nickname = entry;
         new_user.online = true;
         new_user.info = NEW_USER;
@@ -44,7 +54,13 @@ void    setNickname (User& new_user, std::string entry, Server& irc_server) {
         if (compare.online == true)
             new_user.info = NICK_TAKEN;
         else {
+            new_user.online = true;
+            //compare.online = true; // eco+ fix
+            new_user.username = compare.username; // rajout d'info
+            new_user.nickname = compare.nickname;
+            new_user.away_message = compare.away_message;
             new_user.logInPwd = compare.logInPwd;
+            //clean_compare(compare, irc_server);
             new_user.info = KNOWN_USER;
         }
     }
@@ -65,15 +81,15 @@ void    askInput (const int sd, int& info_status);
 
 void    createUser (int new_socket, USER_VECTOR& users, int& max_sd, int& number_of_users) {
     User new_user (new_socket);
-     if (number_of_users >= MAX_USERS) {
-         print_message (new_socket, "Too many users on the server.\n");
-         close (new_socket);
-         return;
-     }
-     std::cout << "A new user joined the server." << std::endl;
-     fcntl (new_socket, F_SETFL, O_NONBLOCK);
-     users.push_back (new_user);
-     askInput (users.back ().sd, users.back ().info);
-     max_sd = std::max (max_sd, new_socket);
-     number_of_users++;
+    if (number_of_users >= MAX_USERS) {
+        print_message (new_socket, "Too many users on the server.\n");
+        close (new_socket);
+        return;
+    }
+    std::cout << "A new user joined the server." << std::endl;
+    fcntl (new_socket, F_SETFL, O_NONBLOCK);
+    users.push_back (new_user);
+    askInput (users.back ().sd, users.back ().info);
+    max_sd = std::max (max_sd, new_socket);
+    number_of_users++;
 }

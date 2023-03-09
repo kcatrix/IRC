@@ -52,6 +52,11 @@ void    ban (User executer, STRING_VECTOR bufferSplit, Server& irc_server) {
 			{
 				print_message (executer.sd, "You don't have enought right to ban from the channel :" + bufferSplit[1] + "\n");
 			}
+			else if (bufferSplit[2] == executer.nickname)
+			{
+				print_message (executer.sd, "You cannot ban yourself !\n");
+				return;
+			}
 			else
 			{
 				if(isInChan(executer, kick_from, bufferSplit) == 0)

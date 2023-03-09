@@ -99,8 +99,8 @@ void    askInput (const int sd, int& info_status) {
         print_message (sd, "Nickname already in use, please try another one: ");
         info_status = SERVPWD_OK;
     }
-    else if (info_status == KNOWN_USER)
-        print_message (sd, "Enter your password to log in: ");
+    else if (info_status == KNOWN_USER) // && log_PWD_exist ?
+        print_message (sd, "Enter your password to log in:(Enter if no pwd)");
     else if (info_status == INVALID_NICK) {
         print_message (sd, "Your nickname must start with a letter. Pick another one: ");
         info_status = SERVPWD_OK;
@@ -156,7 +156,7 @@ void startIrc (const int port, const std::string password) {
                     it->online = false;
                     std::cout << "User " << it->nickname << " went offline" << std::endl;
                     number_of_users--;
-                    FD_CLR (it->sd, &read_fds);
+                    FD_CLR (it->sd, &read_fds); // pb quit nb of user
                     close (it->sd);
                     it->sd = 0;
                 }
