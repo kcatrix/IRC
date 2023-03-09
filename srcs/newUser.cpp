@@ -1,5 +1,5 @@
 #include "../includes/irc.hpp"
-// ------------------------    Gestion entree infos users (a modifier pour coller au user protocol + J'ai rajoute une protect doublon en attendant) -------------------------------------- 
+
 void    checkPassword (User* new_user, char* buffer, std::string password) {
         if (password.compare(buffer) == 0) {
             new_user->password = buffer;
@@ -92,15 +92,18 @@ int     getInfoUser (User* new_user, STRING_VECTOR bufferSplit, std::string pass
     return 0;
 }
 
-void    createUser (int new_socket, USER_VECTOR* users, int* max_sd, int* number_of_users) {
+void    createUser (int new_socket, USER_VECTOR& users, int& max_sd, int& number_of_users) {
     User new_user (new_socket);
-     if (*number_of_users >= MAX_USERS)
-         exit(0); // a changer en fonction qui close toute les socket
+     if (number_of_users >= MAX_USERS) {
+         print_message (new_socket, "Too many users on the server.\n");
+         close (new_socket);
+         return;
+     }
      std::cout << "A new user joined the server." << std::endl;
-     fcntl(new_socket, F_SETFL, O_NONBLOCK);
-     users->push_back (new_user);
-     *max_sd = std::max (*max_sd, new_socket);
-     (*number_of_users)++;
+     fcntl (new_socket, F_SETFL, O_NONBLOCK);
+     users.push_back (new_user);
+     max_sd = std::max (max_sd, new_socket);
+     number_of_users++;
     print_message (new_user.sd, "Enter your nickname: ");
      //print_message (new_user.sd, "Enter the password to access this server.\n");
     

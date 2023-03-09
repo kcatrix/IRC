@@ -1,5 +1,6 @@
 #include "../includes/irc.hpp"
-#include <errno.h>
+
+extern int errno;
 
 User    getUser (USER_VECTOR users, std::string nickname) {
     for (USER_ITERATOR it = users.begin (); it != users.end (); it++) {
@@ -10,23 +11,19 @@ User    getUser (USER_VECTOR users, std::string nickname) {
 }
 
 void    createChannel (User executer, std::string channel_name, Server& irc_server) {
-    if(channel_name[0] == '#')
-    {
+        channel_name = "#" + channel_name;
         Channel     new_channel (channel_name);
 
-        new_channel.ope.push_back(executer.nickname); new_channel.chan_users.push_back (executer); irc_server.channels.push_back (new_channel);
-        std::cout << "The channel " << irc_server.channels.back ().channel_name << " was created by " << irc_server.channels.back ().chan_users.back ().nickname << std::endl;
+        new_channel.ope.push_back (executer.nickname);
+        new_channel.chan_users.push_back (executer);
+        irc_server.channels.push_back (new_channel);
         print_message (executer.sd, "You created the channel " + irc_server.channels.back ().channel_name + "\n");
-    }
-    else
-        print_message (executer.sd, "The channel you want to join / create must start with # !\n");
-
 }
 
 CHANNEL_ITERATOR     findChannel (std::string channel_name, Server& irc_server) {
     CHANNEL_ITERATOR    current_channel = irc_server.channels.begin ();
     while (current_channel != irc_server.channels.end ()) {
-        if ((*current_channel).channel_name == channel_name)
+        if (current_channel->channel_name == channel_name)
             return current_channel;
         current_channel++;
     }
@@ -86,10 +83,7 @@ void    redirectFonction (User &executer, STRING_VECTOR bufferSplit, std::vector
     }
 }
 
-extern int errno;
-
-void start_irc(int port, std::string password)
-{
+void start_irc (const int port, const std::string password) {
     Server    irc_server (port, password); 
     int       server_fd = irc_server.getFd ();
     int       address_length = irc_server.getAddressLength ();
@@ -107,12 +101,12 @@ void start_irc(int port, std::string password)
             if (it->sd != 0)
                 FD_SET (it->sd, &read_fds);
         }
-        if (activity = select (max_sd + 1, &read_fds, NULL, NULL, NULL) < 0)
+        if ((activity = select (max_sd + 1, &read_fds, NULL, NULL, NULL)) < 0)
             print_error ("Select error");
         if (FD_ISSET (server_fd, &read_fds)) {
             if ((new_socket = accept (server_fd, (SOCKADDR*)&server_address, (socklen_t*)&address_length))<0)
                 print_error ("Socket creation error");
-			createUser (new_socket, &irc_server.users, &max_sd, &number_of_users);
+			createUser (new_socket, irc_server.users, max_sd, number_of_users);
         }
         for (USER_ITERATOR it = irc_server.users.begin (); it != irc_server.users.end (); it++) {
             memset (buffer, 0, BUFFER_SIZE);
