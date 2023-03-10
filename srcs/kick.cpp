@@ -2,7 +2,7 @@
 
 static int	isOpe(STRING_VECTOR ope, User executer) {
 	for (STRING_ITERATOR it = ope.begin (); it != ope.end (); it++) {
-		if (it == executer.nickname)
+		if (*it == executer.nickname)
 			return 0;
 	}
 	return 1;

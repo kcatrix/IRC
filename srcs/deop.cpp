@@ -29,15 +29,15 @@ void    deop (User executer, STRING_VECTOR bufferSplit, Server& irc_server) {
         print_message (executer.sd, "Not enough parameters given.\n");
     else {
         CHANNEL_ITERATOR chan_to_op = findChannel (bufferSplit[1], irc_server);
-        if (chnn_to_op == irc_server.channels.end ())
+        if (chan_to_op == irc_server.channels.end ())
             print_message (executer.sd, "The chan: " + bufferSplit[1] + " doesn't exist\n");
         else {
-            if (isOpe (chann_to_op->ope, executer) == 0) {
+            if (isOpe (chan_to_op->ope, executer) == 0) {
 				print_message (executer.sd, "You don't have enough rights to demote operators in the channel:" + bufferSplit[1] + "\n");
 			}
             else
 			{
-				if (isInChan (executer, chann_to_op, bufferSplit) == 0)
+				if (isInChan (executer, chan_to_op, bufferSplit) == 0)
 					print_message (executer.sd, "No user: " + bufferSplit[2] + " in channel: " + bufferSplit[1] +  "\n");
 			}
         }

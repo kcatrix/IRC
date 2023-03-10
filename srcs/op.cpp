@@ -2,7 +2,7 @@
 
 static int	isOpe(STRING_VECTOR ope, User executer) {
 	for (STRING_ITERATOR it = ope.begin (); it != ope.end (); it++) {
-		if(it == executer.nickname)
+		if (*it == executer.nickname)
 			return 1;
 	}
 	return 0;
@@ -29,10 +29,10 @@ void    op (User executer, STRING_VECTOR bufferSplit, Server& irc_server) {
         if (chan_to_op == irc_server.channels.end ())
             print_message (executer.sd, "The chan: " + bufferSplit[1] + " doesn't exist\n");
         else {
-            if (isOpe (chann_to_op->ope, executer) == 0)
+            if (isOpe (chan_to_op->ope, executer) == 0)
 				print_message (executer.sd, "You don't have enought right to op in the channel :" + bufferSplit[1] + "\n");
             else {
-				if (isInChan (executer, chann_to_op, bufferSplit) == 0)
+				if (isInChan (executer, chan_to_op, bufferSplit) == 0)
 					print_message (executer.sd, "No user: " + bufferSplit[2] + " in channel: " + bufferSplit[1] +  "\n");
 			}
         }

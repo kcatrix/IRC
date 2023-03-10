@@ -1,14 +1,14 @@
 #include "../includes/irc.hpp"
 
-User::User (void) : username (""), nickname (""), logInPwd (""), away_message (""), away (false), OP (false) , online (false), sd (0), x(0), info(0) { 
+User::User (void) : username (""), nickname (""), logInPwd (""), away_message (""), away (false), OP (false) , online (false), sd (0), info(0) { 
     ignored.reserve (1);
 }
 
-User::User (int sd) : username (""), nickname (""), logInPwd (""), away_message (""), away (false), OP (false) , online (false), sd (sd), x(0), info(0) { 
+User::User (int sd) : username (""), nickname (""), logInPwd (""), away_message (""), away (false), OP (false) , online (false), sd (sd), info(0) { 
     ignored.reserve (1);
 }
 
-User::User (const User& cpy) : username (cpy.username), nickname (cpy.nickname), logInPwd (cpy.logInPwd), away_message (cpy.away_message), ignored (cpy.ignored), away (cpy.away), OP (cpy.OP), online (cpy.online), sd (cpy.sd), x(cpy.x), info(cpy.info) { }
+User::User (const User& cpy) : username (cpy.username), nickname (cpy.nickname), logInPwd (cpy.logInPwd), away_message (cpy.away_message), ignored (cpy.ignored), away (cpy.away), OP (cpy.OP), online (cpy.online), sd (cpy.sd), info(cpy.info) { }
 
 User& User::operator= (User const& cp) {
 	username = cp.username;

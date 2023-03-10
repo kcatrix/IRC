@@ -47,8 +47,6 @@ void    redirectFonction (User &executer, STRING_VECTOR bufferSplit, Server& irc
             nick(executer, bufferSplit, irc_server.users);
         else if (bufferSplit[0] == "/quit")
             quit(executer);
-        else if (bufferSplit[0] == "/ping")
-            ping(executer, bufferSplit);
         else if (bufferSplit[0] == "/motd")
             motd(executer);
         else if (bufferSplit[0] == "/away")
