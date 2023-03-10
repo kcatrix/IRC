@@ -7,14 +7,12 @@ int checkDuplicateNick (std::string to_check, USER_VECTOR users) {
 }
 
 int checkDuplicateUser (std::string to_check, USER_VECTOR users, int sd) {
-    for (USER_ITERATOR it = users.begin (); it != users.end (); it++)
-    {
-		if((*it).nickname.compare(to_check) == 0)
-		{
-			if(sd == (*it).sd)
-				write(sd, "This is already your username !\n", 32);
+    for (USER_ITERATOR it = users.begin (); it != users.end (); it++) {
+		if(it->nickname.compare (to_check) == 0) {
+			if (sd == it->sd)
+				print_message (sd, "This is already your username\n"); 
 			else
-				write(sd, "username already in use, please try an other one\n", 49);
+				print_message (sd, "Username already in use.n"); 
 			return 1;
 		}
 	}

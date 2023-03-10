@@ -1,16 +1,16 @@
 #include "../includes/irc.hpp"
 
-static void opequit(const User executer, CHANNEL_ITERATOR &to_quit) {
+static void opequit (const User executer, CHANNEL_ITERATOR &to_quit) {
     for (STRING_ITERATOR it = to_quit->ope.begin (); it != to_quit->ope.end (); it++) {
-        if(executer.nickname == *it) {
-            to_quit->ope.erase(it);
-            return ;
+        if (executer.nickname == *it) {
+            to_quit->ope.erase (it);
+            return;
         }
     }
 }
 
 void    part (User executer, std::vector<std::string> bufferSplit, Server& irc_server) {
-    if(bufferSplit[1].empty () == 1)
+    if (bufferSplit[1].empty () == 1)
         print_message (executer.sd, "Not enough parameters given.\n");
     else {
         CHANNEL_ITERATOR to_quit = findChannel (bufferSplit[1], irc_server);

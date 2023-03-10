@@ -1,21 +1,16 @@
 #include "../includes/irc.hpp"
 
 User    findUser (std::string nickname, USER_VECTOR users) {
-
     for (USER_ITERATOR user = users.begin (); user != users.end (); user++) {
         if (user->nickname == nickname)
-        {
             return *user;
-        }
     }
     return User ();
 }
 
-static void removecompare(USER_VECTOR &users, std::string compare)
-{
+static void removecompare (USER_VECTOR &users, std::string compare) {
     for (USER_ITERATOR user = users.begin (); user != users.end (); user++) {
-        if (user->nickname == compare)
-        {
+        if (user->nickname == compare) {
             user->nickname = "";
             return;
         }
@@ -47,7 +42,7 @@ void    setUsername (User& new_user, std::string username) {
 void    setNickname (User& new_user, std::string entry, Server& irc_server) {
     User    compare = findUser (entry, irc_server.users);
 
-    if(compare.sd == -1 || compare.sd == -2)
+    if (compare.sd == -1 || compare.sd == -2)
         new_user.info = NICK_TAKEN;
     else if (isalpha (entry[0]) == 0)
         new_user.info = INVALID_NICK;

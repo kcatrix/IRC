@@ -7,8 +7,8 @@ void    away (User& executer, STRING_VECTOR bufferSplit) {
 		executer.away_message.clear ();
 	}
     else {
-        std::string reason;
-        for(int y = 1; bufferSplit[y].empty () == 0; y++)
+        std::string	reason;
+        for (int y = 1; bufferSplit[y].empty () == 0; y++)
             reason = reason + " " + bufferSplit[y];
         executer.away = true;
         print_message (executer.sd, "You are now marked as being away\n");

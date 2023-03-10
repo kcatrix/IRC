@@ -12,9 +12,9 @@ class Server {
 
         virtual ~Server (void);
 
-        std::vector<User>           users;
-        std::vector<Channel>        channels;
-        std::vector<std::string>    commands_list;
+        USER_VECTOR     users;
+        CHANNEL_VECTOR  channels;
+        STRING_VECTOR	commands_list;
 
         int         getFd (void) const;
         int         getAddressLength (void) const;

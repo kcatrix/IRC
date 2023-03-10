@@ -18,7 +18,7 @@ void    printQuit (int sd) {
 }
 
 void    printMotd (int sd) {
-    print_message (sd, "Use: /motd.\nDisplays the message of the day of your IRC server.\n");
+    print_message (sd, "Use: /motd.\nDisplay the message of the day of your IRC server.\n");
 }
 
 void    printAway (int sd) {
@@ -34,15 +34,15 @@ void    printPart (int sd) {
 }
 
 void    printNames (int sd) {
-    print_message (sd, "Use: /names <channel1> <channel2>.\nLists the users present in the listed channels.\n");
+    print_message (sd, "Use: /names <channel1> <channel2>.\nList the users present in the listed channels.\n");
 }
 
 void    printList (int sd) {
-    print_message (sd, "Use: /list.\nLists the channels on the server.\n");
+    print_message (sd, "Use: /list.\nList the channels on the server.\n");
 }
 
 void    printHelp (int sd) {
-    print_message (sd, "Use: /help <command>.\nDisplays the function of the command. If nothing is entered, a list of available commands will be displayed.\n");
+    print_message (sd, "Use: /help <command>.\nDisplay the function of the command. If nothing is entered, a list of available commands will be displayed.\n");
 }
 
 void    printKick (int sd) {
@@ -54,27 +54,27 @@ void    printBan (int sd) {
 }
 
 void    printOp (int sd) {
-    print_message (sd, "Use: /op <channel> <nickname>.\nPromotes a user to OP status in a channel.\n");
+    print_message (sd, "Use: /op <channel> <nickname>.\nPromote a user to operator status in a channel.\n");
 }
 
 void    printDeop (int sd) {
-    print_message (sd, "Use: /deop <channel> <nickname>.\nDemotes a user from OP status in a channel.\n");
+    print_message (sd, "Use: /deop <channel> <nickname>.\nDemote a user from operator status in a channel.\n");
 }
 
 void    printInvite (int sd) {
-    print_message (sd, "Use: /invite <channel> <nickname>.\nInvites a user to a channel.\n");
+    print_message (sd, "Use: /invite <channel> <nickname>.\nInvite a user to a channel.\n");
 }
 
 void    printIgnore (int sd) {
-    print_message (sd, "Use: /ignore <nickname>.\nMakes all messages from a user invisible to you, in a channel or in private.\n");
+    print_message (sd, "Use: /ignore <nickname>.\nMake all messages from a user invisible to you, in a channel or in private.\n");
 }
 
 void    printAccept (int sd) {
-    print_message (sd, "Use: /accept <nickname>.\nRemoves the ignore status of a user.\n");
+    print_message (sd, "Use: /accept <nickname>.\nRemove the ignore status of a user.\n");
 }
 
 void    printIdentify (int sd) {
-    print_message (sd, "Use: /identify <password>.\nAssigns a password to your nickname.\n");
+    print_message (sd, "Use: /identify <password>.\nAssign a password to your nickname.\n");
 }
 
 void    printHelp (int sd, std::string command) {

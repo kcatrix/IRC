@@ -1,7 +1,6 @@
 #include "../includes/irc.hpp"
 
-Channel::Channel (void) {
-    channel_name = "";
+Channel::Channel (void) : channel_name (""){
     chan_users.reserve (1);
     ope.reserve (1);
     banned.reserve (1);

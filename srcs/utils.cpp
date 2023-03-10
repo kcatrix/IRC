@@ -1,4 +1,3 @@
-
 #include "../includes/irc.hpp"
 
 void    print_message (int sd, std::string message) {
@@ -10,21 +9,21 @@ void    print_error (std::string error_message) {
     exit (EXIT_FAILURE);
 }
 
-std::vector<std::string> splitString( std::string& str) {
-    std::vector<std::string> result;
+STRING_VECTOR splitString (std::string& str) {
+    STRING_VECTOR result;
     std::string::size_type start = 0;
-    std::string::size_type end = str.find(" ");
+    std::string::size_type end = str.find (" ");
 
     str.erase (str.length () - 1, 1);
     while (end != std::string::npos) {
         if (end > start) {
-            result.push_back(str.substr(start, end - start));
+            result.push_back (str.substr (start, end - start));
         }
         start = end + 1;
         end = str.find(" ", start);
     }
-    if (start < str.size()) {
-        result.push_back(str.substr(start));
+    if (start < str.size ()) {
+        result.push_back (str.substr(start));
     }
     result.push_back ("");
     return result;

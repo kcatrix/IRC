@@ -56,10 +56,9 @@ enum    e_info_status {
 
 User    getUser (USER_VECTOR users, std::string nickname);
 void    startIrc (const int port, const std::string password);
-int     getInfoUser(User& new_User, STRING_VECTOR bufferSplit, Server& irc_server);
 void    createUser (int new_socket, USER_VECTOR& users, int& max_sd, int& number_of_users);
-int     checkDuplicateNick(std::string to_check, USER_VECTOR users);
-int     checkDuplicateUser(std::string to_check, USER_VECTOR users);
-int     checkCommand(int sd, std::string to_check, Server& irc_server);
+int     checkDuplicateNick (std::string to_check, USER_VECTOR users);
+int     checkDuplicateUser (std::string to_check, USER_VECTOR users);
+int     checkCommand (int sd, std::string to_check, Server& irc_server);
 void    createChannel (User executer, std::string channel_name, Server& irc_server);
 CHANNEL_ITERATOR     findChannel (std::string channel_name, Server& irc_server);

@@ -4,7 +4,7 @@ extern int errno;
 
 User    getUser (USER_VECTOR users, std::string nickname) {
     for (USER_ITERATOR it = users.begin (); it != users.end (); it++) {
-        if(it->nickname == nickname)
+        if (it->nickname == nickname)
             return *it;
     }
     return User ();
@@ -162,7 +162,7 @@ void startIrc (const int port, const std::string password) {
                     it->online = false;
                     std::cout << "User " << it->nickname << " went offline" << std::endl;
                     number_of_users--;
-                    FD_CLR (it->sd, &read_fds); // pb quit nb of user
+                    FD_CLR (it->sd, &read_fds);
                     close (it->sd);
                     it->sd = 0;
                 }
